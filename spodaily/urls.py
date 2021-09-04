@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(url='spodaily-api/login/', permanent=False)),
     path('spodaily-api/', include('django.contrib.auth.urls'), name='spodaily_login'),
     url(r'^spodaily-api/home/', views.Home.as_view(), name='home'),
+    url(r'^spodaily-api/register/', views.register, name='register'),
 
 ]

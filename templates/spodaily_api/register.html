@@ -1,0 +1,11 @@
+{% block content %}
+
+    <H1>Register</H1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="create" value="register">
+    </form>
+
+{% endblock %}

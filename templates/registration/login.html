@@ -1,7 +1,5 @@
-
-
 {% block content %}
-
+<H1>Login</H1>
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
@@ -28,11 +26,10 @@
       </tr>
     </table>
     <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
   </form>
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-  <p><a href="">Register</a></p>
+  <p><a href="{% url 'register' %}">Register</a></p>
 
 {% endblock %}
