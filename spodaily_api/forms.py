@@ -5,3 +5,7 @@ from spodaily_api.models import User
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField()
+
+
+class RegisterForm(forms.ModelForm):
+    pass

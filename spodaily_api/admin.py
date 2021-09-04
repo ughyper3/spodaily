@@ -4,7 +4,6 @@ from spodaily_api.models import User
 
 class UserAdmin(admin.ModelAdmin):
     list_display = [
-        "status",
         "user_name",
         "email",
     ]

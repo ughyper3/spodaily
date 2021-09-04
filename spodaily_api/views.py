@@ -20,3 +20,6 @@ class Home(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/home.html"
 
 
+class Register(TemplateView):
+    template_name = "spodaily_api/register.html"
+
