@@ -1,6 +1,26 @@
 {% block content %}
-    hello home
-{{ user.user_name }}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "spodaily_api/css/home.css" %}">
+     <header>
+        <a href="{% url 'home' %}"><h1 class="title"> Spodaily </h1></a>
+        <li>
+            <ul><a href="{% url 'account' %}"> My account </a></ul>
+            <ul><a href="{% url 'routine' %}"> My routine </a></ul>
+            <ul><a href=""> Boolean field </a></ul>
+            <ul><a href='{% url 'logout' %}'>Logout</a></ul>
+        </li>
+    </header>
 
-    <a href='{% url 'logout' %}'>logout</a>
+    <h1>Hello home </h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae massa auctor, convallis metus aliquam, consectetur lorem. Nam ultrices vestibulum enim, a cursus lorem. Etiam ac est blandit, ornare mi sed, varius dolor. Nam sit amet convallis diam. Morbi in rutrum nunc, vitae facilisis lorem. Vestibulum et risus volutpat, cursus ante sit amet, finibus massa. Donec hendrerit mauris non tellus elementum, ac pharetra neque fermentum. Duis vel metus fermentum, feugiat augue sit amet, maximus elit. Donec cursus eget erat in fringilla. Maecenas et iaculis leo.
+
+Suspendisse in pellentesque urna. Mauris faucibus tellus in velit accumsan, fermentum aliquam odio ornare. In pharetra consequat pellentesque. Vestibulum sed ligula eget tortor finibus volutpat sed quis nisl. Fusce at volutpat mauris. Morbi id sem quis purus ultricies iaculis sit amet sed neque. Donec tincidunt nibh ut lorem bibendum fermentum. Proin in leo enim. Pellentesque elementum lacus sed ligula egestas laoreet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer congue lectus sed ultrices tempus. Phasellus sit amet leo leo.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus suscipit pellentesque. Morbi sed facilisis sem. Mauris rutrum neque a facilisis posuere. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In venenatis fermentum enim, in convallis orci rutrum sit amet. Aliquam mattis varius lacinia. Vivamus commodo blandit nunc, et sollicitudin eros lobortis et. Pellentesque pellentesque, ligula vel condimentum dignissim, nulla turpis pharetra diam, a tempus ipsum mauris sit amet diam. Vivamus posuere aliquet pulvinar. Quisque nec ligula eu orci eleifend pharetra ac ut nunc. Donec euismod tellus massa, et volutpat augue pulvinar sed.
+
+Aliquam suscipit rhoncus nulla. In dignissim tortor id nunc sodales, vehicula tristique neque maximus. Mauris efficitur finibus neque, quis dignissim lorem molestie quis. In pulvinar hendrerit enim quis varius. Curabitur eget nisl non ante rutrum tincidunt id non velit. Cras elementum gravida felis, quis accumsan risus cursus sit amet. Praesent et vehicula ante, vitae mollis velit.
+
+Pellentesque lobortis, quam et dignissim consequat, sapien nisl cursus lorem, blandit pretium nisl sem ut erat. Ut tincidunt vulputate egestas. Donec vel ultrices quam. Phasellus placerat imperdiet nisi ac dapibus. Suspendisse at libero ultrices, convallis ante eu, consequat quam. Donec faucibus, urna vitae cursus semper, dolor felis tempor turpis, eu malesuada diam urna vel nisi. Vestibulum aliquet sollicitudin ullamcorper. Nam varius non ex sed fringilla. Pellentesque ut lectus metus. Mauris rhoncus libero eu nulla tempor laoreet. Etiam consequat mattis tortor, non viverra metus elementum eget. Nulla facilisi. Curabitur ligula lectus, fringilla eu cursus ac, condimentum a ligula. Donec viverra justo massa, ac pharetra velit sagittis ac.
+    </p>
 {% endblock %}
