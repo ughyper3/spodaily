@@ -11,8 +11,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -27,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "spodaily_api.User"
 
 # Application definition
 
@@ -37,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'spodaily_api.apps.SpodailyApiConfig',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +61,7 @@ ROOT_URLCONF = 'spodaily.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -76,8 +83,13 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql', # on utilise l'adaptateur postgresql
+        'NAME': 'spodaily_preprod', # le nom de notre base de donnees creee precedemment
+        'USER': 'postgres', # attention : remplacez par votre nom d'utilisateur
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
+
     }
 }
 
@@ -100,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/spodaily-api/auth/login/'
+LOGIN_REDIRECT_URL = '/spodaily-api/home/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

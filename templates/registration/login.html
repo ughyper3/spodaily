@@ -1,0 +1,24 @@
+{% load static %}
+<link rel="stylesheet" href="{% static "spodaily_api/css/login.css" %}">
+{% block content %}
+    <a href="{% url 'register' %}">Register</a>
+    <div class="login-box">
+        <div class="login-box">
+  <h2>Login</h2>
+  <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+    <div class="user-box">
+        {{ form.username }}
+      <label>Email</label>
+    </div>
+    <div class="user-box">
+      {{ form.password }}
+      <label>Password</label>
+    </div>
+      <input type="submit" value="Submit">
+  </form>
+</div>
+    </div>
+
+
+{% endblock %}

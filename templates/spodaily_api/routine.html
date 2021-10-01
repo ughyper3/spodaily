@@ -1,0 +1,21 @@
+{% block content %}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static "spodaily_api/css/account.css" %}">
+     <header>
+         <a href="{% url 'home' %}"><h1 class="title"> Spodaily </h1></a>
+        <li>
+            <ul><a href="{% url 'account' %}"> My account </a></ul>
+            <ul><a href="{% url 'routine' %}"> My routine </a></ul>
+            <ul><a href=""> Boolean field </a></ul>
+            <ul><a href='{% url 'logout' %}'>Logout</a></ul>
+        </li>
+    </header>
+
+    <h1>{{user.user_name}}'s routine</h1>
+
+    <table>
+
+    </table>
+
+{% endblock %}
