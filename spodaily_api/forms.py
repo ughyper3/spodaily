@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from spodaily_api.models import User
+from spodaily_api.models import User, Session
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -37,4 +37,11 @@ class EditUserForm(ModelForm):
         model = User
         fields = ['email', 'user_name', 'first_name', 'name', 'birth']
 
+class AddSessionForm(ModelForm):
+    routine_id_id = forms.CharField(required=True, max_length=150)
+    name = forms.CharField(required=True, max_length=150)
+    date = forms.DateField(required=True)
 
+    class Meta:
+        model = Session
+        fields = ['routine_id_id', 'name', 'date']

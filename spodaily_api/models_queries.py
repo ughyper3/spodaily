@@ -23,7 +23,6 @@ def get_activities_by_session(session_id):
         'session_id_id',
         'exercise_id__name'
     )
-    print(activities)
     return activities
 
 

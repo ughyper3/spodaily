@@ -8,6 +8,7 @@
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <h3 class="main-title pt-1">My sessions</h3>
+            <a href="{% url 'add_session' %}">AJOUTER UNE SESSION</a>
             <div class="row">
                 {% for ses in session %}
                         <div class="col-4" style="padding-bottom: 25px">

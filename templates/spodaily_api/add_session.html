@@ -1,0 +1,29 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block content %}
+
+{% include 'base/sidebar.html' %}
+{% include 'base/header.html' %}
+
+    <div class="content" style="padding-left: 200px">
+        <div class="container-fluid">
+            <h3 class="main-title pt-1">Add session</h3>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div>
+                    <label for="routine_id_id">{{add_session_form.routine_id_id.label}}</label>
+                    <input id="routine_id_id" type="text" name="routine_id_id" value="{{ user.uuid }}">
+                </div>
+                <div>
+                    {{add_session_form.name.label}}
+                    {{ add_session_form.name }}
+                </div>
+                <div>
+                    {{add_session_form.date.label}}
+                    {{ add_session_form.date }}
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}

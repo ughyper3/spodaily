@@ -10,7 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from spodaily_api.models import Exercise, Activity, Routine, Session
 from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_routine, get_routine_by_user, get_session_name_by_act_uuid
 
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm
 from collections import ChainMap
 
 class LoginView(TemplateView):
@@ -24,9 +24,12 @@ class LoginView(TemplateView):
                                 password=login_form.cleaned_data.get('password'))
             if user is not None:
                 login(request, user)
+                messages.add_message(request, messages.SUCCESS, "Authentification réussie !")
                 return HttpResponseRedirect(reverse('home'))
 
-        messages.add_message(request, messages.WARNING, "Echec de l'authentification!")
+            else:
+                messages.error(request,'username or password not correct')
+
         return HttpResponseRedirect(reverse('login'))
 
 
@@ -41,6 +44,11 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Successfully registered')
+            return HttpResponseRedirect(reverse('login'))
+
+        else:
+            messages.error(request, 'Registration failed')
 
     context = {'form': form}
     return render(request, template_name="registration/register.html", context=context)
@@ -80,6 +88,16 @@ def session(request):
 
     context['session'] = session
     context['activity'] = activities_list
-    print(activities_list[0])
 
     return render(request, 'spodaily_api/session.html', context)
+
+def add_session(request):
+    add_session_form = AddSessionForm
+
+    if request.method == 'POST':
+        form = AddSessionForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+    context = {'add_session_form': add_session_form}
+    return render(request, 'spodaily_api/add_session.html', context)
