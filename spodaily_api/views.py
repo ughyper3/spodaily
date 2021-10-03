@@ -7,10 +7,11 @@ from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from spodaily_api.models import Exercise
+from spodaily_api.models import Exercise, Activity, Routine, Session
+from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_routine, get_routine_by_user, get_session_name_by_act_uuid
 
-from spodaily_api.forms import LoginForm, CreateUserForm, UserNameForm, PictureForm
-
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm
+from collections import ChainMap
 
 class LoginView(TemplateView):
     template_name = "registration/login.html"
@@ -33,18 +34,6 @@ class Home(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/home.html"
 
 
-def routine(request):
-    user = request.user
-
-    context = {
-
-    }
-
-    return render(request, 'spodaily_api/routine.html', context)
-
-
-
-
 def register(request):
     form = CreateUserForm
 
@@ -54,18 +43,18 @@ def register(request):
             form.save()
 
     context = {'form': form}
-    return render(request, template_name="spodaily_api/register.html", context=context)
+    return render(request, template_name="registration/register.html", context=context)
 
 
 def account(request):
-    user_name_form = UserNameForm
+    edit_user_form = EditUserForm
 
     if request.method == 'POST':
-        form = UserNameForm(request.POST, instance=request.user)
+        form = EditUserForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
 
-    context = {'user_name_form': user_name_form}
+    context = {'edit_user_form': edit_user_form}
     return render(request, template_name="spodaily_api/account.html", context=context)
 
 
@@ -74,3 +63,23 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('dlc_login'))
 
 
+def routine(request):
+    context = {}
+    return render(request, 'spodaily_api/routine.html', context)
+
+
+def session(request):
+    context = {}
+    user = request.user
+    routine = get_routine_by_user(user.uuid)
+    session = get_sessions_by_routine(routine.values()[0]['uuid']).values()
+    activities_list = []
+    for ses in session:
+        activity = get_activities_by_session(ses['uuid'])
+        activities_list.append(activity)
+
+    context['session'] = session
+    context['activity'] = activities_list
+    print(activities_list[0])
+
+    return render(request, 'spodaily_api/session.html', context)

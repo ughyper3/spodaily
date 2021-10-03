@@ -1,0 +1,43 @@
+{% load static %}
+<style>
+    .sidebar {
+
+          width: 200px;
+          position : absolute;
+          height: 100%;
+
+    }
+    .side-links{
+        padding-top: 50px;
+    }
+
+    .img{
+        padding:15px;
+    }
+
+    .contact{
+        padding-top: 100px;
+    }
+
+</style>
+
+<!-- The sidebar -->
+<div class="sidebar bg-dark list-group m-0 p-0 accordion v-100 toggle position-fixed">
+    <div class="picture">
+        <a href="{% url 'home' %}"><img class="img img-fluid" src={% static 'spodaily_api/img/logo.png' %}></a>
+    </div>
+    <div class="side-links ">
+        <a class="list-group-item bg-dark text-light" href="{% url 'routine' %}">My routine</a>
+        <a class="list-group-item bg-dark text-light" href="{% url 'session' %}">My past sessions</a>
+        <a class="list-group-item bg-dark text-light">Exercise guide</a>
+        <a class="list-group-item bg-dark text-light">Blablabla</a>
+        <a class="list-group-item bg-dark text-light">Test</a>
+        <a class="list-group-item bg-dark text-light">Issou</a>
+    </div>
+    <div class="contact">
+        <a class="list-group-item bg-dark text-light">Contact</a>
+        <a class="list-group-item bg-dark text-light">Test</a>
+        <a class="list-group-item bg-dark text-light">Machin</a>
+
+    </div>
+</div>

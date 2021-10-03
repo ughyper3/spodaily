@@ -26,17 +26,15 @@ class CreateUserForm(UserCreationForm):
         return user
 
 
-class UserNameForm(ModelForm):
+class EditUserForm(ModelForm):
+    email = forms.EmailField(required=True, max_length=150)
     user_name = forms.CharField(required=True, max_length=150)
+    first_name = forms.CharField(required=False, max_length=150)
+    name = forms.CharField(required=False, max_length=150)
+    birth = forms.DateField(required=False)
 
     class Meta:
         model = User
-        fields = ['user_name']
+        fields = ['email', 'user_name', 'first_name', 'name', 'birth']
 
 
-class PictureForm(ModelForm):
-    picture = forms.ImageField(max_length=200)
-
-    class Meta:
-        model = User
-        fields = ['picture']

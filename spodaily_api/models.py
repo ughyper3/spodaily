@@ -101,18 +101,17 @@ class Session(BaseModel):
     date = models.DateField(default=datetime.now)
 
 
+class Exercise(BaseModel):
+    name = models.CharField(max_length=200, null=False, blank=False, default="off")
+
+
 class Activity(BaseModel):
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='activity_session_id')
-    exercise_id = models.ForeignKey(Session, on_delete=models.CASCADE)
+    exercise_id = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     sets = models.SmallIntegerField(null=False, blank=False, default=0)
     repetition = models.SmallIntegerField(null=False, blank=False, default=0)
     rest = models.DurationField(null=False, blank=False, default=0)
     weight = models.SmallIntegerField(null=False, blank=False, default=0)
-
-
-class Exercise(BaseModel):
-    name = models.CharField(max_length=200, null=False, blank=False, default="off")
-
 
 
 class Muscle(BaseModel):
