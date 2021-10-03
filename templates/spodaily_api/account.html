@@ -1,24 +1,94 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
 {% block content %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static "spodaily_api/css/account.css" %}">
-     <header>
-         <a href="{% url 'home' %}"><h1 class="title"> Spodaily </h1></a>
-        <li>
-            <ul><a href="{% url 'account' %}"> My account </a></ul>
-            <ul><a href="{% url 'routine' %}"> My routine </a></ul>
-            <ul><a href=""> Boolean field </a></ul>
-            <ul><a href='{% url 'logout' %}'>Logout</a></ul>
-        </li>
-    </header>
 
-    <h1>Hello account </h1>
-        <form method="post" action="">
-            {% csrf_token %}
-            {{ user_name_form.user_name.label }} :
-            {{ user.user_name }} :
-            {{ user_name_form.user_name }}
-            <input type="submit" value="Register">
-        </form>
+{% include 'base/sidebar.html' %}
+{% include 'base/header.html' %}
+
+   <div class="content" style="padding-left: 200px">
+        <div class="container-fluid">
+            <h3 class="main-title pt-1">My profile</h3>
+
+            <div class="row">
+
+                <div class="col-7">
+                    <div class="card shadow h-100 py-1">
+                        <div class="card-header border-0 ">
+                            <h6 class="m-0 p-0 font-weight-bold text-dark" >My personals information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                {% if user.email%}
+                                    Email : {{ user.email }}
+                                {% else %}
+                                    Email : not specified
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if user.user_name%}
+                                    Username : {{ user.user_name }}
+                                {% else %}
+                                    Username : not specified
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if user.first_name%}
+                                    First name : {{ user.first_name }}
+                                {% else %}
+                                    First name : not specified
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if user.name%}
+                                    Name : {{ user.name }}
+                                {% else %}
+                                    Name : not specified
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-5">
+                <div class="card shadow h-100 py-1">
+                    <div class="card-header border-0 ">
+                        <h6 class="m-0 p-0 font-weight-bold text-dark" >Change my personals information</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <div>
+                                <label>Email : </label>
+                                <input id="email" type="email" name="email" value="{{ user.email }}">
+                            </div>
+                            <div>
+                                <label>User name : </label>
+                                <input id="user_name" type="text" name="user_name" value="{{ user.user_name }}">
+                            </div>
+                             <div>
+                                <label>First name : </label>
+                                <input id="first_name" type="text" name="first_name" value="{{ user.first_name }}">
+                            </div>
+                            <div>
+                                <label>Name : </label>
+                                <input id="name" type="text" name="name" value="{{ user.name }}">
+                            </div>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'password_change' %}">{% trans "Change password" %}</a>
+          </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+    </div>
+
 
 
 {% endblock %}
+
+
+
+

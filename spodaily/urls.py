@@ -14,5 +14,7 @@ urlpatterns = [
     url(r'^spodaily-api/register/', views.register, name='register'),
     url(r'^spodaily-api/account/', views.account, name='account'),
     url(r'^spodaily-api/routine/', views.routine, name='routine'),
+    url(r'^spodaily-api/session/', views.session, name='session'),
+
 
 ]
