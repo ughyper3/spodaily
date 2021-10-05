@@ -88,15 +88,8 @@ class User(AbstractBaseUser, BaseModel):
         return True
 
 
-class Routine(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=False)
-    name = models.CharField(max_length=200, null=False, blank=False)
-    date_start = models.DateField(default=datetime.now)
-    session_per_week = models.SmallIntegerField(null=False, blank=False, default=3)
-
-
 class Session(BaseModel):
-    routine_id = models.ForeignKey(Routine, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
 

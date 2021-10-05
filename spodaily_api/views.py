@@ -7,10 +7,10 @@ from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from spodaily_api.models import Exercise, Activity, Routine, Session
-from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_routine, get_routine_by_user, get_session_name_by_act_uuid
+from spodaily_api.models import Exercise, Activity, Session
+from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid
 
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
 from collections import ChainMap
 
 class LoginView(TemplateView):
@@ -79,8 +79,7 @@ def routine(request):
 def session(request):
     context = {}
     user = request.user
-    routine = get_routine_by_user(user.uuid)
-    session = get_sessions_by_routine(routine.values()[0]['uuid']).values()
+    session = get_sessions_by_user(user.uuid).values()
     activities_list = []
     for ses in session:
         activity = get_activities_by_session(ses['uuid'])
@@ -91,13 +90,22 @@ def session(request):
 
     return render(request, 'spodaily_api/session.html', context)
 
+
 def add_session(request):
-    add_session_form = AddSessionForm
+    form = AddSessionForm(request.POST or None)
 
-    if request.method == 'POST':
-        form = AddSessionForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+    if form.is_valid():
+        form.save()
 
-    context = {'add_session_form': add_session_form}
+    context = {'form': form}
     return render(request, 'spodaily_api/add_session.html', context)
+
+
+def add_activity(request):
+    form = AddActivityForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+
+    context = {'form': form}
+    return render(request, 'spodaily_api/add_activity.html', context)

@@ -2,7 +2,6 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, reverse_lazy
 from django.views.generic import RedirectView
-
 from spodaily_api import views
 
 
@@ -16,6 +15,7 @@ urlpatterns = [
     url(r'^spodaily-api/routine/', views.routine, name='routine'),
     url(r'^spodaily-api/session/', views.session, name='session'),
     url(r'^spodaily-api/add_session/', views.add_session, name='add_session'),
+    url(r'^spodaily-api/add_activity/', views.add_activity, name='add_activity'),
 
 
 ]

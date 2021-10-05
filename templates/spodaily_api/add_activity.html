@@ -7,8 +7,7 @@
 
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <h3 class="main-title pt-1">Add session</h3>
-            <a href="{% url 'add_activity' %}"> Add activity </a>
+            <h3 class="main-title pt-1">Add activity</h3>
             <form method="post" action="">
                 {% csrf_token %}
                 {{ form }}

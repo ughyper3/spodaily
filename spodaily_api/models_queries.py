@@ -1,13 +1,8 @@
 from spodaily_api import models
 
 
-def get_routine_by_user(user_id):
-    data = models.Routine.objects.filter(user_id=user_id)
-    return data
-
-
-def get_sessions_by_routine(routine_id):
-    sessions = models.Session.objects.filter(routine_id_id=routine_id)
+def get_sessions_by_user(user_id):
+    sessions = models.Session.objects.filter(user_id=user_id)
     return sessions
 
 
@@ -19,7 +14,7 @@ def get_activities_by_session(session_id):
         'repetition',
         'rest',
         'weight',
-        'exercise_id_id',
+        'exercise_id',
         'session_id_id',
         'exercise_id__name'
     )
