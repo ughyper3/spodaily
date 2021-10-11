@@ -4,7 +4,6 @@ from spodaily_api.models import User, Session, Activity, Exercise, Muscle
 
 class UserAdmin(admin.ModelAdmin):
     list_display = [
-        "user_name",
         "email",
     ]
 

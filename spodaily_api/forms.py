@@ -16,7 +16,7 @@ class LoginForm(forms.Form):
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['email', 'user_name', 'password1', 'password2']
+        fields = ['email', 'password1', 'password2']
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -28,14 +28,13 @@ class CreateUserForm(UserCreationForm):
 
 class EditUserForm(ModelForm):
     email = forms.EmailField(required=True, max_length=150)
-    user_name = forms.CharField(required=True, max_length=150)
     first_name = forms.CharField(required=False, max_length=150)
     name = forms.CharField(required=False, max_length=150)
     birth = forms.DateField(required=False)
 
     class Meta:
         model = User
-        fields = ['email', 'user_name', 'first_name', 'name', 'birth']
+        fields = ['email', 'first_name', 'name', 'birth']
 
 
 class AddSessionForm(ModelForm):
