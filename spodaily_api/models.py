@@ -76,6 +76,8 @@ class User(AbstractBaseUser, BaseModel):
 
     USERNAME_FIELD = 'email'
 
+    def __str__(self):
+        return self.name
 
     def get_email(self):
         return self.email
@@ -91,9 +93,12 @@ class User(AbstractBaseUser, BaseModel):
 
 
 class Session(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return self.name
 
     def get_user(self):
         return self.user
@@ -104,6 +109,9 @@ class Session(BaseModel):
 
 class Exercise(BaseModel):
     name = models.CharField(max_length=200, null=False, blank=False, default="off")
+
+    def __str__(self):
+        return self.name
 
     def get_name(self):
         return self.name
@@ -139,6 +147,9 @@ class Activity(BaseModel):
 class Muscle(BaseModel):
     use = models.ManyToManyField(Exercise)
     name = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
 
     def get_user(self):
         return self.use

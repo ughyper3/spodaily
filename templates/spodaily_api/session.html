@@ -9,13 +9,15 @@
         <div class="container-fluid">
             <h3 class="main-title pt-1">My sessions</h3>
             <a href="{% url 'add_session' %}">AJOUTER UNE SESSION</a>
+            <a href="{% url 'add_activity' %}"> AJOUTER UNE ACTIVITY </a>
             <div class="row">
                 {% for ses in session %}
-                        <div class="col-4" style="padding-bottom: 25px">
+                        <div class="col-6" style="padding-bottom: 25px">
                             <div class="card shadow h-100 py-1">
-                                <div class="card-header border-0 ">
+                                <div class="card-header border-0">
                                     <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.name }}</h6>
                                     <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.date }}</h6>
+                                     <a href="{% url 'delete_session' ses.uuid %}">Delete</a>
                                 </div>
                                 <div class="card-body m-0 p-0">
                                     <div class="table-responsive">
@@ -27,6 +29,8 @@
                                                     <th class="case-sm">Rep.</th>
                                                     <th class="case-sm">Weight</th>
                                                     <th class="case-sm">Rest</th>
+                                                    <th class="case-sm">Update</th>
+                                                    <th class="case-sm">Delete</th>
                                                 </tr>
                                             </thead>
                                             {% for act in activity %}
@@ -39,6 +43,8 @@
                                                             <td class="case-sm">{{ truc.repetition}}</td>
                                                             <td class="case-sm">{{ truc.weight }}</td>
                                                             <td class="case-sm">{{ truc.rest }}</td>
+                                                            <td class="case-sm">X</td>
+                                                            <td class="case-sm"><a href="{% url 'delete_activity' truc.uuid %}">X</a></td>
                                                         </tr>
                                                     </tbody>
                                                     {% endif %}

@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path, include, reverse_lazy
 from django.views.generic import RedirectView
 from spodaily_api import views
-
+from spodaily_api.views import DeleteSessionView, DeleteActivityView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
@@ -14,8 +14,10 @@ urlpatterns = [
     url(r'^spodaily-api/account/', views.account, name='account'),
     url(r'^spodaily-api/routine/', views.routine, name='routine'),
     url(r'^spodaily-api/session/', views.session, name='session'),
-    url(r'^spodaily-api/add_session/', views.add_session, name='add_session'),
-    url(r'^spodaily-api/add_activity/', views.add_activity, name='add_activity'),
+    url(r'^spodaily-api/add_session/', views.AddSessionView.as_view(), name='add_session'),
+    path('spodaily-api/delete_session/<uuid:pk>/', DeleteSessionView.as_view(), name='delete_session'),
+    path('spodaily-api/delete_activity/<uuid:pk>/', DeleteActivityView.as_view(), name='delete_activity'),
+    url(r'^spodaily-api/add_activity/', views.AddActivityView.as_view(), name='add_activity'),
 
 
 ]

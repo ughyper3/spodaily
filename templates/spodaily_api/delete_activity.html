@@ -7,11 +7,11 @@
 
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <h3 class="main-title pt-1">Add session</h3>
+            <h3 class="main-title pt-1">Delete activity</h3>
             <form method="post" action="">
+                <h3>Delete : </h3>
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" name="Delete">
             </form>
         </div>
     </div>

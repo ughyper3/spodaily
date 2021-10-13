@@ -40,7 +40,10 @@ class EditUserForm(ModelForm):
 class AddSessionForm(ModelForm):
     class Meta:
         model = Session
-        fields = ['user', 'name', 'date']
+        fields = ['name', 'date']
+
+    def __init__(self, *args, **kwargs):
+        super(AddSessionForm, self).__init__(*args, **kwargs)
 
 
 class AddActivityForm(ModelForm):
