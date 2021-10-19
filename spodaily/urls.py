@@ -18,6 +18,7 @@ urlpatterns = [
     path('spodaily-api/delete_session/<uuid:pk>/', DeleteSessionView.as_view(), name='delete_session'),
     path('spodaily-api/delete_activity/<uuid:pk>/', DeleteActivityView.as_view(), name='delete_activity'),
     url(r'^spodaily-api/add_activity/', views.AddActivityView.as_view(), name='add_activity'),
-
-
+    url(r'^spodaily-api/exercise_guide/', views.exercise_guide, name='exercise_guide'),
+    url(r'^spodaily-api/contact/', views.contact, name='contact'),
+    url(r'^spodaily-api/rule_of_use/', views.rules_of_use, name='rules_of_use'),
 ]

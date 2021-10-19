@@ -38,15 +38,22 @@ class EditUserForm(ModelForm):
 
 
 class AddSessionForm(ModelForm):
-    class Meta:
-        model = Session
-        fields = ['name', 'date']
 
     def __init__(self, *args, **kwargs):
         super(AddSessionForm, self).__init__(*args, **kwargs)
 
+    class Meta:
+        model = Session
+        fields = ['name', 'date']
+
 
 class AddActivityForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddActivityForm, self).__init__(*args, **kwargs)  # populates the post
+        self.fields['session_id'].queryset = Session.objects.filter(deleted=False)
+
+
     class Meta:
         model = Activity
         fields = ['session_id', 'exercise_id', 'sets', 'repetition', 'rest', 'weight']

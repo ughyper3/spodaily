@@ -2,6 +2,7 @@
 {% load static i18n %}
 
 {% block content %}
+    <title>Login | Spodaily </title>
     <section class="vh-100">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -12,20 +13,18 @@
                   <div class="card-body p-4 p-lg-5 text-black">
                     <form method="post" action="{% url 'login' %}">
                       {% csrf_token %}
-                      <div class="d-flex align-items-center mb-12 pb-1">
-                        <span class="h1 fw-bold mb-0">Spodaily</span>
-                      </div>
-                      <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Maximiser vos performances</h5>
+                        <img style="width: 110px; margin-top: -25px; margin-bottom: 25px" src="{% static 'spodaily_api/img/logo.png' %}">
+                        <span style="margin-left: 50px; margin-bottom: 25px; letter-spacing: 1px" class="font-weight-bold mb-5 pb-1">Optimiser vos performances</span>
                       <div class="form-outline mb-4">
-                        <input name = "username" type="email" id="username" class="form-control form-control-lg" />
+                        <input name = "username" type="email" id="username" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
                         <label class="form-label" for="username">Email address</label>
                       </div>
                       <div class="form-outline mb-4">
-                        <input name="password" type="password" id="password" class="form-control form-control-lg" />
+                        <input name="password" type="password" id="password" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
                         <label class="form-label" for="password">Password</label>
                       </div>
                       <div class="pt-1 mb-4">
-                        <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit">Login</button>
+                        <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit" style="background-color: #616161">Login</button>
                       </div>
                       <a class="small text-muted" href="{% url 'password_reset' %}">Forgot password?</a>
                       <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="{% url 'register' %}" style="color: #393f81;">Register here</a></p>

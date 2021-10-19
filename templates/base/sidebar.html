@@ -16,7 +16,7 @@
     }
 
     .contact{
-        padding-top: 100px;
+        padding-top: 150%;
     }
 
 </style>
@@ -28,16 +28,11 @@
     </div>
     <div class="side-links ">
         <a class="list-group-item bg-dark text-light" href="{% url 'routine' %}">My routine</a>
-        <a class="list-group-item bg-dark text-light" href="{% url 'session' %}">My past sessions</a>
-        <a class="list-group-item bg-dark text-light">Exercise guide</a>
-        <a class="list-group-item bg-dark text-light">Blablabla</a>
-        <a class="list-group-item bg-dark text-light">Test</a>
-        <a class="list-group-item bg-dark text-light">Issou</a>
+        <a class="list-group-item bg-dark text-light" href="{% url 'session' %}">My session</a>
+        <a class="list-group-item bg-dark text-light" href="{% url 'exercise_guide' %}">Exercise guide</a>
     </div>
     <div class="contact">
-        <a class="list-group-item bg-dark text-light">Contact</a>
-        <a class="list-group-item bg-dark text-light">Test</a>
-        <a class="list-group-item bg-dark text-light">Machin</a>
-
+        <a class="list-group-item bg-dark text-light" href="{% url 'contact' %}">Contact</a>
+        <a class="list-group-item bg-dark text-light" href="{% url 'rules_of_use' %}">Rules of use</a>
     </div>
 </div>

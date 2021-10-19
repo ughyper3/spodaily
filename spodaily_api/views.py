@@ -134,3 +134,16 @@ def session(request):
 
     return render(request, 'spodaily_api/session.html', context)
 
+
+def exercise_guide(request):
+    context = {}
+    return render(request, 'spodaily_api/exercise_guide.html', context)
+
+
+def contact(request):
+    context = {}
+    return render(request, 'spodaily_api/contact.html', context)
+
+def rules_of_use(request):
+    context = {}
+    return render(request, 'spodaily_api/rules_of_use.html', context)

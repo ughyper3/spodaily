@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on 127.0.0.1:8000
+From: webmaster@localhost
+To: ugodimini@gmail.com
+Date: Wed, 13 Oct 2021 21:03:45 -0000
+Message-ID: <163415902540.24087.8988263429034792225@MacBook-Air-de-Ugo.local>
+
+
+You're receiving this email because you requested a password reset for your user account at 127.0.0.1:8000.
+
+Please go to the following page and choose a new password:
+
+http://127.0.0.1:8000/spodaily-api/reset/M2FmN2FjMWItYmRiZC00OWQ1LTk3NTYtZjc1NDI3MGE2NjA4/auh6i9-65635ee2616b3dd2924ec722de3fcbda/
+
+Your username, in case you’ve forgotten: ugodimini@gmail.com
+
+Thanks for using our site!
+
+The 127.0.0.1:8000 team
+
+
+
+-------------------------------------------------------------------------------
