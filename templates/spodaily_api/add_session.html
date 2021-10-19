@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block content %}
+
+{% include 'base/sidebar.html' %}
+{% include 'base/header.html' %}
+    <title>Add session | Spodaily </title>
+    <div class="content" style="padding-left: 200px">
+        <div class="container-fluid">
+            <h3 class="main-title pt-1">Add session</h3>
+            <form method="post" action="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}

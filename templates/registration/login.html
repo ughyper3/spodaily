@@ -1,24 +1,48 @@
-{% load static %}
-<link rel="stylesheet" href="{% static "spodaily_api/css/login.css" %}">
+{% extends "base/base.html" %}
+{% load static i18n %}
+
 {% block content %}
-    <a href="{% url 'register' %}">Register</a>
-    <div class="login-box">
-        <div class="login-box">
-  <h2>Login</h2>
-  <form method="post" action="{% url 'login' %}">
-      {% csrf_token %}
-    <div class="user-box">
-        {{ form.username }}
-      <label>Email</label>
-    </div>
-    <div class="user-box">
-      {{ form.password }}
-      <label>Password</label>
-    </div>
-      <input type="submit" value="Submit">
-  </form>
-</div>
-    </div>
-
-
+    <title>Login | Spodaily </title>
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-7">
+            <div class="card" style="border-radius: 1rem;">
+              <div class="row g-0">
+                <div class="col-md-12 col-lg-12 d-flex align-items-center">
+                  <div class="card-body p-4 p-lg-5 text-black">
+                    <form method="post" action="{% url 'login' %}">
+                      {% csrf_token %}
+                        <img style="width: 110px; margin-top: -25px; margin-bottom: 25px" src="{% static 'spodaily_api/img/logo.png' %}">
+                        <span style="margin-left: 50px; margin-bottom: 25px; letter-spacing: 1px" class="font-weight-bold mb-5 pb-1">Optimiser vos performances</span>
+                      <div class="form-outline mb-4">
+                        <input name = "username" type="email" id="username" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
+                        <label class="form-label" for="username">Email address</label>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <input name="password" type="password" id="password" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
+                        <label class="form-label" for="password">Password</label>
+                      </div>
+                      <div class="pt-1 mb-4">
+                        <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit" style="background-color: #616161">Login</button>
+                      </div>
+                      <a class="small text-muted" href="{% url 'password_reset' %}">Forgot password?</a>
+                      <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="{% url 'register' %}" style="color: #393f81;">Register here</a></p>
+                    </form>
+                      {% if form.errors %}
+                        <div class="alert alert-warning">
+                          <a class="close" href="" data-dismiss="alert">×</a>
+                          <p class="text-center">Login failed. The username or password you entered is incorrect</p>
+                        </div>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock %}
+
+

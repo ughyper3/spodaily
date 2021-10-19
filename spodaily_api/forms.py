@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from spodaily_api.models import User
+from spodaily_api.models import User, Session, Activity
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -16,7 +16,7 @@ class LoginForm(forms.Form):
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['email', 'user_name', 'password1', 'password2']
+        fields = ['email', 'password1', 'password2']
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -28,13 +28,32 @@ class CreateUserForm(UserCreationForm):
 
 class EditUserForm(ModelForm):
     email = forms.EmailField(required=True, max_length=150)
-    user_name = forms.CharField(required=True, max_length=150)
     first_name = forms.CharField(required=False, max_length=150)
     name = forms.CharField(required=False, max_length=150)
     birth = forms.DateField(required=False)
 
     class Meta:
         model = User
-        fields = ['email', 'user_name', 'first_name', 'name', 'birth']
+        fields = ['email', 'first_name', 'name', 'birth']
 
 
+class AddSessionForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddSessionForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Session
+        fields = ['name', 'date']
+
+
+class AddActivityForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddActivityForm, self).__init__(*args, **kwargs)  # populates the post
+        self.fields['session_id'].queryset = Session.objects.filter(deleted=False)
+
+
+    class Meta:
+        model = Activity
+        fields = ['session_id', 'exercise_id', 'sets', 'repetition', 'rest', 'weight']

@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', # on utilise l'adaptateur postgresql
-        'NAME': 'spodaily_dev', # le nom de notre base de donnees creee precedemment
+        'NAME': 'spodaily', # le nom de notre base de donnees creee precedemment
         'USER': 'postgres', # attention : remplacez par votre nom d'utilisateur
         'PASSWORD': '',
         'HOST': '127.0.0.1',
@@ -114,6 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_URL = '/spodaily-api/auth/login/'
 LOGIN_REDIRECT_URL = '/spodaily-api/home/'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

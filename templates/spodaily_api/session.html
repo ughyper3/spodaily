@@ -4,27 +4,33 @@
 
 {% include 'base/sidebar.html' %}
 {% include 'base/header.html' %}
-
+    <title>Session | Spodaily </title>
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <h3 class="main-title pt-1">My sessions</h3>
+            <a href="{% url 'add_session' %}">AJOUTER UNE SESSION</a>
             <div class="row">
                 {% for ses in session %}
-                        <div class="col-4" style="padding-bottom: 25px">
+                        <div class="col-6" style="padding-bottom: 25px">
                             <div class="card shadow h-100 py-1">
-                                <div class="card-header border-0 ">
-                                    <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.name }}</h6>
+                                <div class="card-header border-0 d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.name }}</h6>
+                                        <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.date }}</h6>
+                                    </div>
+                                    <a style="font-size: 20px; color: black" href="{% url 'delete_session' ses.uuid %}">X</a>
                                 </div>
                                 <div class="card-body m-0 p-0">
                                     <div class="table-responsive">
                                         <table class="table table-bordered text-core m-0 p-0" width="100%" cellspacing="0">
                                             <thead class="text-dark">
                                                 <tr>
-                                                    <th class="text-right case-sm">Exercise</th>
-                                                    <th class="text-right case-sm">Set</th>
-                                                    <th class="text-right case-sm">Rest</th>
-                                                    <th class="text-right case-sm">Rep.</th>
-                                                    <th class="text-right case-sm">Weight</th>
+                                                    <th class="case-sm text-center">Exercise</th>
+                                                    <th class="case-sm text-center">Set</th>
+                                                    <th class="case-sm text-center">Rep.</th>
+                                                    <th class="case-sm text-center">Weight</th>
+                                                    <th class="case-sm text-center">Rest</th>
+                                                    <th class="case-sm text-center">Delete</th>
                                                 </tr>
                                             </thead>
                                             {% for act in activity %}
@@ -32,17 +38,19 @@
                                                     {% if truc.session_id_id == ses.uuid %}
                                                     <tbody>
                                                         <tr>
-                                                            <td class="text-right case-sm">{{ truc.exercise_id__name }}</td>
-                                                            <td class="text-right case-sm">{{ truc.sets }}</td>
-                                                            <td class="text-right case-sm">{{ truc.rest }}</td>
-                                                            <td class="text-right case-sm">{{ truc.repetition}}</td>
-                                                            <td class="text-right case-sm">{{ truc.weight }}</td>
+                                                            <td class="case-sm text-center">{{ truc.exercise_id__name }}</td>
+                                                            <td class="case-sm text-center">{{ truc.sets }}</td>
+                                                            <td class="case-sm text-center">{{ truc.repetition}}</td>
+                                                            <td class="case-sm text-center">{{ truc.weight }}</td>
+                                                            <td class="case-sm text-center">{{ truc.rest }}</td>
+                                                            <td class="case-sm text-center"><a style="color:black; font-size: 20px" href="{% url 'delete_activity' truc.uuid %}">X</a></td>
                                                         </tr>
                                                     </tbody>
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endfor %}
                                         </table>
+                                        <a href="{% url 'add_activity' %}"> AJOUTER UNE ACTIVITY </a>
                                     </div>
                                 </div>
                             </div>

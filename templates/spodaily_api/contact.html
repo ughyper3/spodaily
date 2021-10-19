@@ -1,0 +1,58 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block content %}
+
+{% include 'base/sidebar.html' %}
+{% include 'base/header.html' %}
+    <title>Contact | Spodaily </title>
+    <div class="content" style="padding-left: 200px">
+        <div class="container-fluid">
+            <h3 class="main-title pt-1">Contact</h3>
+            <div class="row">
+                {% for ses in session %}
+                        <div class="col-6" style="padding-bottom: 25px">
+                            <div class="card shadow h-100 py-1">
+                                <div class="card-header border-0">
+                                    <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.name }}</h6>
+                                    <h6 class="m-0 p-0 font-weight-bold text-dark" >{{ ses.date }}</h6>
+                                     <a href="{% url 'delete_session' ses.uuid %}">Delete</a>
+                                </div>
+                                <div class="card-body m-0 p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-core m-0 p-0" width="100%" cellspacing="0">
+                                            <thead class="text-dark">
+                                                <tr>
+                                                    <th class="case-sm">Exercise</th>
+                                                    <th class="case-sm">Set</th>
+                                                    <th class="case-sm">Rep.</th>
+                                                    <th class="case-sm">Weight</th>
+                                                    <th class="case-sm">Rest</th>
+                                                    <th class="case-sm">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            {% for act in activity %}
+                                                {% for truc in act %}
+                                                    {% if truc.session_id_id == ses.uuid %}
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="case-sm">{{ truc.exercise_id__name }}</td>
+                                                            <td class="case-sm">{{ truc.sets }}</td>
+                                                            <td class="case-sm">{{ truc.repetition}}</td>
+                                                            <td class="case-sm">{{ truc.weight }}</td>
+                                                            <td class="case-sm">{{ truc.rest }}</td>
+                                                            <td class="case-sm"><a href="{% url 'delete_activity' truc.uuid %}">X</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

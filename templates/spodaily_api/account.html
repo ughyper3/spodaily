@@ -1,7 +1,9 @@
 {% extends "base/base.html" %}
 {% load static i18n %}
-{% block content %}
 
+
+{% block content %}
+<title>Account | Spodaily </title>
 {% include 'base/sidebar.html' %}
 {% include 'base/header.html' %}
 
@@ -22,13 +24,6 @@
                                     Email : {{ user.email }}
                                 {% else %}
                                     Email : not specified
-                                {% endif %}
-                            </div>
-                            <div>
-                                {% if user.user_name%}
-                                    Username : {{ user.user_name }}
-                                {% else %}
-                                    Username : not specified
                                 {% endif %}
                             </div>
                             <div>
@@ -59,10 +54,6 @@
                             <div>
                                 <label>Email : </label>
                                 <input id="email" type="email" name="email" value="{{ user.email }}">
-                            </div>
-                            <div>
-                                <label>User name : </label>
-                                <input id="user_name" type="text" name="user_name" value="{{ user.user_name }}">
                             </div>
                              <div>
                                 <label>First name : </label>

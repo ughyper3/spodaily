@@ -58,7 +58,6 @@ class BaseModel(models.Model):
 
 
 class User(AbstractBaseUser, BaseModel):
-    user_name = models.CharField(max_length=200, unique=True, null=False, blank=False)
     email = models.EmailField(verbose_name='email', max_length=200, unique=True, null=False, blank=False)
     password = models.CharField(max_length=200, null=False, blank=False)
     name = models.CharField(max_length=200, null=True, blank=True)
@@ -76,10 +75,15 @@ class User(AbstractBaseUser, BaseModel):
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name']
 
     def __str__(self):
-        return self.user_name
+        return self.name
+
+    def get_email(self):
+        return self.email
+
+    def get_password(self):
+        return self.password
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
@@ -88,21 +92,29 @@ class User(AbstractBaseUser, BaseModel):
         return True
 
 
-class Routine(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=False)
-    name = models.CharField(max_length=200, null=False, blank=False)
-    date_start = models.DateField(default=datetime.now)
-    session_per_week = models.SmallIntegerField(null=False, blank=False, default=3)
-
-
 class Session(BaseModel):
-    routine_id = models.ForeignKey(Routine, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return self.name
+
+    def get_user(self):
+        return self.user
+
+    def get_name(self):
+        return self.name
 
 
 class Exercise(BaseModel):
     name = models.CharField(max_length=200, null=False, blank=False, default="off")
+
+    def __str__(self):
+        return self.name
+
+    def get_name(self):
+        return self.name
 
 
 class Activity(BaseModel):
@@ -113,7 +125,34 @@ class Activity(BaseModel):
     rest = models.DurationField(null=False, blank=False, default=0)
     weight = models.SmallIntegerField(null=False, blank=False, default=0)
 
+    def get_session_id(self):
+        return self.session_id
+
+    def get_exercise_id(self):
+        return self.exercise_id
+
+    def get_sets(self):
+        return self.sets
+
+    def get_repetition(self):
+        return self.repetition
+
+    def get_rest(self):
+        return self.rest
+
+    def get_weight(self):
+        return self.weight
+
 
 class Muscle(BaseModel):
     use = models.ManyToManyField(Exercise)
     name = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    def get_user(self):
+        return self.use
+
+    def get_name(self):
+        return self.name
