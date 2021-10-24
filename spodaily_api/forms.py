@@ -50,10 +50,9 @@ class AddSessionForm(ModelForm):
 class AddActivityForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(AddActivityForm, self).__init__(*args, **kwargs)  # populates the post
-        self.fields['session_id'].queryset = Session.objects.filter(deleted=False)
+        super(AddActivityForm, self).__init__(*args, **kwargs)
 
 
     class Meta:
         model = Activity
-        fields = ['session_id', 'exercise_id', 'sets', 'repetition', 'rest', 'weight']
+        fields = ['exercise_id', 'sets', 'repetition', 'rest', 'weight']

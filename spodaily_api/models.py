@@ -11,25 +11,21 @@ class CustomManager(models.Manager):
 
 class MyUserManager(BaseUserManager):
 
-    def create_user(self, email, user_name, password):
+    def create_user(self, email, password):
         if not email:
             raise ValueError("Users must have an email address")
-        if not user_name:
-            raise ValueError("Users must have a username")
 
         user = self.model(
             email=self.normalize_email(email),
-            user_name=user_name,
-            password=password,
+            password=password
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, user_name, password=None):
+    def create_superuser(self, email, password=None):
         user = self.create_user(
             email=self.normalize_email(email),
-            user_name=user_name,
             password=password
         )
         user.is_admin = True
@@ -97,8 +93,7 @@ class Session(BaseModel):
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
 
-    def __str__(self):
-        return self.name
+
 
     def get_user(self):
         return self.user

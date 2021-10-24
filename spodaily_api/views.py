@@ -4,12 +4,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.views.generic import TemplateView, DeleteView
+from django.views.generic import TemplateView, DeleteView, CreateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from spodaily_api.models import Exercise, Activity, Session, User
-from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid
+from spodaily_api.models import Exercise, Activity, Session, User, Muscle
+from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
+    get_muscles, get_muscle_by_uuid, get_exercise_by_muscle
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
 from collections import ChainMap
@@ -54,8 +55,10 @@ class AddSessionView(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('session'))
 
 
-class AddActivityView(LoginRequiredMixin, TemplateView):
+class AddActivityView(LoginRequiredMixin, CreateView):
     template_name = "spodaily_api/add_activity.html"
+    model = Activity
+    success_url = '/'
 
     def get(self, request, *args, **kwargs):
         form = AddActivityForm()
@@ -65,6 +68,8 @@ class AddActivityView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = AddActivityForm(request.POST)
         if form.is_valid():
+            form.save(commit=False)
+            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
             return HttpResponseRedirect(reverse('session'))
 
@@ -80,6 +85,26 @@ class DeleteActivityView(LoginRequiredMixin, DeleteView):
     model = Activity
     success_url = reverse_lazy('session')
 
+
+class ExerciseGuideView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/exercise_guide.html'
+
+    def get(self, request, *args, **kwargs):
+        muscles = get_muscles()
+        context = {'muscle': muscles}
+        return render(request, self.template_name, context)
+
+
+class MuscleView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/muscle.html'
+
+    def get(self, request, *args, **kwargs):
+        uuid = request.get_full_path()[21:-1]  # disgusting way to get url
+        muscle = get_muscle_by_uuid(uuid)
+        exercise = get_exercise_by_muscle(uuid)
+        context = {'muscle': muscle,
+                   'exercise': exercise}
+        return render(request, self.template_name, context)
 
 def register(request):
     form = CreateUserForm
@@ -133,11 +158,6 @@ def session(request):
     context['activity'] = activities_list
 
     return render(request, 'spodaily_api/session.html', context)
-
-
-def exercise_guide(request):
-    context = {}
-    return render(request, 'spodaily_api/exercise_guide.html', context)
 
 
 def contact(request):

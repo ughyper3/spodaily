@@ -4,22 +4,19 @@
 
 {% include 'base/sidebar.html' %}
 {% include 'base/header.html' %}
-    <title>Exercise guide | Spodaily </title>
+    <title>Muscle | Spodaily </title>
     <div class="content" style="padding-left: 200px">
+        {% for muscle in muscle %}
         <div class="container-fluid">
-            <h1 class="main-title text-uppercase align-self-center p-0 m-0" style="padding-top: 15px !important;">Guide des exercices</h1>
+            <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Exercises pour les {{ muscle.name }}</h1>
         </div>
+        {% endfor %}
         <div class="row p-3">
-            {% for muscle in muscle %}
+            {% for exercise in exercise %}
                 <div class="col-4" style="padding-bottom: 25px">
                     <div class="card shadow h-100 border-0">
                         <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
-                            {{ muscle.name }}
-                        </div>
-                        <div class="card-body m-0 p-0">
-                            <a href="{% url 'muscle' fk=muscle.uuid %}">
-                                <img class="img-fluid" style="width: 100%" src="{% static 'spodaily_api/img/exercise_guide/'%}{{muscle.name}}.png">
-                            </a>
+                            {{ exercise.name }}
                         </div>
                     </div>
                 </div>
