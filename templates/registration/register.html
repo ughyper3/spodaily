@@ -13,8 +13,14 @@
                   <div class="card-body p-4 p-lg-5 text-black">
                     <form method="post" action="{% url 'register' %}">
                       {% csrf_token %}
-                        <img style="width: 110px; margin-top: -25px; margin-bottom: 25px" src="{% static 'spodaily_api/img/logo.png' %}">
-                        <span style="margin-left: 50px; margin-bottom: 25px; letter-spacing: 1px" class="font-weight-bold mb-5 pb-1">Optimiser vos performances</span>
+                        <div class="row">
+                            <div class="col-3 p-0 m-0">
+                                <img style="width: 110px;margin-top: -25px; margin-bottom: 15px" src="{% static 'spodaily_api/img/logo.png' %}">
+                            </div>
+                            <div class="col-6 pt-3 text-center">
+                                <span style="letter-spacing: 1px" class="font-weight-bold">Optimiser vos performances</span>
+                            </div>
+                        </div>
                       <div class="form-outline mb-4">
                         <input name = "email" type="email" id="email" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
                         <label class="form-label" for="email">Email address</label>

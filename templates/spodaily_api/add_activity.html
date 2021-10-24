@@ -10,7 +10,31 @@
             <h3 class="main-title pt-1">Add activity</h3>
             <form method="post" action="">
                 {% csrf_token %}
-                {{ form }}
+                <div>
+                    {{ form.exercise_id.errors }}
+                    <label>Exercise id:</label>
+                    {{ form.exercise_id }}
+                </div>
+                <div>
+                    {{ form.sets.errors }}
+                    <label>Sets:</label>
+                    {{ form.sets }}
+                </div>
+                <div>
+                    {{ form.repetition.errors }}
+                    <label>Repetition:</label>
+                    {{ form.repetition }}
+                </div>
+                <div>
+                    {{ form.weight.errors }}
+                    <label>Weight:</label>
+                    {{ form.weight }}
+                </div>
+                <div>
+                    {{ form.rest.errors }}
+                    <label>Rest:</label>
+                    {{ form.rest }}
+                </div>
                 <input type="submit" value="Submit">
             </form>
         </div>
