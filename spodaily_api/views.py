@@ -10,10 +10,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from spodaily_api.models import Exercise, Activity, Session, User, Muscle
 from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
-    get_muscles, get_muscle_by_uuid, get_exercise_by_muscle
+    get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
 from collections import ChainMap
+
+from spodaily_api.utils import get_maximum_by_exercise
+
 
 class LoginView(TemplateView):
     template_name = "registration/login.html"
@@ -74,6 +77,14 @@ class AddActivityView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('session'))
 
 
+class SessionView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/session.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
 class DeleteSessionView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/delete_session.html"
     model = Session
@@ -106,6 +117,71 @@ class MuscleView(LoginRequiredMixin, TemplateView):
                    'exercise': exercise}
         return render(request, self.template_name, context)
 
+
+class AccountView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/account.html"
+
+    def get(self, request, *args, **kwargs):
+        form = EditUserForm()
+        context = {'edit_user_form': form}
+        return render(request, 'spodaily_api/account.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = EditUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('account'))
+
+
+class LogoutView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/logged_out.html'
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse('dlc_login'))
+
+
+class RoutineView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/routine.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
+class ContactView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/contact.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
+class RulesOfUseView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/rules_of_use.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
+class PastSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/past_session.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        user = request.user
+        session = get_past_sessions_by_user(user.uuid).values()
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+
+        context['session'] = session
+        context['activity'] = activities_list
+        return render(request, 'spodaily_api/past_session.html', context)
+
+
 def register(request):
     form = CreateUserForm
 
@@ -115,55 +191,8 @@ def register(request):
             form.save()
             messages.success(request, 'Successfully registered')
             return HttpResponseRedirect(reverse('login'))
-
         else:
             messages.error(request, 'Registration failed')
 
     context = {'form': form}
     return render(request, template_name="registration/register.html", context=context)
-
-
-def account(request):
-    edit_user_form = EditUserForm
-
-    if request.method == 'POST':
-        form = EditUserForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-
-    context = {'edit_user_form': edit_user_form}
-    return render(request, template_name="spodaily_api/account.html", context=context)
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('dlc_login'))
-
-
-def routine(request):
-    context = {}
-    return render(request, 'spodaily_api/routine.html', context)
-
-
-def session(request):
-    context = {}
-    user = request.user
-    session = get_sessions_by_user(user.uuid).values()
-    activities_list = []
-    for ses in session:
-        activity = get_activities_by_session(ses['uuid'])
-        activities_list.append(activity)
-
-    context['session'] = session
-    context['activity'] = activities_list
-
-    return render(request, 'spodaily_api/session.html', context)
-
-
-def contact(request):
-    context = {}
-    return render(request, 'spodaily_api/contact.html', context)
-
-def rules_of_use(request):
-    context = {}
-    return render(request, 'spodaily_api/rules_of_use.html', context)

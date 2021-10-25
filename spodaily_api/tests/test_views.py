@@ -122,3 +122,115 @@ class RegisterTest(TestCase):
         self.assertEqual(User.objects.count(), 2)
 
 
+class AccountTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_account_not_authenticated_user(self):
+        url = reverse('account')
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/account.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_account_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('account'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/account.html')
+        self.client.logout()
+
+
+class LogoutTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_logout_not_authenticated_user(self):
+        url = reverse('routine')
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/logged_out.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_logout_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/logged_out.html')
+        self.client.logout()
+
+
+class RoutineTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_routine_not_authenticated_user(self):
+        url = reverse('routine')
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/routine.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_routine_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('routine'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/routine.html')
+        self.client.logout()
+
+
+class PastSessionTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_past_session_not_authenticated_user(self):
+        url = reverse('past_session')
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/past_session.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_past_session_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('past_session'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/past_session.html')
+        self.client.logout()
+
+
+class ContactTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_contact_not_authenticated_user(self):
+        url = reverse('contact')
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/contact.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_contact_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('contact'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/contact.html')
+        self.client.logout()
+
+
+class RulesOfUseTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_rules_of_use_not_authenticated_user(self):
+        url = reverse('rules_of_use')
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/rules_of_use.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_rules_of_use_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('rules_of_use'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/rules_of_use.html')
+        self.client.logout()

@@ -27,14 +27,10 @@ class CreateUserForm(UserCreationForm):
 
 
 class EditUserForm(ModelForm):
-    email = forms.EmailField(required=True, max_length=150)
-    first_name = forms.CharField(required=False, max_length=150)
-    name = forms.CharField(required=False, max_length=150)
-    birth = forms.DateField(required=False)
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'name', 'birth']
+        fields = ['email', 'first_name', 'name', 'birth', 'height', 'weight', 'sexe']
 
 
 class AddSessionForm(ModelForm):

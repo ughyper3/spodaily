@@ -9,73 +9,102 @@
 
    <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <h3 class="main-title pt-1">My profile</h3>
-
-            <div class="row">
-
-                <div class="col-7">
-                    <div class="card shadow h-100 py-0">
-                        <div class="card-header border-0 ">
-                            <h6 class="m-0 p-0 font-weight-bold text-dark" >My personals information</h6>
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                {% if user.email%}
-                                    Email : {{ user.email }}
-                                {% else %}
-                                    Email : not specified
-                                {% endif %}
-                            </div>
-                            <div>
-                                {% if user.first_name%}
-                                    First name : {{ user.first_name }}
-                                {% else %}
-                                    First name : not specified
-                                {% endif %}
-                            </div>
-                            <div>
-                                {% if user.name%}
-                                    Name : {{ user.name }}
-                                {% else %}
-                                    Name : not specified
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <div class="col-5">
+            <div class="d-flex justify-content-between pt-2 pb-2">
+                <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mon compte</h1>
+            </div>
+            <div class="row d-flex justify-content-center">
+            <div class="col-9">
                 <div class="card shadow h-100 py-0">
-                    <div class="card-header border-0 ">
-                        <h6 class="m-0 p-0 font-weight-bold text-dark" >Change my personals information</h6>
+                    <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
+                        <h6 class="m-0 p-0 font-weight-bold" >Mes informations</h6>
                     </div>
                     <div class="card-body">
                         <form method="post" action="">
                             {% csrf_token %}
-                            <div>
-                                <label>Email : </label>
-                                <input id="email" type="email" name="email" value="{{ user.email }}">
+                            <h6 class="heading-small text-muted mb-4 mt-2">Informations utilisateur</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Adresse email </label>
+                                </div>
+                                <div class="col-6">
+                                    <label>Mot de passe </label>
+                                </div>
                             </div>
-                             <div>
-                                <label>First name : </label>
-                                <input id="first_name" type="text" name="first_name" value="{{ user.first_name }}">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <input class="text-muted" id="email" type="email" name="email" value="{{ user.email }}">
+                                </div>
+                                <div class="col-6">
+                                    <a class="text-muted" href="{% url 'password_change' %}">{% trans "Changer mon mot de passe" %}</a>
+                                </div>
                             </div>
-                            <div>
-                                <label>Name : </label>
-                                <input id="name" type="text" name="name" value="{{ user.name }}">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Nom</label>
+                                </div>
+                                <div class="col-6">
+                                    <label>Prénom </label>
+                                </div>
                             </div>
-                            <input type="submit" value="Submit">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <input class="text-muted" id="name" type="text" name="name" pattern="[a-zA-Z]*" value="{{ user.name }}">
+                                </div>
+                                <div class="col-6">
+                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="[a-zA-Z]*" value="{{ user.first_name }}">
+                                </div>
+                            </div>
+                            <hr class="my-5">
+                            <h6 class="heading-small text-muted mb-4 mt-2">Informations sportives</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Poids</label>
+                                </div>
+                                <div class="col-6">
+                                    <label>Taille</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <input class="text-muted" id="weight" type="number" name="weight" value="{{ user.weight }}">
+                                </div>
+                                <div class="col-6">
+                                    <input class="text-muted" id="height" type="number" name="height" value="{{ user.height }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Date de naissance</label>
+                                </div>
+                                <div class="col-6">
+                                    <label>Sexe</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <input id="birth" type="date" name="birth" value="{{ user.birth }}">
+                                </div>
+                                <div class="col-6">
+                                    {{ edit_user_form.sexe }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                </div>
+                                <div class="col-2">
+                                    <input class="btn btn-secondary mb-2" type="submit" value="Enregistrer">
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <a href="{% url 'password_change' %}">{% trans "Change password" %}</a>
           </div>
           </div>
         </div>
         <!-- /.container-fluid -->
       </div>
     </div>
-
 
 
 {% endblock %}

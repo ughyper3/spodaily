@@ -54,6 +54,13 @@ class BaseModel(models.Model):
 
 
 class User(AbstractBaseUser, BaseModel):
+
+    sexe_choice = [
+        ('Homme', 'Homme'),
+        ('Femme', 'Femme'),
+        ('Autre', 'Autre')
+    ]
+
     email = models.EmailField(verbose_name='email', max_length=200, unique=True, null=False, blank=False)
     password = models.CharField(max_length=200, null=False, blank=False)
     name = models.CharField(max_length=200, null=True, blank=True)
@@ -61,6 +68,7 @@ class User(AbstractBaseUser, BaseModel):
     birth = models.DateField(null=True, blank=True)
     height = models.SmallIntegerField(null=True, blank=True)
     weight = models.SmallIntegerField(null=True, blank=True)
+    sexe = models.CharField(null=True, blank=True, choices=sexe_choice, max_length=100)
     picture = models.ImageField(max_length=200, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -92,8 +100,6 @@ class Session(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
-
-
 
     def get_user(self):
         return self.user

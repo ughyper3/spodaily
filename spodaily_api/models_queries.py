@@ -1,9 +1,16 @@
+from datetime import date
+
 from spodaily_api import models
 from spodaily_api.models import Muscle, Exercise
 
 
 def get_sessions_by_user(user_id):
     sessions = models.Session.objects.filter(user_id=user_id, deleted=False).order_by('-date')
+    return sessions
+
+def get_past_sessions_by_user(user_id):
+    today = date.today()
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lte=today).order_by('-date')
     return sessions
 
 
@@ -42,3 +49,4 @@ def get_muscle_by_uuid(uuid):
 def get_exercise_by_muscle(uuid):
     exercises = list(Exercise.objects.filter(muscle__uuid=uuid, deleted=False).values('name'))
     return exercises
+
