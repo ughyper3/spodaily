@@ -10,18 +10,50 @@
             <div class="d-flex justify-content-between pt-2 pb-2">
                 <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Page d'accueil</h1>
             </div>
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3 border-bottom-0 tab-head" style="{{retailer_background_color}};">
-                <h6 class="m-0 font-weight-bold text-dark" >Actuality</h6>
+            <div class="row">
+                <div class="col-4" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
+                            Nombre de séances effectuées
+                        </div>
+                        <div class="card-body">
+                            <H1 class="p-0 m-0 text-center" style="color: #9A786E">{{ number_of_session }}</H1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
+                            Nombre de kg soulevés
+                        </div>
+                        <div class="card-body">
+                            <H1 class="p-0 m-0 text-center" style="color: #9A786E">{{ number_of_tonnage }}</H1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
+                            Nombre de calories brulées
+                        </div>
+                        <div class="card-body">
+                            <H1 class="p-0 m-0 text-center" style="color: #9A786E">{{ number_of_calories }}</H1>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body m-0 p-0">
-                <p>- V 1.0 -> 31/10/2021 :
-                    register, login, logout, reset password, set/update account parameters, change password,
-                    create/delete activities and sessions, <br> exercise guide / muscle guide
-                </p>
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 border-bottom-0 tab-head" style="{{retailer_background_color}};">
+                    <h6 class="m-0 font-weight-bold text-dark" >Actualité</h6>
+                </div>
+                <div class="card-body m-0 p-0">
+                    <p>- V 1.0 -> 31/10/2021 :
+                        register, login, logout, reset password, set/update account parameters, change password,
+                        create/delete activities and sessions, <br> exercise guide / muscle guide
+                    </p>
+                </div>
             </div>
-          </div>
         </div>
     </div>
 

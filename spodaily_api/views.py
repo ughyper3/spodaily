@@ -10,7 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from spodaily_api.models import Exercise, Activity, Session, User, Muscle
 from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
-    get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user
+    get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
+    get_tonnage_number_by_user, get_calories_burn_by_user
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
 from collections import ChainMap
@@ -41,6 +42,17 @@ class LoginView(TemplateView):
 class Home(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/home.html"
 
+    def get(self, request, *args, **kwargs):
+        context = {}
+        user = request.user
+        number_of_session = get_session_number_by_user(user.uuid)
+        number_of_tonnage = get_tonnage_number_by_user(user.uuid)
+        number_of_calories = get_calories_burn_by_user(user.uuid)
+        context['number_of_session'] = number_of_session
+        context['number_of_tonnage'] = number_of_tonnage['sum']
+        context['number_of_calories'] = number_of_calories
+        return render(request, self.template_name, context)
+
 
 class AddSessionView(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/add_session.html"
@@ -55,7 +67,7 @@ class AddSessionView(LoginRequiredMixin, TemplateView):
         form.instance.user = request.user
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('session'))
+            return HttpResponseRedirect(reverse('past_session'))
 
 
 class AddActivityView(LoginRequiredMixin, CreateView):
@@ -65,7 +77,9 @@ class AddActivityView(LoginRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         form = AddActivityForm()
-        context = {'form': form}
+        session = Session.objects.get(uuid=kwargs['fk'])
+        context = {'form': form,
+                   'session': session}
         return render(request, 'spodaily_api/add_activity.html', context)
 
     def post(self, request, *args, **kwargs):
@@ -74,7 +88,7 @@ class AddActivityView(LoginRequiredMixin, CreateView):
             form.save(commit=False)
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('session'))
+            return HttpResponseRedirect(reverse('past_session'))
 
 
 class SessionView(LoginRequiredMixin, TemplateView):
@@ -88,13 +102,20 @@ class SessionView(LoginRequiredMixin, TemplateView):
 class DeleteSessionView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/delete_session.html"
     model = Session
-    success_url = reverse_lazy('session')
+    success_url = reverse_lazy('past_session')
 
 
 class DeleteActivityView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/delete_activity.html"
     model = Activity
-    success_url = reverse_lazy('session')
+    success_url = reverse_lazy('past_session')
+
+    def get(self, request, *args, **kwargs):
+        activity_uuid = request.get_full_path()[30:-1]
+        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
+        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
+        context = {'session': session, 'activity': activity}
+        return render(request, self.template_name, context)
 
 
 class ExerciseGuideView(LoginRequiredMixin, TemplateView):
@@ -196,3 +217,23 @@ def register(request):
 
     context = {'form': form}
     return render(request, template_name="registration/register.html", context=context)
+
+
+class RegisterView(TemplateView):
+    template_name = "registration/register.html"
+
+    def get(self, request, *args, **kwargs):
+        form = CreateUserForm()
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = CreateUserForm(request.POST)
+        context = {'form':form}
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully registered')
+            return HttpResponseRedirect(reverse('login'))
+        else:
+            messages.error(request, 'Registration failed')
+        return render(request, template_name="registration/register.html", context=context)

@@ -5,14 +5,14 @@ from django.urls import path, include, reverse_lazy
 from django.views.generic import RedirectView
 from spodaily_api import views
 from spodaily_api.views import DeleteSessionView, DeleteActivityView, AddActivityView, ExerciseGuideView, MuscleView, \
-    RoutineView, ContactView, RulesOfUseView, AccountView, PastSessionView
+    RoutineView, ContactView, RulesOfUseView, AccountView, PastSessionView, RegisterView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^$', RedirectView.as_view(url='spodaily-api/login/', permanent=False)),
     path('spodaily-api/', include('django.contrib.auth.urls'), name='spodaily_login'),
     url(r'^spodaily-api/home/', views.Home.as_view(), name='home'),
-    url(r'^spodaily-api/register/', views.register, name='register'),
+    url(r'^spodaily-api/register/', RegisterView.as_view(), name='register'),
     url(r'^spodaily-api/account/', AccountView.as_view(), name='account'),
     url(r'^spodaily-api/routine/', RoutineView.as_view(), name='routine'),
     url(r'^spodaily-api/past_session/', PastSessionView.as_view(), name='past_session'),

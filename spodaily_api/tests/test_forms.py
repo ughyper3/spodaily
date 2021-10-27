@@ -46,32 +46,6 @@ class EditUserFormTest(TestCase):
         )
         self.assertFalse(form.is_valid())
 
-    def test_name_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": 12,
-                  "first_name": "test",
-                  "birth": "2021-01-01",
-                  "height": 180,
-                  "weight": 80,
-                  "sexe": "Autre"
-                  }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_first_name_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": "test",
-                  "first_name": 12,
-                  "birth": "2021-01-01",
-                  "height": 180,
-                  "weight": 80,
-                  "sexe": "Autre"
-                  }
-        )
-        self.assertFalse(form.is_valid())
-
     def test_birth_is_invalid(self):
         form = EditUserForm(
             data={"email": "test@test.test",
@@ -151,10 +125,15 @@ class AddSessionFormTest(TestCase):
 
 class AddActivityFormTest(TestCase):
 
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+        self.session = Session.objects.create(user=self.pascal, name="test")
+        self.exercise = Exercise.objects.create(name='test')
 
     def test_exercise_id_is_invalid(self):
         form = AddActivityForm(
-            data={"exercise_id": "test@test.test",
+            data={"session_id": self.session,
+                  "exercise_id": 12,
                   "sets": 0,
                   "repetition": 0,
                   "rest": 0,
@@ -163,10 +142,58 @@ class AddActivityFormTest(TestCase):
         )
         self.assertFalse(form.is_valid())
 
+    def test_sets_is_invalid(self):
+        form = AddActivityForm(
+            data={"session_id": self.session,
+                  "exercise_id": self.exercise,
+                  "sets": 'test',
+                  "repetition": 0,
+                  "rest": 0,
+                  "weight": 0,
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_repetition_is_invalid(self):
+        form = AddActivityForm(
+            data={"session_id": self.session,
+                  "exercise_id": self.exercise,
+                  "sets": 0,
+                  "repetition": 'test',
+                  "rest": 0,
+                  "weight": 0,
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_rest_is_invalid(self):
+        form = AddActivityForm(
+            data={"session_id": self.session,
+                  "exercise_id": self.exercise,
+                  "sets": 0,
+                  "repetition": 0,
+                  "rest": 'test',
+                  "weight": 0,
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_weight_is_invalid(self):
+        form = AddActivityForm(
+            data={"session_id": self.session,
+                  "exercise_id": self.exercise,
+                  "sets": 0,
+                  "repetition": 0,
+                  "rest": 0,
+                  "weight": 'test',
+            }
+        )
+        self.assertFalse(form.is_valid())
+
     def test_is_valid(self):
         form = AddActivityForm(
-            data={"session_id": uuid.uuid4(),
-                  "exercise_id": uuid.uuid4(),
+            data={"session_id": self.session,
+                  "exercise_id": self.exercise,
                   "sets": 0,
                   "repetition": 0,
                   "rest": 12,

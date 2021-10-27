@@ -48,10 +48,10 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input class="text-muted" id="name" type="text" name="name" pattern="[a-zA-Z]*" value="{{ user.name }}">
+                                    <input class="text-muted" id="name" type="text" name="name" pattern="[a-zA-Z]*" maxlength="20" value="{{ user.name }}">
                                 </div>
                                 <div class="col-6">
-                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="[a-zA-Z]*" value="{{ user.first_name }}">
+                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="[a-zA-Z]*" maxlength="20" value="{{ user.first_name }}">
                                 </div>
                             </div>
                             <hr class="my-5">
@@ -66,10 +66,10 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input class="text-muted" id="weight" type="number" name="weight" value="{{ user.weight }}">
+                                    <input class="text-muted" id="weight" type="number" name="weight" min="10" max="200" value="{{ user.weight }}">
                                 </div>
                                 <div class="col-6">
-                                    <input class="text-muted" id="height" type="number" name="height" value="{{ user.height }}">
+                                    <input class="text-muted" id="height" type="number" name="height" min="120" max="250" value="{{ user.height }}">
                                 </div>
                             </div>
                             <div class="row">
@@ -92,7 +92,7 @@
                                 <div class="col-10">
                                 </div>
                                 <div class="col-2">
-                                    <input class="btn btn-secondary mb-2" type="submit" value="Enregistrer">
+                                    <input class="btn btn-dark mb-2" type="submit" value="Enregistrer">
                                 </div>
                             </div>
                         </form>

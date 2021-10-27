@@ -23,22 +23,22 @@
                         </div>
                       <div class="form-outline mb-4">
                         <input name = "username" type="email" id="username" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
-                        <label class="form-label" for="username">Email address</label>
+                        <label class="form-label" for="username">Email</label>
                       </div>
                       <div class="form-outline mb-4">
                         <input name="password" type="password" id="password" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="password">Mot de passe</label>
                       </div>
                       <div class="pt-1 mb-4">
-                        <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit" style="background-color: #616161">Login</button>
+                        <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit" style="background-color: #616161">Se connecter</button>
                       </div>
-                      <a class="small text-muted" href="{% url 'password_reset' %}">Forgot password?</a>
-                      <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="{% url 'register' %}" style="color: #393f81;">Register here</a></p>
+                      <a class="small text-muted" href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
+                      <p class="mb-5 pb-lg-2" style="color: #393f81;">Vous n'avez pas de compte? <a href="{% url 'register' %}" style="color: #393f81;">Inscrivez-vous</a></p>
                     </form>
                       {% if form.errors %}
                         <div class="alert alert-warning">
                           <a class="close" href="" data-dismiss="alert">×</a>
-                          <p class="text-center">Login failed. The username or password you entered is incorrect</p>
+                          <p class="text-center">La connexion a échoué. Le nom d'utilisateur ou le mot de passe que vous avez saisi est incorrect</p>
                         </div>
                       {% endif %}
                   </div>

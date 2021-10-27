@@ -80,8 +80,6 @@ class User(AbstractBaseUser, BaseModel):
 
     USERNAME_FIELD = 'email'
 
-    def __str__(self):
-        return self.name
 
     def get_email(self):
         return self.email
@@ -126,8 +124,6 @@ class Activity(BaseModel):
     rest = models.DurationField(null=False, blank=False, default=0)
     weight = models.SmallIntegerField(null=False, blank=False, default=0)
 
-    def get_session_id(self):
-        return self.session_id
 
     def get_exercise_id(self):
         return self.exercise_id
