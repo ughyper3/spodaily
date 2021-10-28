@@ -1,22 +1,16 @@
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views import generic
-from django.views.generic import TemplateView, DeleteView, CreateView
+from django.views.generic import TemplateView, DeleteView, CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
 from spodaily_api.models import Exercise, Activity, Session, User, Muscle
 from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
     get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
-    get_tonnage_number_by_user, get_calories_burn_by_user
+    get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
-from collections import ChainMap
-
-from spodaily_api.utils import get_maximum_by_exercise
 
 
 class LoginView(TemplateView):
@@ -167,6 +161,16 @@ class RoutineView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = {}
+        user = request.user
+        number_of_session = 3
+        session = get_future_sessions_by_user(user.uuid, number_of_session).values()
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+
+        context['session'] = session
+        context['activity'] = activities_list
         return render(request, self.template_name, context)
 
 
@@ -237,3 +241,10 @@ class RegisterView(TemplateView):
         else:
             messages.error(request, 'Registration failed')
         return render(request, template_name="registration/register.html", context=context)
+
+
+class UpdateActivityView(UpdateView):
+    model = Activity
+    fields = ['exercise_id', 'weight', 'rest', 'repetition']
+    template_name = 'spodaily_api/update_activity.html'
+    success_url = reverse_lazy('past_session')

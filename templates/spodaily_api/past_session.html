@@ -8,7 +8,7 @@
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2 pb-2">
-                <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mes sessions passées</h1>
+                <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mes séances passées</h1>
                  <a class="position-sticky" href="{% url 'add_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
             </div>
             <div class="row">
@@ -36,6 +36,7 @@
                                                 <th class="case-sm text-left">Poids</th>
                                                 <th class="case-sm text-left">Repos</th>
                                                 <th class="case-sm text-left"></th>
+                                                <th class="case-sm text-left"></th>
                                             </tr>
                                         </thead>
                                             {% for act in activity %}
@@ -47,6 +48,7 @@
                                                             <td class="case-sm text-left">{{ truc.repetition}}</td>
                                                             <td class="case-sm text-left">{{ truc.weight }}</td>
                                                             <td class="case-sm text-left">{{ truc.rest }}</td>
+                                                            <td class="case-sm text-left"><a href="{% url 'update_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
                                                             <td class="case-sm text-left"><a href="{% url 'delete_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>
                                                         </tr>
                                                     {% endif %}

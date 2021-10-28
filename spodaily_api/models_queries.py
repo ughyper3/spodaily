@@ -74,3 +74,10 @@ def get_tonnage_number_by_user(uuid):
 def get_calories_burn_by_user(uuid):
     number = get_session_number_by_user(uuid) * 263
     return number
+
+
+def get_future_sessions_by_user(user_id, number_of_session):
+    today = date.today()
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__gte=today).order_by('date')[:number_of_session]
+    return sessions
+
