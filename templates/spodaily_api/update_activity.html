@@ -12,13 +12,61 @@
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
                     <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
-                        <h6 class="m-0 p-0 font-weight-bold">issou</h6>
+                        <h6 class="m-0 p-0 font-weight-bold"></h6>
                     </div>
                     <div class="card-body">
                         <form method="post" action="">
                             {% csrf_token %}
-                            {{ form.as_p }}
-                            <input class="btn btn-dark mb-2" type="submit" value="Mettre à jour" name="Delete">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Exercice </label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    {{ form.exercise_id }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Nombre de série </label>
+                                </div>
+                                <div class="col-6">
+                                    <label>Nombre de répétition </label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    {{ form.sets }}
+                                </div>
+                                <div class="col-6">
+                                     {{ form.repetition }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Poids </label>
+                                </div>
+                                <div class="col-6">
+                                    <label>Temps de récupération </label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    {{form.weight}}
+                                </div>
+                                <div class="col-6">
+                                    {{form.rest}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-10">
+                                </div>
+                                <div class="col-2">
+                                    <input class="btn btn-dark mb-2" type="submit" value="Enregistrer">
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -10,7 +10,8 @@ from spodaily_api.models_queries import get_activities_by_session, get_sessions_
     get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
     get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user
 
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm
+from spodaily_api.utils import get_graph_of_exercise
 
 
 class LoginView(TemplateView):
@@ -24,11 +25,10 @@ class LoginView(TemplateView):
                                 password=login_form.cleaned_data.get('password'))
             if user is not None:
                 login(request, user)
-                messages.add_message(request, messages.SUCCESS, "Authentification réussie !")
                 return HttpResponseRedirect(reverse('home'))
 
             else:
-                messages.error(request,'username or password not correct')
+                messages.error(request, 'username or password not correct')
 
         return HttpResponseRedirect(reverse('login'))
 
@@ -42,9 +42,14 @@ class Home(LoginRequiredMixin, TemplateView):
         number_of_session = get_session_number_by_user(user.uuid)
         number_of_tonnage = get_tonnage_number_by_user(user.uuid)
         number_of_calories = get_calories_burn_by_user(user.uuid)
+        data = get_graph_of_exercise(request, 'Deadlift')
+        context['labels'] = data[0]
+        context['data'] = data[1]
+        context['exercise'] = data[2]
         context['number_of_session'] = number_of_session
         context['number_of_tonnage'] = number_of_tonnage['sum']
         context['number_of_calories'] = number_of_calories
+
         return render(request, self.template_name, context)
 
 
@@ -61,7 +66,7 @@ class AddSessionView(LoginRequiredMixin, TemplateView):
         form.instance.user = request.user
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('past_session'))
+            return HttpResponseRedirect(reverse('routine'))
 
 
 class AddActivityView(LoginRequiredMixin, CreateView):
@@ -82,7 +87,7 @@ class AddActivityView(LoginRequiredMixin, CreateView):
             form.save(commit=False)
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('past_session'))
+            return HttpResponseRedirect(reverse('routine'))
 
 
 class SessionView(LoginRequiredMixin, TemplateView):
@@ -105,7 +110,7 @@ class DeleteActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('past_session')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = request.get_full_path()[30:-1]
+        activity_uuid = request.get_full_path()[26:-1]
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}
@@ -125,7 +130,7 @@ class MuscleView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/muscle.html'
 
     def get(self, request, *args, **kwargs):
-        uuid = request.get_full_path()[21:-1]  # disgusting way to get url
+        uuid = request.get_full_path()[17:-1]  # disgusting way to get url
         muscle = get_muscle_by_uuid(uuid)
         exercise = get_exercise_by_muscle(uuid)
         context = {'muscle': muscle,
@@ -207,22 +212,6 @@ class PastSessionView(LoginRequiredMixin, TemplateView):
         return render(request, 'spodaily_api/past_session.html', context)
 
 
-def register(request):
-    form = CreateUserForm
-
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Successfully registered')
-            return HttpResponseRedirect(reverse('login'))
-        else:
-            messages.error(request, 'Registration failed')
-
-    context = {'form': form}
-    return render(request, template_name="registration/register.html", context=context)
-
-
 class RegisterView(TemplateView):
     template_name = "registration/register.html"
 
@@ -233,18 +222,47 @@ class RegisterView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = CreateUserForm(request.POST)
-        context = {'form':form}
+        context = {'form': form}
         if form.is_valid():
             form.save()
             messages.success(request, 'Successfully registered')
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('register_success'))
         else:
             messages.error(request, 'Registration failed')
         return render(request, template_name="registration/register.html", context=context)
 
 
+class RegisterSuccessView(TemplateView):
+    template_name = 'registration/register_success.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
 class UpdateActivityView(UpdateView):
     model = Activity
-    fields = ['exercise_id', 'weight', 'rest', 'repetition']
+    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
     template_name = 'spodaily_api/update_activity.html'
     success_url = reverse_lazy('past_session')
+
+
+class AddContactView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/contact.html"
+
+    def get(self, request, *args, **kwargs):
+        form = AddContactForm()
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddContactForm(request.POST)
+        form.instance.user = request.user
+        user_id = request.user.uuid
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.user = User.objects.get(uuid=user_id)
+            form.save()
+            return HttpResponseRedirect(reverse('home'))
+
+

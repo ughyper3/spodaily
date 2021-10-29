@@ -1,18 +1,20 @@
 import debug_toolbar
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include, reverse_lazy
+from django.urls import path, include
 from django.views.generic import RedirectView
 from spodaily_api import views
 from spodaily_api.views import DeleteSessionView, DeleteActivityView, AddActivityView, ExerciseGuideView, MuscleView, \
-    RoutineView, ContactView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView
+    RoutineView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView, Home, \
+    RegisterSuccessView, AddContactView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
-    url(r'^$', RedirectView.as_view(url='spodaily-api/login/', permanent=False)),
+    url(r'^$', RedirectView.as_view(url='spodaily/login/', permanent=False)),
     path('spodaily/', include('django.contrib.auth.urls'), name='spodaily_login'),
-    url(r'^spodaily/home/', views.Home.as_view(), name='home'),
+    url(r'^spodaily/home/', Home.as_view(), name='home'),
     url(r'^spodaily/register/', RegisterView.as_view(), name='register'),
+    url(r'^spodaily/register_success/', RegisterSuccessView.as_view(), name='register_success'),
     url(r'^spodaily/account/', AccountView.as_view(), name='account'),
     url(r'^spodaily/routine/', RoutineView.as_view(), name='routine'),
     url(r'^spodaily/past_session/', PastSessionView.as_view(), name='past_session'),
@@ -24,7 +26,7 @@ urlpatterns = [
     path('spodaily/add_activity/<uuid:fk>/', AddActivityView.as_view(), name='add_activity'),
     url(r'^spodaily/exercise_guide/', ExerciseGuideView.as_view(), name='exercise_guide'),
     path('spodaily/muscle/<uuid:fk>/', MuscleView.as_view(), name='muscle'),
-    url(r'^spodaily/contact/', ContactView.as_view(), name='contact'),
+    url(r'^spodaily/contact/', AddContactView.as_view(), name='contact'),
     url(r'^spodaily/rule_of_use/', RulesOfUseView.as_view(), name='rules_of_use'),
     path('__debug__/', include(debug_toolbar.urls)),
 ]

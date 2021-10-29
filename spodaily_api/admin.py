@@ -1,5 +1,5 @@
 from django.contrib import admin
-from spodaily_api.models import User, Session, Activity, Exercise, Muscle
+from spodaily_api.models import User, Session, Activity, Exercise, Muscle, Contact
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -44,8 +44,18 @@ class MuscleAdmin(admin.ModelAdmin):
     ]
 
 
+class ContactAdmin(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "reason",
+        "content"
+    ]
+
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Muscle, MuscleAdmin)
+admin.site.register(Contact, ContactAdmin)

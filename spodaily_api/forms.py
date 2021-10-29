@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from spodaily_api.models import User, Session, Activity
+from spodaily_api.models import User, Session, Activity, Contact
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -52,3 +52,13 @@ class AddActivityForm(ModelForm):
     class Meta:
         model = Activity
         fields = ['exercise_id', 'sets', 'repetition', 'rest', 'weight']
+
+
+class AddContactForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddContactForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Contact
+        fields = ['reason', 'content']

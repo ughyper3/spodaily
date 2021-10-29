@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-qtg6s+ixh65gn+8nx2-*$4iyqz&e=t$wz)-mpk=%+@d^mfcx5v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 AUTH_USER_MODEL = "spodaily_api.User"
 
@@ -114,8 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL = '/spodaily-api/auth/login/'
-LOGIN_REDIRECT_URL = '/spodaily-api/home/'
+LOGIN_URL = '/spodaily/auth/login/'
+LOGIN_REDIRECT_URL = '/spodaily/home/'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))

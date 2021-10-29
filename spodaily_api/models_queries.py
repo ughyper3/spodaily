@@ -13,7 +13,7 @@ def get_sessions_by_user(user_id):
 
 def get_past_sessions_by_user(user_id):
     today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lte=today).order_by('-date')
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lt=today).order_by('-date')
     return sessions
 
 
@@ -58,7 +58,7 @@ def get_exercise_by_muscle(uuid):
 
 def get_session_number_by_user(uuid):
     today = date.today()
-    number = Session.objects.filter(deleted=False, user__uuid=uuid, date__lte=today).count()
+    number = Session.objects.filter(deleted=False, user__uuid=uuid, date__lt=today).count()
     return number
 
 

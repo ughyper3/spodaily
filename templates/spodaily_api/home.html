@@ -42,19 +42,48 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 border-bottom-0 tab-head" style="{{retailer_background_color}};">
-                    <h6 class="m-0 font-weight-bold text-dark" >Actualité</h6>
-                </div>
-                <div class="card-body m-0 p-0">
-                    <p>- V 1.0 -> 31/10/2021 :
-                        register, login, logout, reset password, set/update account parameters, change password,
-                        create/delete activities and sessions, <br> exercise guide / muscle guide
-                    </p>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
+                            <h6 class="m-0 font-weight-bold text-light" >{{ exercise }} : Evolution de votre maximum théorique</h6>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div id="container" style="width: 100%;">
+                                <canvas class="d-flex align-content-center" id="pie-chart">
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                                    <script>
+                                        var config = {
+                                            type: 'line',
+                                            data: {
+                                            datasets: [{
+                                                data: {{ data|safe }},
+                                                    backgroundColor: [
+                                                        '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+                                                    ],
+                                                label: '{{ exercise|safe }}'
+                                            }],
+                                            labels: {{ labels|safe }}
+                                            },
+                                            options: {
+                                                responsive: true
+                                            }
+                                        };
+                                        window.onload = function() {
+                                            var ctx = document.getElementById('pie-chart').getContext('2d');
+                                            window.myPie = new Chart(ctx, config);
+                                        };
+                                    </script>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
 
 {% endblock %}

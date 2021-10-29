@@ -153,3 +153,14 @@ class Muscle(BaseModel):
 
     def get_name(self):
         return self.name
+
+
+class Contact(BaseModel):
+    CONTACT_CHOICE = [
+        ('Suggestion', 'Suggestion'),
+        ('Bug', 'Bug'),
+        ('Autre', 'Autre')
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=20, choices=CONTACT_CHOICE)
+    content = models.CharField(max_length=1000, null=False, blank=False)
