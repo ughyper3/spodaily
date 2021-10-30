@@ -4,39 +4,41 @@
         font-family: Roboto, sans-serif !important;
     }
     .sidebar {
-
           width: 200px;
           position : absolute;
           height: 100%;
-
     }
-    .side-links{
-        padding-top: 50px;
-    }
-
-    .img{
-        padding:15px;
-    }
-
-    .contact{
-        padding-top: 150%;
-    }
-
 </style>
 
-<!-- The sidebar -->
-<div class="sidebar bg-dark list-group m-0 p-0 accordion v-100 toggle position-fixed">
-    <div class="picture">
-        <a href="{% url 'home' %}"><img class="img img-fluid" src={% static 'spodaily_api/img/logo.png' %}></a>
+<div class="sidebar bg-dark list-group m-0 p-0 accordion v-100 toggle position-fixed d-flex flex-column justify-content-between">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="picture" style="padding: 15px">
+                        <a href="{% url 'home' %}"><img class="img img-fluid" src={% static 'spodaily_api/img/logo.png' %}></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="side-links">
+                        <a class="list-group-item bg-dark text-muted">Mon programme</a>
+                        <a class="list-group-item bg-dark text-light" href="{% url 'routine' %}">Mes séances à venir</a>
+                        <a class="list-group-item bg-dark text-light" href="{% url 'past_session' %}">Mes séances passées</a>
+                        <a class="list-group-item bg-dark text-light" href="{% url 'exercise_guide' %}">Guide des exercices</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="side-links">
-        <a class="list-group-item bg-dark text-muted">Mon programme</a>
-        <a class="list-group-item bg-dark text-light" href="{% url 'routine' %}">Mes séances à venir</a>
-        <a class="list-group-item bg-dark text-light" href="{% url 'past_session' %}">Mes séances passées</a>
-        <a class="list-group-item bg-dark text-light" href="{% url 'exercise_guide' %}">Guide des exercices</a>
+    <div class="row">
+        <div class="col-12">
+            <div class="side-links">
+                 <a class="list-group-item bg-dark text-light" href="{% url 'contact' %}">Contact</a>
+                 <a class="list-group-item bg-dark text-light" href="{% url 'rules_of_use' %}">Mentions légales</a>
+            </div>
+        </div>
     </div>
-    <div class="contact">
-        <a class="list-group-item bg-dark text-light" href="{% url 'contact' %}">Contact</a>
-        <a class="list-group-item bg-dark text-light" href="{% url 'rules_of_use' %}">Rules of use</a>
-    </div>
+
 </div>
