@@ -42,10 +42,18 @@ class Home(LoginRequiredMixin, TemplateView):
         number_of_session = get_session_number_by_user(user.uuid)
         number_of_tonnage = get_tonnage_number_by_user(user.uuid)
         number_of_calories = get_calories_burn_by_user(user.uuid)
-        data = get_graph_of_exercise(request, 'Deadlift')
-        context['labels'] = data[0]
-        context['data'] = data[1]
-        context['exercise'] = data[2]
+        sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
+        squat_data = get_graph_of_exercise(request, 'Squat')
+        bench_data = get_graph_of_exercise(request, 'Développé couché')
+        context['sdt_labels'] = sdt_data[0]
+        context['sdt_data'] = sdt_data[1]
+        context['sdt_exercise'] = sdt_data[2]
+        context['squat_labels'] = squat_data[0]
+        context['squat_data'] = squat_data[1]
+        context['squat_exercise'] = squat_data[2]
+        context['bench_labels'] = bench_data[0]
+        context['bench_data'] = bench_data[1]
+        context['bench_exercise'] = bench_data[2]
         context['number_of_session'] = number_of_session
         context['number_of_tonnage'] = number_of_tonnage['sum']
         context['number_of_calories'] = number_of_calories
@@ -53,7 +61,7 @@ class Home(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, context)
 
 
-class AddSessionView(LoginRequiredMixin, TemplateView):
+class AddFutureSessionView(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/add_session.html"
 
     def get(self, request, *args, **kwargs):
@@ -69,7 +77,7 @@ class AddSessionView(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('routine'))
 
 
-class AddActivityView(LoginRequiredMixin, CreateView):
+class AddFutureActivityView(LoginRequiredMixin, CreateView):
     template_name = "spodaily_api/add_activity.html"
     model = Activity
     success_url = '/'
@@ -88,6 +96,43 @@ class AddActivityView(LoginRequiredMixin, CreateView):
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
             return HttpResponseRedirect(reverse('routine'))
+
+
+class AddPastSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/add_session.html"
+
+    def get(self, request, *args, **kwargs):
+        form = AddSessionForm()
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddSessionForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('past_session'))
+
+
+class AddPastActivityView(LoginRequiredMixin, CreateView):
+    template_name = "spodaily_api/add_activity.html"
+    model = Activity
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        form = AddActivityForm()
+        session = Session.objects.get(uuid=kwargs['fk'])
+        context = {'form': form,
+                   'session': session}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddActivityForm(request.POST)
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
+            form.save()
+            return HttpResponseRedirect(reverse('past_session'))
 
 
 class SessionView(LoginRequiredMixin, TemplateView):

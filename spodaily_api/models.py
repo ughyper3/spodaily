@@ -63,8 +63,8 @@ class User(AbstractBaseUser, BaseModel):
 
     email = models.EmailField(verbose_name='email', max_length=200, unique=True, null=False, blank=False)
     password = models.CharField(max_length=200, null=False, blank=False)
-    name = models.CharField(max_length=200, null=True, blank=True)
-    first_name = models.CharField(max_length=200, null=True, blank=True)
+    name = models.CharField(max_length=200, null=True, blank=True, default='Non renseigné')
+    first_name = models.CharField(max_length=200, null=True, blank=True, default='Non renseigné')
     birth = models.DateField(null=True, blank=True)
     height = models.SmallIntegerField(null=True, blank=True)
     weight = models.SmallIntegerField(null=True, blank=True)

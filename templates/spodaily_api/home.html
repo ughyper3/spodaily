@@ -27,7 +27,13 @@
                             Nombre de kg soulevés
                         </div>
                         <div class="card-body">
-                            <H1 class="p-0 m-0 text-center" style="color: #9A786E">{{ number_of_tonnage }}</H1>
+                            <h1 class="p-0 m-0 text-center" style="color: #9A786E">
+                                {% if number_of_tonnage %}
+                                    {{ number_of_tonnage }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h1>
                         </div>
                     </div>
                 </div>
@@ -46,32 +52,102 @@
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
-                            <h6 class="m-0 font-weight-bold text-light" >{{ exercise }} : Evolution de votre maximum théorique</h6>
+                            <h6 class="m-0 font-weight-bold text-light" >{{ sdt_exercise }} : Evolution de votre maximum théorique</h6>
                         </div>
                         <div class="card-body m-0 p-0">
                             <div id="container" style="width: 100%;">
-                                <canvas class="d-flex align-content-center" id="pie-chart">
+                                <canvas class="d-flex align-content-center" id="sdt-chart">
                                     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
                                     <script>
-                                        var config = {
+                                        var config_sdt = {
                                             type: 'line',
                                             data: {
                                             datasets: [{
-                                                data: {{ data|safe }},
+                                                data: {{ sdt_data|safe }},
                                                     backgroundColor: [
                                                         '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
                                                     ],
-                                                label: '{{ exercise|safe }}'
+                                                label: '{{ sdt_exercise|safe }}'
                                             }],
-                                            labels: {{ labels|safe }}
+                                            labels: {{ sdt_labels|safe }}
+                                            },
+                                            options: {
+                                                responsive: true
+                                            }
+                                        };
+                                    </script>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
+                            <h6 class="m-0 font-weight-bold text-light" >{{ squat_exercise }} : Evolution de votre maximum théorique</h6>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div id="container" style="width: 100%;">
+                                <canvas class="d-flex align-content-center" id="squat-chart">
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                                    <script>
+                                        var config_squat = {
+                                            type: 'line',
+                                            data: {
+                                            datasets: [{
+                                                data: {{ squat_data|safe }},
+                                                    backgroundColor: [
+                                                        '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+                                                    ],
+                                                label: '{{ squat_exercise|safe }}'
+                                            }],
+                                            labels: {{ squat_labels|safe }}
+                                            },
+                                            options: {
+                                                responsive: true
+                                            }
+                                        };
+                                    </script>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
+                            <h6 class="m-0 font-weight-bold text-light" >{{ bench_exercise }} : Evolution de votre maximum théorique</h6>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div id="container" style="width: 100%;">
+                                <canvas class="d-flex align-content-center" id="bench-chart">
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                                    <script>
+                                        var config_bench = {
+                                            type: 'line',
+                                            data: {
+                                            datasets: [{
+                                                data: {{ bench_data|safe }},
+                                                    backgroundColor: [
+                                                        '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+                                                    ],
+                                                label: '{{ bench_exercise|safe }}'
+                                            }],
+                                            labels: {{ bench_labels|safe }}
                                             },
                                             options: {
                                                 responsive: true
                                             }
                                         };
                                         window.onload = function() {
-                                            var ctx = document.getElementById('pie-chart').getContext('2d');
-                                            window.myPie = new Chart(ctx, config);
+                                            var sdt = document.getElementById('sdt-chart').getContext('2d');
+                                            var squat = document.getElementById('squat-chart').getContext('2d');
+                                            var bench = document.getElementById('bench-chart').getContext('2d');
+                                            window.myPie = new Chart(sdt, config_sdt);
+                                            window.myPie = new Chart(squat, config_squat);
+                                            window.myPie = new Chart(bench, config_bench);
                                         };
                                     </script>
                                 </canvas>

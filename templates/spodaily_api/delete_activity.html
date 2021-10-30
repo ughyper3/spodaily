@@ -12,14 +12,14 @@
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
                     <div class="card-header border-0 d-flex bg-dark text-light">
-                        <h6 class="m-0 p-0 font-weight-bold">Supprimer l'activité suivante ?</h6>
+                        <h6 class="m-0 p-0 font-weight-bold">Supprimer l'activité suivante</h6>
 
                     </div>
                     <div class="card-body">
                         <form method="post" action="">
                             {% csrf_token %}
                             <div class="row mb-3 d-flex justify-content-center">
-                                <p> ?</p>
+                                <p> Êtes-vous sur de vouloir supprimer l'activité {{ activity.exercise_id__name }} de la session {{ session.name }} ?</p>
                             </div>
                             <div class="row">
                                 <div class="col-10">

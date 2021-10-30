@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2 pb-2">
                 <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mes séances passées</h1>
-                 <a class="position-sticky" href="{% url 'add_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                 <a class="position-sticky" href="{% url 'add_past_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
             </div>
             <div class="row">
                 {% for ses in session %}
@@ -17,7 +17,7 @@
                         <div class="card shadow h-100 border-0">
                             <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
                                 <div>
-                                    <a class="p-0 m-0" href="{% url 'add_activity' fk=ses.uuid %}"><img style="width: 40px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                                    <a class="p-0 m-0" href="{% url 'add_past_activity' fk=ses.uuid %}"><img style="width: 40px" src="{% static 'spodaily_api/img/add.png' %}"></a>
                                 </div>
                                 <div class="text-center">
                                     <h6 class="m-0 pt-1 font-weight-bold" >{{ ses.name }}</h6>
@@ -64,4 +64,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

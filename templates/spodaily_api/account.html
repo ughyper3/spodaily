@@ -82,7 +82,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input id="birth" type="date" name="birth" value="{{ user.birth }}">
+                                    <input id="birth" type="date" name="birth" value={% if user.birth %}{{ user.birth }}{% else %}'2021-01-01'{% endif %}>
                                 </div>
                                 <div class="col-6">
                                     {{ edit_user_form.sexe }}
