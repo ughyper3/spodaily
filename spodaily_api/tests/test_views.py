@@ -176,7 +176,7 @@ class RegisterTest(TestCase):
                                     data={'email': 'alice@example.com',
                                           'password1': 'testtesttest',
                                           'password2': 'testtesttest'})
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse('register_success'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(User.objects.count(), 2)
 
