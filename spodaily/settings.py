@@ -38,10 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'spodaily_api.apps.SpodailyApiConfig',
-    'rest_framework',
-    'corsheaders',
-    'debug_toolbar'
+    'spodaily_api.apps.SpodailyApiConfig'
+
 ]
 
 MIDDLEWARE = [
@@ -85,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql', # on utilise l'adaptateur postgresql
         'NAME': 'spodaily', # le nom de notre base de donnees creee precedemment
         'USER': 'postgres', # attention : remplacez par votre nom d'utilisateur
-        'PASSWORD': '',
+        'PASSWORD': 'root',
         'HOST': '127.0.0.1',
         'PORT': '5433',
 
