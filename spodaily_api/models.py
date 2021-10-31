@@ -99,6 +99,7 @@ class Session(BaseModel):
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
     is_program = models.BooleanField(default=False)
+    is_done = models.BooleanField(default=False)
 
     def get_user(self):
         return self.user

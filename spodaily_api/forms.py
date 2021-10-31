@@ -72,3 +72,13 @@ class AddSessionProgramForm(ModelForm):
     class Meta:
         model = Session
         fields = ['name']
+
+
+class AddSessionDuplicateForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddSessionDuplicateForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Session
+        fields = ['date']
