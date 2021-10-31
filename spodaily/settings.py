@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qtg6s+ixh65gn+8nx2-*$4iyqz&e=t$wz)-mpk=%+@d^mfcx5v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['spodaily-staging.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS =['*']
 
 
 AUTH_USER_MODEL = "spodaily_api.User"
