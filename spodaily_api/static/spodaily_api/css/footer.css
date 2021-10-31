@@ -1,0 +1,21 @@
+footer {
+     position: relative;
+     bottom: 0;
+     right: 0;
+     top: auto;
+     height: auto;
+     margin-top: auto;
+     width: 100%;
+     float: right;
+     text-align: center;
+     background-color: #f8f9fa!important;
+     color: black;
+     font-family: Roboto, sans-serif !important;
+    padding-top: 15px;
+ }
+
+.content{
+    min-height: calc(100vh - 57px);
+    display: flex;
+    flex-direction: column;
+}

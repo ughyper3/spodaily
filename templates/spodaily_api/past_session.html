@@ -23,7 +23,7 @@
                                     <h6 class="m-0 pt-1 font-weight-bold" >{{ ses.name }}</h6>
                                     <h6 class="m-0 pt-1 font-weight-bold" >{{ ses.date|date:'d/m/y' }}</h6>
                                 </div>
-                                <a class="p-0 m-0 mt-2" style=" color: black" href="{% url 'delete_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
+                                <a class="p-0 m-0 mt-2" style=" color: black" href="{% url 'delete_past_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
                             </div>
                             <div class="card-body m-0 p-0">
                                 <div class="table-responsive">
@@ -63,6 +63,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% include 'base/footer.html' %}
     </div>
 
 {% endblock %}

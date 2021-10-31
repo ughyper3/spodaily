@@ -7,13 +7,18 @@ from spodaily_api.models import Muscle, Exercise, Session, Activity
 
 
 def get_sessions_by_user(user_id):
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False).order_by('-date')
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, is_program=False).order_by('-date')
     return sessions
 
 
 def get_past_sessions_by_user(user_id):
     today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lt=today).order_by('-date')
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lt=today, is_program=False).order_by('-date')
+    return sessions
+
+
+def get_session_program_by_user(user_id):
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, is_program=True)
     return sessions
 
 
@@ -78,6 +83,6 @@ def get_calories_burn_by_user(uuid):
 
 def get_future_sessions_by_user(user_id, number_of_session):
     today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__gte=today).order_by('date')[:number_of_session]
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__gte=today, is_program=False).order_by('date')[:number_of_session]
     return sessions
 

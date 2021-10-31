@@ -8,9 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from spodaily_api.models import Exercise, Activity, Session, User, Muscle
 from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
     get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
-    get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user
+    get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user, get_session_program_by_user
 
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
+    AddSessionProgramForm, AddSessionDuplicateForm
 from spodaily_api.utils import get_graph_of_exercise
 
 
@@ -135,18 +136,22 @@ class AddPastActivityView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('past_session'))
 
 
-class SessionView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/session.html'
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, self.template_name, context)
-
-
-class DeleteSessionView(LoginRequiredMixin, DeleteView):
+class DeletePastSessionView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/delete_session.html"
     model = Session
     success_url = reverse_lazy('past_session')
+
+
+class DeleteFutureSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('routine')
+
+
+class DeleteProgramSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('program')
 
 
 class DeleteActivityView(LoginRequiredMixin, DeleteView):
@@ -311,3 +316,72 @@ class AddContactView(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('home'))
 
 
+class ProgramView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/program.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        session = get_session_program_by_user(request.user.uuid).values()
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+
+        context['session'] = session
+        context['activity'] = activities_list
+
+        return render(request, self.template_name, context)
+
+
+class AddProgramSessionView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/add_program_session.html'
+
+    def get(self, request, *args, **kwargs):
+        form = AddSessionProgramForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddSessionProgramForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.is_program = True
+            form.save()
+            return HttpResponseRedirect(reverse('program'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
+
+
+class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/duplicate_program_session.html"
+
+    def get(self, request, *args, **kwargs):
+        session_uuid = request.get_full_path()[36:-1]
+        session = Session.objects.get(uuid=session_uuid)
+        form = AddSessionDuplicateForm()
+        context = {'session': session,
+                   'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddSessionDuplicateForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            session_uuid = request.get_full_path()[36:-1]
+            session = Session.objects.get(uuid=session_uuid)
+            activities = Activity.objects.filter(session_id=session_uuid)
+            session_2 = session
+            session_2.pk = None
+            session_2.is_program = False
+            session_2.date = form.instance.date
+            session_2.save()
+            for activity in activities:
+                activity_2 = activity
+                activity_2.pk = None
+                activity_2.session_id = session
+                activity_2.save()
+            return HttpResponseRedirect(reverse('routine'))
+        else:
+            return HttpResponseRedirect(reverse('home'))

@@ -16,14 +16,14 @@
             <div class="row">
                 <div class="col-12">
                     <div class="picture" style="padding: 15px">
-                        <a href="{% url 'home' %}"><img class="img img-fluid" src="{% static 'spodaily_api/img/logo.png' %}"></a>
+                        <a href="{% url 'home' %}"><img class="img img-fluid" src="{% static 'spodaily_api/img/logo.png' %}" alt="logo Spodaily"></a>
                     </div>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col-12">
                     <div class="side-links">
-                        <a class="list-group-item bg-dark text-muted">Mon programme</a>
+                        <a class="list-group-item bg-dark text-light" href="{% url 'program' %}">Mon programme</a>
                         <a class="list-group-item bg-dark text-light" href="{% url 'routine' %}">Mes séances à venir</a>
                         <a class="list-group-item bg-dark text-light" href="{% url 'past_session' %}">Mes séances passées</a>
                         <a class="list-group-item bg-dark text-light" href="{% url 'exercise_guide' %}">Guide des exercices</a>
@@ -35,20 +35,9 @@
     <div class="row">
         <div class="col-12">
             <div class="side-links">
-                <div class="list-group-item bg-dark text-light dropdown">
-                    <button class="dropbtn">Langues
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                <div class="dropdown-languages">
-                    <a href="#">Français</a>
-                    <a href="#">Anglais</a>
-                    <a href="#">Italien</a>
-                </div>
-                </div>
-                 <a class="list-group-item bg-dark text-light" href="{% url 'contact' %}">Contact</a>
-                 <a class="list-group-item bg-dark text-light" href="{% url 'rules_of_use' %}">Mentions légales</a>
+                <a class="list-group-item bg-dark text-light" href="{% url 'contact' %}">Contact</a>
+                <a class="list-group-item bg-dark text-light" href="{% url 'rules_of_use' %}">Mentions légales</a>
             </div>
         </div>
     </div>
-
 </div>
