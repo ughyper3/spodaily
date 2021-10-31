@@ -13,7 +13,7 @@
                 <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0;">Mon compte</h1>
             </div>
             <div class="row d-flex justify-content-center" style="margin-bottom: 10px;">
-            <div class="col-9">
+            <div class="col-9 pb-5">
                 <div class="card shadow h-100 py-0">
                     <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
                         <h6 class="m-0 p-0 font-weight-bold" >Mes informations</h6>
@@ -58,10 +58,10 @@
                             <h6 class="heading-small text-muted mb-4 mt-2">Informations sportives</h6>
                             <div class="row">
                                 <div class="col-6">
-                                    <label for="weight">Poids</label>
+                                    <label for="weight">Poids(kg)</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="height">Taille</label>
+                                    <label for="height">Taille(cm)</label>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -82,7 +82,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input id="birth" type="date" name="birth" value={% if user.birth %}{{ user.birth }}{% else %}'2021-01-01'{% endif %}>
+                                    <input id="birth" type="date" name="birth" placeholder="{{ user.birth }}" value={% if user.birth %}{{ user.birth | date:"d-m-Y" }}{% else %}'2021-01-01'{% endif %}>
                                 </div>
                                 <div class="col-6">
                                     {{ edit_user_form.sexe }}
