@@ -6,7 +6,7 @@ from spodaily_api import views
 from spodaily_api.views import DeleteSessionView, DeleteActivityView, AddFutureActivityView, ExerciseGuideView, \
     MuscleView, \
     RoutineView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView, Home, \
-    RegisterSuccessView, AddContactView, AddPastActivityView
+    RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
@@ -21,10 +21,13 @@ urlpatterns = [
     url(r'^spodaily/add_session/', views.AddFutureSessionView.as_view(), name='add_session'),
     url(r'^spodaily/add_past_session/', views.AddPastSessionView.as_view(), name='add_past_session'),
     url(r'^spodaily/session/', views.SessionView.as_view(), name='session'),
+    url(r'^spodaily/program/', views.ProgramView.as_view(), name='program'),
+    url(r'^spodaily/add_program_session/', views.AddProgramSessionView.as_view(), name='add_program_session'),
     path('spodaily/delete_session/<uuid:pk>/', DeleteSessionView.as_view(), name='delete_session'),
     path('spodaily/delete_activity/<uuid:pk>/', DeleteActivityView.as_view(), name='delete_activity'),
     path('spodaily/update_activity/<uuid:pk>/', UpdateActivityView.as_view(), name='update_activity'),
     path('spodaily/add_activity/<uuid:fk>/', AddFutureActivityView.as_view(), name='add_activity'),
+    path('spodaily/duplicate_program_session/<uuid:fk>/', DuplicateProgramSessionView.as_view(), name='duplicate_program_session'),
     path('spodaily/add_past_activity/<uuid:fk>/', AddPastActivityView.as_view(), name='add_past_activity'),
     url(r'^spodaily/exercise_guide/', ExerciseGuideView.as_view(), name='exercise_guide'),
     path('spodaily/muscle/<uuid:fk>/', MuscleView.as_view(), name='muscle'),
