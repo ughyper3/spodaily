@@ -27,6 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['spodaily-staging.herokuapp.com', '127.0.0.1']
 
+
 AUTH_USER_MODEL = "spodaily_api.User"
 
 # Application definition
