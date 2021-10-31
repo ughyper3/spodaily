@@ -23,10 +23,10 @@
                                 <div class="text-center">
                                     <h6 class="m-0 font-weight-bold" >{{ ses.name }}</h6>
                                 </div>
-                                <div class="text-center">
-                                    <a class="p-0 m-0" href="{% url 'duplicate_program_session' fk=ses.uuid %}">Dup</a>
+                                <div>
+                                <a class="pr-2 m-0" href="{% url 'duplicate_program_session' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/dupliquer.png' %}"></a>
+                                <a class="p-0 m-0" style=" color: black" href="{% url 'delete_program_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
                                 </div>
-                                <a class="p-0 m-0" style=" color: black" href="{% url 'delete_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
                             </div>
                             <div class="card-body m-0 p-0">
                                 <div class="table-responsive">

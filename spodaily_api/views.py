@@ -136,18 +136,22 @@ class AddPastActivityView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('past_session'))
 
 
-class SessionView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/session.html'
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, self.template_name, context)
-
-
-class DeleteSessionView(LoginRequiredMixin, DeleteView):
+class DeletePastSessionView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/delete_session.html"
     model = Session
     success_url = reverse_lazy('past_session')
+
+
+class DeleteFutureSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('routine')
+
+
+class DeleteProgramSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('program')
 
 
 class DeleteActivityView(LoginRequiredMixin, DeleteView):
@@ -378,6 +382,6 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
                 activity_2.pk = None
                 activity_2.session_id = session
                 activity_2.save()
-            return HttpResponseRedirect(reverse('program'))
+            return HttpResponseRedirect(reverse('routine'))
         else:
             return HttpResponseRedirect(reverse('home'))

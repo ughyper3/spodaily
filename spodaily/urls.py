@@ -3,10 +3,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 from spodaily_api import views
-from spodaily_api.views import DeleteSessionView, DeleteActivityView, AddFutureActivityView, ExerciseGuideView, \
+from spodaily_api.views import DeleteActivityView, AddFutureActivityView, ExerciseGuideView, \
     MuscleView, \
     RoutineView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView, Home, \
-    RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView
+    RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView, DeletePastSessionView, \
+    DeleteFutureSessionView, DeleteProgramSessionView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
@@ -20,10 +21,11 @@ urlpatterns = [
     url(r'^spodaily/past_session/', PastSessionView.as_view(), name='past_session'),
     url(r'^spodaily/add_session/', views.AddFutureSessionView.as_view(), name='add_session'),
     url(r'^spodaily/add_past_session/', views.AddPastSessionView.as_view(), name='add_past_session'),
-    url(r'^spodaily/session/', views.SessionView.as_view(), name='session'),
     url(r'^spodaily/program/', views.ProgramView.as_view(), name='program'),
     url(r'^spodaily/add_program_session/', views.AddProgramSessionView.as_view(), name='add_program_session'),
-    path('spodaily/delete_session/<uuid:pk>/', DeleteSessionView.as_view(), name='delete_session'),
+    path('spodaily/delete_past_session/<uuid:pk>/', DeletePastSessionView.as_view(), name='delete_past_session'),
+    path('spodaily/delete_future_session/<uuid:pk>/', DeleteFutureSessionView.as_view(), name='delete_future_session'),
+    path('spodaily/delete_program_session/<uuid:pk>/', DeleteProgramSessionView.as_view(), name='delete_program_session'),
     path('spodaily/delete_activity/<uuid:pk>/', DeleteActivityView.as_view(), name='delete_activity'),
     path('spodaily/update_activity/<uuid:pk>/', UpdateActivityView.as_view(), name='update_activity'),
     path('spodaily/add_activity/<uuid:fk>/', AddFutureActivityView.as_view(), name='add_activity'),
