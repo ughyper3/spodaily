@@ -98,6 +98,7 @@ class Session(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
     date = models.DateField(default=datetime.now)
+    is_program = models.BooleanField(default=False)
 
     def get_user(self):
         return self.user

@@ -8,9 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from spodaily_api.models import Exercise, Activity, Session, User, Muscle
 from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
     get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
-    get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user
+    get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user, get_session_program_by_user
 
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
+    AddSessionProgramForm
 from spodaily_api.utils import get_graph_of_exercise
 
 
@@ -310,4 +311,49 @@ class AddContactView(LoginRequiredMixin, TemplateView):
             form.save()
             return HttpResponseRedirect(reverse('home'))
 
+
+class ProgramView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/program.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        session = get_session_program_by_user(request.user.uuid).values()
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+
+        context['session'] = session
+        context['activity'] = activities_list
+
+        return render(request, self.template_name, context)
+
+
+class AddProgramSessionView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/add_program_session.html'
+
+    def get(self, request, *args, **kwargs):
+        form = AddSessionProgramForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddSessionProgramForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.is_program = True
+            form.save()
+            return HttpResponseRedirect(reverse('program'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
+
+
+class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/duplicate_program_session.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
 

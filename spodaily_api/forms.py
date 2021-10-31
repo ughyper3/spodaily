@@ -62,3 +62,13 @@ class AddContactForm(ModelForm):
     class Meta:
         model = Contact
         fields = ['reason', 'content']
+
+
+class AddSessionProgramForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AddSessionProgramForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Session
+        fields = ['name']
