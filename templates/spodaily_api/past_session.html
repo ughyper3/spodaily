@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2 pb-2">
                 <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mes séances passées</h1>
-                 <a class="position-sticky" href="{% url 'add_past_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                    <a class="position-sticky" href="{% url 'add_past_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
             </div>
             <div class="row">
                 {% for ses in session %}
@@ -54,7 +54,6 @@
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endfor %}
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>

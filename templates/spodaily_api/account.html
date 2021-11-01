@@ -48,10 +48,10 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input class="text-muted" id="name" type="text" name="name" pattern="[a-zA-Z]*" maxlength="20" value="{{ user.name }}">
+                                    <input class="text-muted" id="name" type="text" name="name" pattern="^[.\p{L}]*$" maxlength="20" value="{{ user.name }}">
                                 </div>
                                 <div class="col-6">
-                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="[a-zA-Z]*" maxlength="20" value="{{ user.first_name }}">
+                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="^[.\p{L}]*$" maxlength="20" value="{{ user.first_name }}">
                                 </div>
                             </div>
                             <hr class="my-5">
