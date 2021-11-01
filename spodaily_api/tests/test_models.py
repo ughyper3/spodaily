@@ -1,5 +1,5 @@
 from django.test import TestCase
-from spodaily_api.models import Session, User, Exercise, Activity, Muscle
+from spodaily_api.models import Session, User, Exercise, Activity, Muscle, Contact
 
 
 class UserTestCase(TestCase):
@@ -93,3 +93,24 @@ class MuscleTestCase(TestCase):
         self.assertTrue(isinstance(muscle, Muscle))
         self.assertEqual(muscle.get_user(), muscle.use)
         self.assertEqual(muscle.get_name(), muscle.name)
+
+
+class ContactTestCase(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(
+            email="test@test.test",
+            password="testtesttest"
+        )
+
+        self.contact = Contact.objects.create(
+            user=self.user,
+            reason='Bug',
+            content='Test'
+        )
+
+
+    def test_contact_creation(self):
+        contact = self.contact
+        self.assertTrue(isinstance(contact, Contact))
+        self.assertEqual(contact.get_user(), self.user)

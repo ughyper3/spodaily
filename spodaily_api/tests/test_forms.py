@@ -1,8 +1,7 @@
-import uuid
-
 from django.test import TestCase
-from spodaily_api.models import Session, User, Exercise, Activity, Muscle
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm
+from spodaily_api.models import Session, User, Exercise
+from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
+    AddSessionProgramForm, AddSessionDuplicateForm
 
 
 class LoginFormTest(TestCase):
@@ -199,5 +198,60 @@ class AddActivityFormTest(TestCase):
                   "rest": 12,
                   "weight": 0
             }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class AddContactFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_reason_is_invalid(self):
+        form = AddContactForm(
+            data={"reason": 'test',
+                  "content": 'test'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_is_valid(self):
+        form = AddContactForm(
+            data={"reason": 'Bug',
+                  "content": 'test'
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class AddSessionProgramFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_is_valid(self):
+        form = AddSessionProgramForm(
+            data={"name": 'test'
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class AddSessionDuplicateFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_date_is_invalid(self):
+        form = AddSessionDuplicateForm(
+            data={"date": 'test'
+                  }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_is_valid(self):
+        form = AddSessionDuplicateForm(
+            data={"date": '2021-01-01'
+                  }
         )
         self.assertTrue(form.is_valid())

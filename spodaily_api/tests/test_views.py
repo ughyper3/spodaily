@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.urls import resolve
 
 from spodaily_api.views import *
 
@@ -41,7 +40,7 @@ class HomeTest(TestCase):
         self.client.logout()
 
 
-class AddSessionTest(TestCase):
+class AddFutureSessionTest(TestCase):
 
     def setUp(self):
         self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
@@ -60,20 +59,20 @@ class AddSessionTest(TestCase):
         self.client.logout()
 
 
-class SessionTest(TestCase):
+class PastSessionTest(TestCase):
 
     def setUp(self):
         self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
 
-    def test_session_not_authenticated_user(self):
-        url = reverse('session')
+    def test_past_session_not_authenticated_user(self):
+        url = reverse('past_session')
         response = self.client.get(url)
         self.assertTemplateNotUsed(response, 'spodaily_api/session.html')
         self.assertEqual(response.status_code, 302)
 
-    def test_session_authenticated_user(self):
+    def test_past_session_authenticated_user(self):
         self.client.login(email='pascal@test.com', password='pascal')
-        response = self.client.get(reverse('session'))
+        response = self.client.get(reverse('past_session'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'spodaily_api/session.html')
         self.client.logout()
@@ -97,7 +96,7 @@ class ExerciseGuideTest(TestCase):
         self.assertTemplateUsed(response, 'spodaily_api/exercise_guide.html')
         self.client.logout()
 
-class AddActivityTest(TestCase):
+class AddFutureActivityTest(TestCase):
 
     def setUp(self):
         self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
@@ -118,21 +117,21 @@ class AddActivityTest(TestCase):
         self.client.logout()
 
 
-class DeleteSessionTest(TestCase):
+class DeletePastSessionTest(TestCase):
 
     def setUp(self):
         self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
         self.session = Session.objects.create(user=self.pascal, name='test_session')
 
-    def test_delete_session_not_authenticated_user(self):
-        url = reverse('delete_session', args=[self.session.uuid])
+    def test_past_delete_session_not_authenticated_user(self):
+        url = reverse('delete_past_session', args=[self.session.uuid])
         response = self.client.get(url)
         self.assertTemplateNotUsed(response, 'spodaily_api/delete_session.html')
         self.assertEqual(response.status_code, 302)
 
-    def test_delete_session_authenticated_user(self):
+    def test_past_delete_session_authenticated_user(self):
         self.client.login(email='pascal@test.com', password='pascal')
-        response = self.client.get(reverse('delete_session', args=[self.session.uuid]))
+        response = self.client.get(reverse('delete_past_session', args=[self.session.uuid]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'spodaily_api/delete_session.html')
         self.client.logout()

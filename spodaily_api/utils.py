@@ -15,7 +15,13 @@ def get_graph_of_exercise(request, exercise):
     data = []
     user = request.user
     today = date.today()
-    queryset = Activity.objects.filter(session_id__user_id=user, exercise_id__name=exercise, deleted=False, session_id__date__lt=today)
+    queryset = Activity.objects.filter(session_id__user_id=user,
+                                       exercise_id__name=exercise,
+                                       deleted=False,
+                                       session_id__deleted=False,
+                                       session_id__date__lt=today,
+                                       session_id__is_program=False,
+                                       )
 
     for activity in queryset:
         labels.append(str(activity.session_id.date))

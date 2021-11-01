@@ -166,3 +166,9 @@ class Contact(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reason = models.CharField(max_length=20, choices=CONTACT_CHOICE)
     content = models.CharField(max_length=1000, null=False, blank=False)
+
+    def __str__(self):
+        return self.reason
+
+    def get_user(self):
+        return self.user

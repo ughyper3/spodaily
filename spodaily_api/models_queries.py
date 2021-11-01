@@ -63,7 +63,7 @@ def get_exercise_by_muscle(uuid):
 
 def get_session_number_by_user(uuid):
     today = date.today()
-    number = Session.objects.filter(deleted=False, user__uuid=uuid, date__lt=today).count()
+    number = Session.objects.filter(deleted=False, user__uuid=uuid, date__lt=today, is_program=False).count()
     return number
 
 
@@ -72,6 +72,7 @@ def get_tonnage_number_by_user(uuid):
     number = Activity.objects.filter(
         deleted=False,
         session_id__user_id=uuid,
+        session_id__is_program=False,
         session_id__deleted=False, session_id__date__lte=today).aggregate(sum=Sum(F('weight') * F('repetition') * F('sets')))
     return number
 
