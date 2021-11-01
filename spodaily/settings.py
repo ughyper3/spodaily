@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-qtg6s+ixh65gn+8nx2-*$4iyqz&e=t$wz)-mpk=%+@d^mfcx5v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS =['*']
 
@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd44qa8t41fk7ld',
-        'USER': 'uhrvrpismgxiei',
-        'PASSWORD': 'e1c501cb9e929dc6fa28900f447656fcd90aec3988ebd0704ac6e75ded7ffa6d',
-        'HOST': 'ec2-54-220-14-54.eu-west-1.compute.amazonaws.com',
+        'NAME': 'd90pgr9uj52fsv',
+        'USER': 'objlwycxasuzaq',
+        'PASSWORD': '365d051538b47dddc1ac9d485f7fe05f359298b59f7a880ff75fb46dd44b24f4',
+        'HOST': 'ec2-54-195-246-55.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
