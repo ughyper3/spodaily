@@ -15,16 +15,16 @@
                 {% for ses in session %}
                     <div class="col-6" style="padding-bottom: 25px">
                         <div class="card shadow h-100 border-0">
-                            <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
+                            <div class="card-header border-0 d-flex justify-content-between bg-dark text-light align-items-center">
                                 <div>
                                     <a class="p-0 m-0" href="{% url 'add_activity' fk=ses.uuid %}"><img style="width: 40px" src="{% static 'spodaily_api/img/add.png' %}"></a>
                                 </div>
                                 <div class="text-center">
-                                    <h6 class="m-0 pt-1 font-weight-bold" >{{ ses.name }}</h6>
-                                    <h6 class="m-0 pt-1 font-weight-bold" >{{ ses.date|date:'d/m/y' }}</h6>
+                                    <h6 class="m-0 pt-1 font-weight-bold">{{ ses.name }}</h6>
+                                    <h6 class="m-0 pt-1 font-weight-bold">{{ ses.date|date:'d/m/y'}}</h6>
                                 </div>
                                 <div>
-                                    <a class="p-0 m-0" href="{% url 'session_done' fk=ses.uuid %}">done</a>
+                                    <a class="pr-2" href="{% url 'session_done' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/check.png' %}"></a>
                                     <a class="p-0 m-0 mt-2" style=" color: black" href="{% url 'delete_future_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
                                 </div>
                             </div>
