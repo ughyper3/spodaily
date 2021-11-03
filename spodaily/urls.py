@@ -7,7 +7,7 @@ from spodaily_api.views import DeleteActivityView, AddFutureActivityView, Exerci
     MuscleView, \
     RoutineView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView, Home, \
     RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView, DeletePastSessionView, \
-    DeleteFutureSessionView, DeleteProgramSessionView
+    DeleteFutureSessionView, DeleteProgramSessionView, MarkSessionAsDone
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
@@ -29,6 +29,7 @@ urlpatterns = [
     path('spodaily/delete_activity/<uuid:pk>/', DeleteActivityView.as_view(), name='delete_activity'),
     path('spodaily/update_activity/<uuid:pk>/', UpdateActivityView.as_view(), name='update_activity'),
     path('spodaily/add_activity/<uuid:fk>/', AddFutureActivityView.as_view(), name='add_activity'),
+    path('spodaily/session_done/<uuid:fk>/', MarkSessionAsDone.as_view(), name='session_done'),
     path('spodaily/duplicate_program_session/<uuid:fk>/', DuplicateProgramSessionView.as_view(), name='duplicate_program_session'),
     path('spodaily/add_past_activity/<uuid:fk>/', AddPastActivityView.as_view(), name='add_past_activity'),
     url(r'^spodaily/exercise_guide/', ExerciseGuideView.as_view(), name='exercise_guide'),

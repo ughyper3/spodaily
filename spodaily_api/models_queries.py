@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Q
 
 from spodaily_api import models
 from spodaily_api.models import Muscle, Exercise, Session, Activity
@@ -13,7 +13,11 @@ def get_sessions_by_user(user_id):
 
 def get_past_sessions_by_user(user_id):
     today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lt=today, is_program=False).order_by('-date')
+    sessions = models.Session.objects.filter(Q(date__lt=today) | Q(is_done=True),
+                                             user_id=user_id,
+                                             deleted=False,
+                                             is_program=False)\
+        .order_by('-date')
     return sessions
 
 
@@ -84,6 +88,6 @@ def get_calories_burn_by_user(uuid):
 
 def get_future_sessions_by_user(user_id, number_of_session):
     today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__gte=today, is_program=False).order_by('date')[:number_of_session]
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__gte=today, is_program=False, is_done=False).order_by('date')[:number_of_session]
     return sessions
 

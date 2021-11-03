@@ -11,7 +11,7 @@ from spodaily_api.models_queries import get_activities_by_session, get_sessions_
     get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user, get_session_program_by_user
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
 from spodaily_api.utils import get_graph_of_exercise
 
 
@@ -217,13 +217,12 @@ class RoutineView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = {}
         user = request.user
-        number_of_session = 3
+        number_of_session = 8
         session = get_future_sessions_by_user(user.uuid, number_of_session).values()
         activities_list = []
         for ses in session:
             activity = get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
-
         context['session'] = session
         context['activity'] = activities_list
         return render(request, self.template_name, context)
@@ -383,5 +382,30 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
                 activity_2.session_id = session
                 activity_2.save()
             return HttpResponseRedirect(reverse('routine'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
+
+
+class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/session_done.html"
+
+    def get(self, request, *args, **kwargs):
+        session_uuid = request.get_full_path()[23:-1]
+        session = Session.objects.get(uuid=session_uuid)
+        form = SessionDoneForm()
+        context = {'form': form,
+                   'session': session
+                   }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = SessionDoneForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            session_uuid = request.get_full_path()[23:-1]
+            session = Session.objects.get(uuid=session_uuid)
+            session.is_done = True
+            session.save()
+            return HttpResponseRedirect(reverse('past_session'))
         else:
             return HttpResponseRedirect(reverse('home'))
