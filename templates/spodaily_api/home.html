@@ -8,13 +8,14 @@
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2 pb-2">
-                <h1 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Page d'accueil</h1>
+                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Page d'accueil</h3>
             </div>
             <div class="row">
                 <div class="col-4" style="padding-bottom: 25px">
                     <div class="card shadow h-100 border-0">
-                        <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
-                            Nombre de séances effectuées
+                        <div class="card-header border-0 d-flex justify-content-left bg-dark text-light">
+                            <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/biceps.png" %}">
+                            <p class="p-0 m-0">Nombre de séances effectuées</p>
                         </div>
                         <div class="card-body">
                             <H1 class="p-0 m-0 text-center" >{{ number_of_session }}</H1>
@@ -23,8 +24,9 @@
                 </div>
                 <div class="col-4" style="padding-bottom: 25px">
                     <div class="card shadow h-100 border-0">
-                        <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
-                            Nombre de kg soulevés
+                        <div class="card-header border-0 d-flex justify-content-left bg-dark text-light">
+                            <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/weights.png" %}">
+                            <p class="p-0 m-0">Poids total soulevé</p>
                         </div>
                         <div class="card-body">
                             <h1 class="p-0 m-0 text-center">
@@ -39,8 +41,9 @@
                 </div>
                 <div class="col-4" style="padding-bottom: 25px">
                     <div class="card shadow h-100 border-0">
-                        <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
-                            Nombre de calories brulées
+                        <div class="card-header border-0 d-flex justify-content-left bg-dark text-light">
+                            <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/calories.png" %}">
+                            <p class="p-0 m-0">Nombre de calories brulées</p>
                         </div>
                         <div class="card-body">
                             <H1 class="p-0 m-0 text-center">{{ number_of_calories }}</H1>
@@ -52,7 +55,7 @@
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
-                            <h6 class="m-0 font-weight-bold text-light" >{{ sdt_exercise }} : Evolution de votre maximum théorique</h6>
+                            <h6 class="m-0 font-weight-bold text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/dead.png" %}"> Evolution de votre maximum théorique</h6>
                         </div>
                         <div class="card-body m-0 p-0">
                             <div id="container" style="width: 100%;">
@@ -84,7 +87,7 @@
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
-                            <h6 class="m-0 font-weight-bold text-light" >{{ squat_exercise }} : Evolution de votre maximum théorique</h6>
+                            <h6 class="m-0 font-weight-bold text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/squat.png" %}"> Evolution de votre maximum théorique</h6>
                         </div>
                         <div class="card-body m-0 p-0">
                             <div id="container" style="width: 100%;">
@@ -118,7 +121,7 @@
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
-                            <h6 class="m-0 font-weight-bold text-light" >{{ bench_exercise }} : Evolution de votre maximum théorique</h6>
+                            <h6 class="m-0 font-weight-bold text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/bench.png" %}"> Evolution de votre maximum théorique</h6>
                         </div>
                         <div class="card-body m-0 p-0">
                             <div id="container" style="width: 100%;">
