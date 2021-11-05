@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd44qa8t41fk7ld',
-        'USER': 'uhrvrpismgxiei',
-        'PASSWORD': 'e1c501cb9e929dc6fa28900f447656fcd90aec3988ebd0704ac6e75ded7ffa6d',
-        'HOST': 'ec2-54-220-14-54.eu-west-1.compute.amazonaws.com',
+        'NAME': 'dbk0f6j057q7sq',
+        'USER': 'viinylkmjxibgl',
+        'PASSWORD': 'ee501aa4a903c12c6e5b221b49353e1edf147b670de8cfd01a9fc9703d8ca516',
+        'HOST': 'ec2-34-243-180-8.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
