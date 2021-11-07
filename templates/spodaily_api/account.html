@@ -82,7 +82,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input id="birth" type="date" name="birth" placeholder="{{ user.birth }}" value={% if user.birth %}{{ user.birth | date:"d-m-Y" }}{% else %}'2021-01-01'{% endif %}>
+                                    <input id="birth" type="text" name="birth" placeholder="{{ user.birth}}" value="{{ user.birth}}" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                                 <div class="col-6">
                                     {{ edit_user_form.sexe }}

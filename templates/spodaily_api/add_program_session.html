@@ -21,12 +21,12 @@
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-6">
-                                    <label>Nom</label>
+                                    <label>Nom de la séance</label>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    {{form.name}}
+                                    <input class="text-muted" id="name" type="text" name="name" maxlength="25" placeholder="Séance..">
                                 </div>
                             </div>
                             <input class="btn btn-dark mb-2" type="submit" value="Enregistrer">
