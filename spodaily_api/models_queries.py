@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Q
 
 from spodaily_api import models
 from spodaily_api.models import Muscle, Exercise, Session, Activity
@@ -12,8 +12,11 @@ def get_sessions_by_user(user_id):
 
 
 def get_past_sessions_by_user(user_id):
-    today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__lt=today, is_program=False).order_by('-date')
+    sessions = models.Session.objects.filter(Q(is_done=True),
+                                             user_id=user_id,
+                                             deleted=False,
+                                             is_program=False)\
+        .order_by('-date')
     return sessions
 
 
@@ -62,8 +65,7 @@ def get_exercise_by_muscle(uuid):
 
 
 def get_session_number_by_user(uuid):
-    today = date.today()
-    number = Session.objects.filter(deleted=False, user__uuid=uuid, date__lt=today, is_program=False).count()
+    number = Session.objects.filter(deleted=False, user__uuid=uuid, is_done=True, is_program=False).count()
     return number
 
 
@@ -71,6 +73,7 @@ def get_tonnage_number_by_user(uuid):
     today = date.today()
     number = Activity.objects.filter(
         deleted=False,
+        session_id__is_done=True,
         session_id__user_id=uuid,
         session_id__is_program=False,
         session_id__deleted=False, session_id__date__lte=today).aggregate(sum=Sum(F('weight') * F('repetition') * F('sets')))
@@ -83,7 +86,6 @@ def get_calories_burn_by_user(uuid):
 
 
 def get_future_sessions_by_user(user_id, number_of_session):
-    today = date.today()
-    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, date__gte=today, is_program=False).order_by('date')[:number_of_session]
+    sessions = models.Session.objects.filter(user_id=user_id, deleted=False, is_program=False, is_done=False).order_by('date')[:number_of_session]
     return sessions
 

@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'spodaily_api.apps.SpodailyApiConfig'
-
 ]
 
 MIDDLEWARE = [
@@ -87,6 +86,7 @@ DATABASES = {
         'PASSWORD': '365d051538b47dddc1ac9d485f7fe05f359298b59f7a880ff75fb46dd44b24f4',
         'HOST': 'ec2-54-195-246-55.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
+
     }
 }
 

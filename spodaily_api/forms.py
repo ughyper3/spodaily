@@ -82,3 +82,13 @@ class AddSessionDuplicateForm(ModelForm):
     class Meta:
         model = Session
         fields = ['date']
+
+
+class SessionDoneForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SessionDoneForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Session
+        fields = ['is_done']
