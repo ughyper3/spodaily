@@ -271,6 +271,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('account'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
 
 class LogoutView(LoginRequiredMixin, TemplateView):
