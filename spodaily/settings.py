@@ -112,8 +112,11 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_URL = '/spodaily/auth/login/'
 LOGIN_REDIRECT_URL = '/spodaily/home/'
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'spodaily.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'gomlqqmwycgtjdba'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
