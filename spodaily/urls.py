@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^spodaily/home/', Home.as_view(), name='home'),
     url(r'^spodaily/register/', RegisterView.as_view(), name='register'),
     url(r'^spodaily/register_success/', RegisterSuccessView.as_view(), name='register_success'),
+    path('activate/<uidb64>/<token>/',views.activate, name='activate'),
     url(r'^spodaily/account/', AccountView.as_view(), name='account'),
     url(r'^spodaily/routine/', RoutineView.as_view(), name='routine'),
     url(r'^spodaily/program/', views.ProgramView.as_view(), name='program'),
