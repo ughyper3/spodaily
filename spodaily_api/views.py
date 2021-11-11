@@ -50,7 +50,7 @@ class Home(LoginRequiredMixin, TemplateView):
         context = {}
         user = request.user
         today = datetime.date.today()
-        number_of_session = get_session_number_by_user(user.uuid)
+        number_of_sess = get_session_number_by_user(user.uuid)
         number_of_tonnage = get_tonnage_number_by_user(user.uuid)
         number_of_calories = get_calories_burn_by_user(user.uuid)
         sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
@@ -74,7 +74,7 @@ class Home(LoginRequiredMixin, TemplateView):
         context['bench_labels'] = bench_data[0]
         context['bench_data'] = bench_data[1]
         context['bench_exercise'] = bench_data[2]
-        context['number_of_session'] = number_of_session
+        context['number_of_session'] = number_of_sess
         context['number_of_tonnage'] = number_of_tonnage['sum']
         context['number_of_calories'] = number_of_calories
 
