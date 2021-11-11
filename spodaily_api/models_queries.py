@@ -4,6 +4,7 @@ from django.db.models import Sum, F, Q
 
 from spodaily_api import models
 from spodaily_api.models import Muscle, Exercise, Session, Activity
+from spodaily_api.utils import get_maximum_by_exercise
 
 
 def get_sessions_by_user(user_id):
@@ -89,3 +90,21 @@ def get_future_sessions_by_user(user_id, number_of_session):
     sessions = models.Session.objects.filter(user_id=user_id, deleted=False, is_program=False, is_done=False).order_by('date')[:number_of_session]
     return sessions
 
+
+def get_graph_of_exercise(request, exercise):
+    labels = []
+    data = []
+    user = request.user
+    queryset = Activity.objects.filter(session_id__user_id=user,
+                                       exercise_id__name=exercise,
+                                       deleted=False,
+                                       session_id__deleted=False,
+                                       session_id__is_done=True,
+                                       session_id__is_program=False,
+                                       )
+
+    for activity in queryset:
+        labels.append(str(activity.session_id.date))
+        data.append(get_maximum_by_exercise(activity.repetition, activity.weight))
+
+    return labels, data, exercise

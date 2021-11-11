@@ -81,12 +81,11 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbk0f6j057q7sq',
-        'USER': 'viinylkmjxibgl',
-        'PASSWORD': 'ee501aa4a903c12c6e5b221b49353e1edf147b670de8cfd01a9fc9703d8ca516',
-        'HOST': 'ec2-34-243-180-8.eu-west-1.compute.amazonaws.com',
+        'NAME': 'd90pgr9uj52fsv',
+        'USER': 'objlwycxasuzaq',
+        'PASSWORD': '365d051538b47dddc1ac9d485f7fe05f359298b59f7a880ff75fb46dd44b24f4',
+        'HOST': 'ec2-54-195-246-55.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
-
     }
 }
 
@@ -112,8 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_URL = '/spodaily/auth/login/'
 LOGIN_REDIRECT_URL = '/spodaily/home/'
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'spodaily.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'gomlqqmwycgtjdba'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

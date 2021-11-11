@@ -8,7 +8,7 @@
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2 pb-2">
-                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Page d'accueil</h3>
+                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mon tableau de bord</h3>
             </div>
             <div class="row">
                 <div class="col-4" style="padding-bottom: 25px">
@@ -18,7 +18,7 @@
                             <p class="p-0 m-0">Nombre de séances effectuées</p>
                         </div>
                         <div class="card-body">
-                            <H1 class="p-0 m-0 text-center" >{{ number_of_session }}</H1>
+                            <H1 class="p-0 m-0 text-center">{{ number_of_session }}</H1>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     <div class="card shadow h-100 border-0">
                         <div class="card-header border-0 d-flex justify-content-left bg-dark text-light">
                             <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/weights.png" %}">
-                            <p class="p-0 m-0">Poids total soulevé</p>
+                            <p class="p-0 m-0">Poids total soulevé (kg)</p>
                         </div>
                         <div class="card-body">
                             <h1 class="p-0 m-0 text-center">
@@ -43,7 +43,7 @@
                     <div class="card shadow h-100 border-0">
                         <div class="card-header border-0 d-flex justify-content-left bg-dark text-light">
                             <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/calories.png" %}">
-                            <p class="p-0 m-0">Nombre de calories brulées</p>
+                            <p class="p-0 m-0">Nombre de calories brulées (kcal)</p>
                         </div>
                         <div class="card-body">
                             <H1 class="p-0 m-0 text-center">{{ number_of_calories }}</H1>
@@ -52,6 +52,42 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
+                            {% for session in session %}
+                            <h6 class="m-0 font-weight-bold text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : {{ session.name }} | {{ session.date | date:'d/m/y'}}</h6>
+                            {% endfor %}
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-core m-0 p-0" width="100%" cellspacing="0">
+                                    <thead class="text-dark">
+                                        <tr>
+                                            <th class="case-sm text-left">Exercice</th>
+                                            <th class="case-sm text-left">Série</th>
+                                            <th class="case-sm text-left">Repétition</th>
+                                            <th class="case-sm text-left">Poids</th>
+                                            <th class="case-sm text-left">Repos</th>
+                                        </tr>
+                                    </thead>
+                                        {% for act in activity %}
+                                            {% for truc in act %}
+                                                <tr>
+                                                    <td class="case-sm text-left">{{ truc.exercise_id__name }}</td>
+                                                    <td class="case-sm text-left">{{ truc.sets }}</td>
+                                                    <td class="case-sm text-left">{{ truc.repetition}}</td>
+                                                    <td class="case-sm text-left">{{ truc.weight }}</td>
+                                                    <td class="case-sm text-left">{{ truc.rest }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
@@ -84,6 +120,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">
@@ -116,8 +154,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head bg-dark">

@@ -71,7 +71,7 @@ class AddSessionProgramForm(ModelForm):
 
     class Meta:
         model = Session
-        fields = ['name']
+        fields = ['name', 'recurrence']
 
 
 class AddSessionDuplicateForm(ModelForm):
