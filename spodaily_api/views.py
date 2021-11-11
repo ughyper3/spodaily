@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.backends import UserModel
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -14,14 +14,14 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import TemplateView, DeleteView, CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from spodaily_api.models import Exercise, Activity, Session, User, Muscle
-from spodaily_api.models_queries import get_activities_by_session, get_sessions_by_user, get_session_name_by_act_uuid, \
+from spodaily_api.models import Activity, Session, User
+from spodaily_api.models_queries import get_activities_by_session, \
     get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
     get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user, get_session_program_by_user
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
-from spodaily_api.utils import get_graph_of_exercise
+from spodaily_api.models_queries import get_graph_of_exercise
 
 
 class LoginView(TemplateView):
@@ -49,12 +49,22 @@ class Home(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = {}
         user = request.user
+        today = datetime.date.today()
         number_of_session = get_session_number_by_user(user.uuid)
         number_of_tonnage = get_tonnage_number_by_user(user.uuid)
         number_of_calories = get_calories_burn_by_user(user.uuid)
         sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
         squat_data = get_graph_of_exercise(request, 'Squat')
         bench_data = get_graph_of_exercise(request, 'Développé couché')
+        number_of_session = 1
+        session = get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+            ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
+        context['session'] = session
+        context['activity'] = activities_list
         context['sdt_labels'] = sdt_data[0]
         context['sdt_data'] = sdt_data[1]
         context['sdt_exercise'] = sdt_data[2]
@@ -184,7 +194,7 @@ class AddFutureActivityView(LoginRequiredMixin, CreateView):
             form.save(commit=False)
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('past_session'))
+            return HttpResponseRedirect(reverse('routine'))
 
 
 class DeletePastSessionView(LoginRequiredMixin, DeleteView):
@@ -211,7 +221,7 @@ class DeleteActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('past_session')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = request.get_full_path()[26:-1]
+        activity_uuid = kwargs['fk']
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}
@@ -224,7 +234,7 @@ class DeleteFutureActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('routine')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = request.get_full_path()[33:-1]
+        activity_uuid = kwargs['fk']
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}
@@ -237,7 +247,7 @@ class DeleteProgramActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('program')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = request.get_full_path()[34:-1]
+        activity_uuid = kwargs['fk']
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}
@@ -257,7 +267,7 @@ class MuscleView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/muscle.html'
 
     def get(self, request, *args, **kwargs):
-        uuid = request.get_full_path()[17:-1]  # disgusting way to get url
+        uuid = kwargs['fk']  # disgusting way to get url
         muscle = get_muscle_by_uuid(uuid)
         exercise = get_exercise_by_muscle(uuid)
         context = {'muscle': muscle,
@@ -482,7 +492,7 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/duplicate_program_session.html"
 
     def get(self, request, *args, **kwargs):
-        session_uuid = request.get_full_path()[36:-1]
+        session_uuid = kwargs['fk']
         session = Session.objects.get(uuid=session_uuid)
         form = AddSessionDuplicateForm()
         context = {'session': session,
@@ -493,7 +503,7 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
         form = AddSessionDuplicateForm(request.POST)
         form.instance.user = request.user
         if form.is_valid():
-            session_uuid = request.get_full_path()[36:-1]
+            session_uuid = kwargs['fk']
             session = Session.objects.get(uuid=session_uuid)
             activities = Activity.objects.filter(session_id=session_uuid)
             session_2 = session
@@ -515,7 +525,7 @@ class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/session_done.html"
 
     def get(self, request, *args, **kwargs):
-        session_uuid = request.get_full_path()[23:-1]
+        session_uuid = kwargs['fk']
         session = Session.objects.get(uuid=session_uuid)
         form = SessionDoneForm()
         context = {'form': form,
@@ -527,10 +537,22 @@ class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
         form = SessionDoneForm(request.POST)
         form.instance.user = request.user
         if form.is_valid():
-            session_uuid = request.get_full_path()[23:-1]
+            session_uuid = kwargs['fk']
             session = Session.objects.get(uuid=session_uuid)
             session.is_done = True
             session.save()
+            activities = Activity.objects.filter(session_id=session_uuid)
+            session_2 = session
+            session_2.pk = None
+            session_2.is_program = False
+            session_2.is_done = False
+            session_2.date = session.date + datetime.timedelta(days=session.recurrence)
+            session_2.save()
+            for activity in activities:
+                activity_2 = activity
+                activity_2.pk = None
+                activity_2.session_id = session
+                activity_2.save()
             return HttpResponseRedirect(reverse('past_session'))
         else:
             return HttpResponseRedirect(reverse('home'))

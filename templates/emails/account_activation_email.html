@@ -1,6 +1,7 @@
 {% autoescape off %}
-Hi {{ user.username }},
-Please click on the link to confirm your registration,
+Bonjour {{ user.email }},
+Un grand merci pour ton inscription !
+Merci de cliquer sur ce lien pour activer ton compte !
 http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
-If you think, it's not you, then just ignore this email.
+Si vous ne pensez pas être concerné par cet email, merci de l'ignorer.
 {% endautoescape %}
