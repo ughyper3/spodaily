@@ -21,7 +21,7 @@ from spodaily_api.models_queries import get_activities_by_session, \
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
-from spodaily_api.utils import get_graph_of_exercise
+from spodaily_api.models_queries import get_graph_of_exercise
 
 
 class LoginView(TemplateView):
@@ -49,12 +49,22 @@ class Home(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = {}
         user = request.user
+        today = datetime.date.today()
         number_of_session = get_session_number_by_user(user.uuid)
         number_of_tonnage = get_tonnage_number_by_user(user.uuid)
         number_of_calories = get_calories_burn_by_user(user.uuid)
         sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
         squat_data = get_graph_of_exercise(request, 'Squat')
         bench_data = get_graph_of_exercise(request, 'Développé couché')
+        number_of_session = 1
+        session = get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+            ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
+        context['session'] = session
+        context['activity'] = activities_list
         context['sdt_labels'] = sdt_data[0]
         context['sdt_data'] = sdt_data[1]
         context['sdt_exercise'] = sdt_data[2]
@@ -184,7 +194,7 @@ class AddFutureActivityView(LoginRequiredMixin, CreateView):
             form.save(commit=False)
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('past_session'))
+            return HttpResponseRedirect(reverse('routine'))
 
 
 class DeletePastSessionView(LoginRequiredMixin, DeleteView):
