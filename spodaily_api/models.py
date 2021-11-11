@@ -97,6 +97,7 @@ class User(AbstractBaseUser, BaseModel):
 class Session(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
+    recurrence = models.PositiveSmallIntegerField(null=False, blank=False, default=7)
     date = models.DateField(default=datetime.now)
     is_program = models.BooleanField(default=False)
     is_done = models.BooleanField(default=False)

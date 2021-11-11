@@ -541,6 +541,18 @@ class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
             session = Session.objects.get(uuid=session_uuid)
             session.is_done = True
             session.save()
+            activities = Activity.objects.filter(session_id=session_uuid)
+            session_2 = session
+            session_2.pk = None
+            session_2.is_program = False
+            session_2.is_done = False
+            session_2.date = session.date + datetime.timedelta(days=session.recurrence)
+            session_2.save()
+            for activity in activities:
+                activity_2 = activity
+                activity_2.pk = None
+                activity_2.session_id = session
+                activity_2.save()
             return HttpResponseRedirect(reverse('past_session'))
         else:
             return HttpResponseRedirect(reverse('home'))
