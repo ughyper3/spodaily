@@ -1,0 +1,200 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block content %}
+
+{% include 'base/fit/sidebar.html' %}
+{% include 'base/fit/header.html' %}
+    <title>Home | Spodaily </title>
+    <div class="content" style="padding-left: 200px">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between pt-2 pb-2">
+            </div>
+            <div class="row">
+                <div class="col-4" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-left blue text-light">
+                            <img class="p-0 m-0 img-fluid pr-3" style="height: 20px" src="{% static "spodaily_api/img/icon/biceps.png" %}">
+                            <p class="p-0 m-0">Nombre de séances effectuées</p>
+                        </div>
+                        <div class="card-body">
+                            <H1 class="p-0 m-0 text-center">{{ number_of_session }}</H1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-left blue text-light">
+                            <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/weights.png" %}">
+                            <p class="p-0 m-0">Poids total soulevé (kg)</p>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="p-0 m-0 text-center">
+                                {% if number_of_tonnage %}
+                                    {{ number_of_tonnage }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-left blue text-light">
+                            <img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/calories.png" %}">
+                            <p class="p-0 m-0">Nombre de calories brulées (kcal)</p>
+                        </div>
+                        <div class="card-body">
+                            <H1 class="p-0 m-0 text-center">{{ number_of_calories }}</H1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head blue">
+                            {% for session in session %}
+                            <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : {{ session.name }} | {{ session.date | date:'d/m/y'}}</h6>
+                            {% endfor %}
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped text-core m-0 p-0" width="100%" cellspacing="0">
+                                    <thead class="text-dark">
+                                        <tr>
+                                            <th class="case-sm text-left">Exercice</th>
+                                            <th class="case-sm text-left">Série</th>
+                                            <th class="case-sm text-left">Repétition</th>
+                                            <th class="case-sm text-left">Poids</th>
+                                            <th class="case-sm text-left">Repos</th>
+                                        </tr>
+                                    </thead>
+                                        {% for act in activity %}
+                                            {% for truc in act %}
+                                                <tr>
+                                                    <td class="case-sm text-left">{{ truc.exercise_id__name }}</td>
+                                                    <td class="case-sm text-left">{{ truc.sets }}</td>
+                                                    <td class="case-sm text-left">{{ truc.repetition }}</td>
+                                                    <td class="case-sm text-left">{{ truc.weight }}</td>
+                                                    <td class="case-sm text-left">{{ truc.rest }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head blue">
+                            <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/dead.png" %}"> Evolution de votre maximum théorique</h6>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div id="container" style="width: 100%;">
+                                <canvas class="d-flex align-content-center" id="sdt-chart">
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                                    <script>
+                                        var config_sdt = {
+                                            type: 'line',
+                                            data: {
+                                            datasets: [{
+                                                data: {{ sdt_data|safe }},
+                                                    backgroundColor: [
+                                                        '#1D86E5'
+                                                    ],
+                                                label: '{{ sdt_exercise|safe }}'
+                                            }],
+                                            labels: {{ sdt_labels|safe }}
+                                            },
+                                            options: {
+                                                responsive: true
+                                            }
+                                        };
+                                    </script>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head blue">
+                            <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/squat.png" %}"> Evolution de votre maximum théorique</h6>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div id="container" style="width: 100%;">
+                                <canvas class="d-flex align-content-center" id="squat-chart">
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                                    <script>
+                                        var config_squat = {
+                                            type: 'line',
+                                            data: {
+                                            datasets: [{
+                                                data: {{ squat_data|safe }},
+                                                    backgroundColor: [
+                                                        '#1D86E5'
+                                                    ],
+                                                label: '{{ squat_exercise|safe }}'
+                                            }],
+                                            labels: {{ squat_labels|safe }}
+                                            },
+                                            options: {
+                                                responsive: true
+                                            }
+                                        };
+                                    </script>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 border-bottom-0 tab-head blue">
+                            <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/bench.png" %}"> Evolution de votre maximum théorique</h6>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div id="container" style="width: 100%;">
+                                <canvas class="d-flex align-content-center" id="bench-chart">
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                                    <script>
+                                        var config_bench = {
+                                            type: 'line',
+                                            data: {
+                                            datasets: [{
+                                                data: {{ bench_data|safe }},
+                                                    backgroundColor: [
+                                                        '#1D86E5'
+                                                    ],
+                                                label: '{{ bench_exercise|safe }}'
+                                            }],
+                                            labels: {{ bench_labels|safe }}
+                                            },
+                                            options: {
+                                                responsive: true
+                                            }
+                                        };
+                                        window.onload = function() {
+                                            var sdt = document.getElementById('sdt-chart').getContext('2d');
+                                            var squat = document.getElementById('squat-chart').getContext('2d');
+                                            var bench = document.getElementById('bench-chart').getContext('2d');
+                                            window.myPie = new Chart(sdt, config_sdt);
+                                            window.myPie = new Chart(squat, config_squat);
+                                            window.myPie = new Chart(bench, config_bench);
+                                        };
+                                    </script>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% include 'base/footer.html' %}
+    </div>
+{% endblock %}

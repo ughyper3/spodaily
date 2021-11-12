@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from spodaily_api.models import Exercise, Muscle
 from spodaily_api.views import *
 
 

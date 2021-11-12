@@ -5,6 +5,13 @@ from django.utils.datetime_safe import datetime
 import uuid as uuid_util
 
 
+'''
+
+----- COMMON MODELS -----
+
+'''
+
+
 class CustomManager(models.Manager):
     pass
 
@@ -94,6 +101,31 @@ class User(AbstractBaseUser, BaseModel):
         return True
 
 
+class Contact(BaseModel):
+    CONTACT_CHOICE = [
+        ('Suggestion', 'Suggestion'),
+        ('Bug', 'Bug'),
+        ('Autre', 'Autre')
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=20, choices=CONTACT_CHOICE)
+    content = models.CharField(max_length=1000, null=False, blank=False)
+
+    def __str__(self):
+        return self.reason
+
+    def get_user(self):
+        return self.user
+
+
+'''
+
+----- FIT MODELS -----
+
+'''
+
+
+
 class Session(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
@@ -158,18 +190,15 @@ class Muscle(BaseModel):
         return self.name
 
 
-class Contact(BaseModel):
-    CONTACT_CHOICE = [
-        ('Suggestion', 'Suggestion'),
-        ('Bug', 'Bug'),
-        ('Autre', 'Autre')
-    ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    reason = models.CharField(max_length=20, choices=CONTACT_CHOICE)
-    content = models.CharField(max_length=1000, null=False, blank=False)
+'''
 
-    def __str__(self):
-        return self.reason
+----- FIT MODELS -----
 
-    def get_user(self):
-        return self.user
+'''
+
+
+class Meal(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    date = models.DateField(default=datetime.now)
+
+

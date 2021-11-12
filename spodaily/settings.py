@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbk0f6j057q7sq',
-        'USER': 'viinylkmjxibgl',
-        'PASSWORD': 'ee501aa4a903c12c6e5b221b49353e1edf147b670de8cfd01a9fc9703d8ca516',
-        'HOST': 'ec2-34-243-180-8.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
+        'NAME': 'spodaily',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
     }
 }
 
@@ -108,8 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL = '/spodaily/auth/login/'
-LOGIN_REDIRECT_URL = '/spodaily/home/'
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/fit/home/'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True

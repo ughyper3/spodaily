@@ -2,30 +2,30 @@
 {% load static i18n %}
 {% block content %}
 
-{% include 'base/sidebar.html' %}
-{% include 'base/header.html' %}
-    <title>Delete session | Spodaily </title>
+{% include 'base/fit/sidebar.html' %}
+{% include 'base/fit/header.html' %}
+    <title>Done session | Spodaily </title>
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <h3 class="main-title text-uppercase align-self-center pb-2 m-0" style="padding-top: 15px !important;">Supprimer une session</h3>
+            <h3 class="main-title text-uppercase align-self-center pb-2 m-0" style="padding-top: 15px !important;">Séance terminée</h3>
             <div class="row d-flex justify-content-center">
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
                     <div class="card-header border-0 d-flex bg-dark text-light">
-                        <h6 class="m-0 p-0 font-weight-bold">Supprimer la session suivante ?</h6>
+                        <h6 class="m-0 p-0 font-weight-bold">Marquer cette séance comme terminée</h6>
 
                     </div>
                     <div class="card-body">
                         <form method="post" action="">
                             {% csrf_token %}
                             <div class="row mb-3 d-flex justify-content-center">
-                                <p>Voulez-vous supprimer la session {{ session.name }} ?</p>
+                                <p>Voulez-vous marquer la session {{ session.name }} du {{ session.date | date:'d/m/y'}} comme terminée ?</p>
                             </div>
                             <div class="row">
                                 <div class="col-10">
                                 </div>
                                 <div class="col-2">
-                                    <input class="btn btn-dark mb-2" type="submit" value="Supprimer" name="Delete">
+                                    <input class="btn btn-dark mb-2" type="submit" value="Terminer" name="Delete">
                                 </div>
                             </div>
                         </form>
