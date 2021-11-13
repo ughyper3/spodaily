@@ -1,114 +1,7 @@
 from django.test import TestCase
 from spodaily_api.models import Session, User, Exercise
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm
-
-
-class LoginFormTest(TestCase):
-
-    def test_email_is_invalid(self):
-        form = LoginForm(data={"email": "test", "password": "password"})
-        self.assertFalse(form.is_valid())
-
-    def test_is_valid(self):
-        form = LoginForm(data={"email": "test@test.test", "password": "password"})
-        self.assertTrue(form.is_valid())
-
-
-class CreateUserFormTest(TestCase):
-
-    def test_email_is_invalid(self):
-        form = CreateUserForm(data={"email": "test", "password1": "password", "password2": "password"})
-        self.assertFalse(form.is_valid())
-
-    def test_password_is_invalid(self):
-        form = CreateUserForm(data={"email": "test@test.test", "password1": "password", "password2": "passwordd"})
-        self.assertFalse(form.is_valid())
-
-    def test_is_valid(self):
-        form = CreateUserForm(data={"email": "test@test.test", "password1": "adminpassword", "password2": "adminpassword"})
-        self.assertTrue(form.is_valid())
-
-
-class EditUserFormTest(TestCase):
-
-    def test_email_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test",
-                  "name": "test",
-                  "first_name": "test",
-                  "birth": "2021-01-01",
-                  "height": 180,
-                  "weight": 80,
-                  "sexe": "Autre"
-            }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_birth_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": "test",
-                  "first_name": "test",
-                  "birth": "test",
-                  "height": 180,
-                  "weight": 80,
-                  "sexe": "Autre"
-                  }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_height_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": "test",
-                  "first_name": "test",
-                  "birth": "2021-01-01",
-                  "height": "test",
-                  "weight": 80,
-                  "sexe": "Autre"
-                  }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_weight_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": "test",
-                  "first_name": "test",
-                  "birth": "2021-01-01",
-                  "height": 180,
-                  "weight": "test",
-                  "sexe": "Autre"
-                  }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_sexe_is_invalid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": "test",
-                  "first_name": "test",
-                  "birth": "2021-01-01",
-                  "height": 180,
-                  "weight": 80,
-                  "sexe": "Mixeur"
-                  }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_is_valid(self):
-        form = EditUserForm(
-            data={"email": "test@test.test",
-                  "name": "test",
-                  "first_name": "test",
-                  "birth": "2021-01-01",
-                  "height": 180,
-                  "weight": 80,
-                  "sexe": "Autre"
-            }
-        )
-        self.assertTrue(form.is_valid())
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
 
 
 class AddSessionFormTest(TestCase):
@@ -202,28 +95,6 @@ class AddActivityFormTest(TestCase):
         self.assertTrue(form.is_valid())
 
 
-class AddContactFormTest(TestCase):
-
-    def setUp(self):
-        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
-
-    def test_reason_is_invalid(self):
-        form = AddContactForm(
-            data={"reason": 'test',
-                  "content": 'test'
-            }
-        )
-        self.assertFalse(form.is_valid())
-
-    def test_is_valid(self):
-        form = AddContactForm(
-            data={"reason": 'Bug',
-                  "content": 'test'
-            }
-        )
-        self.assertTrue(form.is_valid())
-
-
 class AddSessionProgramFormTest(TestCase):
 
     def setUp(self):
@@ -231,7 +102,8 @@ class AddSessionProgramFormTest(TestCase):
 
     def test_is_valid(self):
         form = AddSessionProgramForm(
-            data={"name": 'test'
+            data={"name": 'test',
+                  'recurrence': 7
             }
         )
         self.assertTrue(form.is_valid())
@@ -252,6 +124,19 @@ class AddSessionDuplicateFormTest(TestCase):
     def test_is_valid(self):
         form = AddSessionDuplicateForm(
             data={"date": '2021-01-01'
+                  }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class SessionDoneFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_is_valid(self):
+        form = SessionDoneForm(
+            data={"is_done": True
                   }
         )
         self.assertTrue(form.is_valid())

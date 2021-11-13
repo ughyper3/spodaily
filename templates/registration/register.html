@@ -13,7 +13,7 @@
                   <div class="card-body p-4 p-lg-5 text-black">
                     <form method="post" action="{% url 'register' %}">
                       {% csrf_token %}
-                        <div class="row">
+                        <div class="row pb-1">
                             <div class="col-3 p-0 m-0">
                                 <img style="width: 110px;margin-top: -25px; margin-bottom: 15px" src="{% static 'spodaily_api/img/logo.png' %}">
                             </div>
@@ -21,28 +21,39 @@
                                 <span style="letter-spacing: 1px" class="font-weight-bold">Optimiser vos performances</span>
                             </div>
                         </div>
-                      <div class="form-outline mb-4">
+                      <div class="form-outline mb-2">
                         <input name="email" type="email" id="email" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
                         <label class="form-label" for="email">Email</label>
                       </div>
-                      <div class="form-outline mb-4">
+                      <div class="form-outline mb-2">
                         <input name="password1" type="password" id="password1" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
                         <label class="form-label" for="password1">Mot de passe</label>
                       </div>
-                      <div class="form-outline mb-4">
+                      <div class="form-outline mb-1">
                         <input name="password2" type="password" id="password2" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"/>
                         <label class="form-label" for="password2">Confirmer votre mot de passe</label>
                       </div>
-                      <div class="pt-1 mb-4">
+                      <div class="form-inline mb-4">
+                        <input name="accept_email" type="checkbox" id="accept_email" class="form-control form-control-lg" style="background-color: #C4C4C4; color: black"checked/>
+                        <label class="form-label pl-3" for="accept_email">Recevoir des emails commerciaux de Spodaily</label>
+                      </div>
+                      <div class="mb-2">
                         <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit">S'inscrire</button>
                       </div>
-                      <p class="mb-5 pb-lg-2" style="color: #393f81;">Déjà inscrit? <a href="{% url 'login' %}" style="color: #393f81;">Se connecter</a></p>
+                      <p class="text-muted m-0 p-0"> En m'inscrivant, j'accepte et je reconnais avoir pris connaissance des condions générales d'utilisations <a style="color: #393f81;" href="{% url 'cgu' %}">(cgu)</a></p>
+                      <p class="m-0 p-0" style="color: #393f81;">Déjà inscrit? <a href="{% url 'login' %}" style="color: #393f81;">Se connecter</a></p>
+
                     </form>
                       {% if form.errors %}
+                          {% for field in form %}
+                            {% for error in field.errors %}
                         <div class="alert alert-warning">
+                            <strong>{{ error|escape }}</strong>
                           <a class="close" href="" data-dismiss="alert">×</a>
-                          <p class="text-center">La connexion a échoué. L'email ou le mot de passe que vous avez saisi est incorrect</p>
+                          <p class="text-center">L'inscription a échoué. L'email ou le mot de passe que vous avez saisi est incorrect</p>
                         </div>
+                                {% endfor %}
+                          {% endfor %}
                       {% endif %}
                   </div>
                 </div>

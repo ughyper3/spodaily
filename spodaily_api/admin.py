@@ -1,5 +1,5 @@
 from django.contrib import admin
-from spodaily_api.models import User, Session, Activity, Exercise, Muscle, Contact
+from spodaily_api.models import User, Session, Activity, Exercise, Muscle, Contact, Meal, Food, MealXFood
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -52,6 +52,28 @@ class ContactAdmin(admin.ModelAdmin):
     ]
 
 
+class MealAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+        "user",
+        "date",
+        "is_done"
+    ]
+
+
+class FoodAdmin(admin.ModelAdmin):
+    list_display = [
+        "name"
+    ]
+
+
+class MealXFoodAdmin(admin.ModelAdmin):
+    list_display = [
+        "meal",
+        "food",
+        "weight"
+    ]
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Session, SessionAdmin)
@@ -59,3 +81,6 @@ admin.site.register(Activity, ActivityAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Muscle, MuscleAdmin)
 admin.site.register(Contact, ContactAdmin)
+admin.site.register(Meal, MealAdmin)
+admin.site.register(Food, FoodAdmin)
+admin.site.register(MealXFood, MealXFoodAdmin)

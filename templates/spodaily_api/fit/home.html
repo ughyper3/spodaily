@@ -54,9 +54,13 @@
                 <div class="col-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 border-bottom-0 tab-head blue">
-                            {% for session in session %}
-                            <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : {{ session.name }} | {{ session.date | date:'d/m/y'}}</h6>
-                            {% endfor %}
+                            {% if session %}
+                                {% for session in session %}
+                                <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : {{ session.name }} | {{ session.date | date:'d/m/y'}}</h6>
+                                {% endfor %}
+                            {% else %}
+                                <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : vous n'avez aucune séance de prévue, rendez-vous sur l'onglet programme ou séance à venir</h6>
+                            {% endif %}
                         </div>
                         <div class="card-body m-0 p-0">
                             <div class="table-responsive">

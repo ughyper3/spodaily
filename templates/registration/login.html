@@ -13,7 +13,7 @@
                   <div class="card-body p-4 p-lg-5 text-black">
                     <form method="post" action="{% url 'login' %}">
                       {% csrf_token %}
-                        <div class="row">
+                        <div class="row pb-1">
                             <div class="col-3 p-0 m-0">
                                 <img style="width: 110px;margin-top: -25px; margin-bottom: 15px" src="{% static 'spodaily_api/img/logo.png' %}">
                             </div>
@@ -33,7 +33,7 @@
                         <button class="btn btn-dark btn-lg btn-block" type="submit" value="Submit" style="background-color: #616161">Se connecter</button>
                       </div>
                       <a class="small text-muted" href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
-                      <p class="mb-5 pb-lg-2" style="color: #393f81;">Vous n'avez pas de compte? <a href="{% url 'register' %}" style="color: #393f81;">Inscrivez-vous</a></p>
+                      <p class="mb-2 pb-lg-2" style="color: #393f81;">Vous n'avez pas de compte? <a href="{% url 'register' %}" style="color: #393f81;">Inscrivez-vous</a></p>
                     </form>
                       {% if form.errors %}
                         <div class="alert alert-warning">

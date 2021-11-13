@@ -61,10 +61,11 @@ class AccountView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = EditUserForm(request.POST, instance=request.user)
         if form.is_valid():
+            print('valid')
             form.save()
             return HttpResponseRedirect(reverse('account'))
         else:
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('account'))
 
 
 class LogoutView(LoginRequiredMixin, TemplateView):
@@ -127,7 +128,7 @@ class RegisterView(TemplateView):
             email = form.cleaned_data['email']
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your account.'
+            mail_subject = 'Activez votre compte Spodaily'
             message = render_to_string('emails/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -155,13 +156,21 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return render(request, template_name="registration/confirmation_email_success.html", context={})
     else:
         return HttpResponse('Activation link is invalid!')
 
 
 class RegisterSuccessView(TemplateView):
     template_name = 'registration/register_success.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
+class CguView(TemplateView):
+    template_name = 'registration/cgu.html'
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -218,7 +227,8 @@ class AddFutureSessionView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         form = AddSessionForm()
-        context = {'form': form}
+        context = {'form': form,
+                   'today': datetime.date.today()}
         return render(request, 'spodaily_api/fit/add_session.html', context)
 
     def post(self, request, *args, **kwargs):
@@ -353,7 +363,7 @@ class DeleteActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('past_session')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = kwargs['fk']
+        activity_uuid = kwargs['pk']
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}
@@ -366,7 +376,7 @@ class DeleteFutureActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('routine')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = kwargs['fk']
+        activity_uuid = kwargs['pk']
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}
@@ -379,7 +389,7 @@ class DeleteProgramActivityView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('program')
 
     def get(self, request, *args, **kwargs):
-        activity_uuid = kwargs['fk']
+        activity_uuid = kwargs['pk']
         session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
         activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
         context = {'session': session, 'activity': activity}

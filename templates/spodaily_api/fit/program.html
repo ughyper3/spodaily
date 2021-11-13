@@ -8,9 +8,14 @@
     <title>Programme | Spodaily </title>
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <div class="d-flex justify-content-between pt-2 pb-2">
+            <div class="d-flex justify-content-between pt-2">
                 <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mon programme</h3>
-                 <a class="position-sticky" href="{% url 'add_program_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                <a class="position-sticky" href="{% url 'add_program_session' %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/add_blue.png' %}"></a>
+            </div>
+            <div>
+                <h6 class="text-muted m-0 p-0">Vous pouvez construire, visualiser et modifier votre programme.</h6>
+                <h6 class="text-muted m-0 p-0">Duppliquer une séance permet de l'ajouter manuellement aux séances à venir.</h6>
+                <h6 class="text-muted">Les séances de votre programme s'ajoutent automatiquement à vos séances à venir à la récurrence choisie lors de la création de la séance.</h6>
             </div>
             <div class="row">
                 {% for ses in session %}
@@ -18,7 +23,7 @@
                         <div class="card shadow h-100 border-0">
                             <div class="card-header border-0 d-flex justify-content-between blue text-light align-items-center">
                                 <div>
-                                    <a class="p-0 m-0" href="{% url 'add_program_activity' fk=ses.uuid %}"><img style="width: 40px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                                    <a class="p-0 m-0" href="{% url 'add_program_activity' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/add.png' %}"></a>
                                 </div>
                                 <div class="text-center">
                                     <h6 class="m-0 font-weight-bold" >{{ ses.name }}</h6>

@@ -8,7 +8,7 @@ from spodaily_api.views import DeleteActivityView, AddFutureActivityView, Exerci
     RoutineView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView, Home, \
     RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView, DeletePastSessionView, \
     DeleteFutureSessionView, DeleteProgramSessionView, MarkSessionAsDone, DeleteFutureActivityView, \
-    DeleteProgramActivityView, AddProgramActivityView, UpdateFutureActivityView, UpdateProgramActivityView, FoodHome
+    DeleteProgramActivityView, AddProgramActivityView, UpdateFutureActivityView, UpdateProgramActivityView, FoodHome, CguView
 
 urlpatterns = [
 
@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^account/', AccountView.as_view(), name='account'),
     url(r'^contact/', AddContactView.as_view(), name='contact'),
     url(r'^rule_of_use/', RulesOfUseView.as_view(), name='rules_of_use'),
+    url(r'^cgu/', CguView.as_view(), name='cgu'),
 
 
     # fit urls

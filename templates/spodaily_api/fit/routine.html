@@ -7,9 +7,14 @@
     <title>Routine | Spodaily </title>
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <div class="d-flex justify-content-between pt-2 pb-2">
+            <div class="d-flex justify-content-between pt-2">
                 <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mes séances à venir</h3>
-                 <a class="position-sticky" href="{% url 'add_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                 <a class="position-sticky" href="{% url 'add_session' %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/add_blue.png' %}"></a>
+            </div>
+            <div>
+                <h6 class="text-muted m-0 p-0">Vous pouvez visualiser vos séances à venir, ajouter des séances personnalisées, ajouter, modifier et supprimer les activités liées à vos séances futures. </h6>
+                <h6 class="text-muted m-0 p-0">Les séances créées dans l'onglet <b> programme </b> s'ajoutent automatiquement aux séances à venir.</h6>
+                <h6 class="text-muted">Dans le cas d'une séance créée depuis l'onglet programme, elle sera automatiquement reprogrammée à la date correspondante à sa récurrence.</h6>
             </div>
             <div class="row">
                 {% for ses in session %}
@@ -17,7 +22,7 @@
                         <div class="card shadow h-100 border-0">
                             <div class="card-header border-0 d-flex justify-content-between text-light align-items-center blue">
                                 <div>
-                                    <a class="p-0 m-0" href="{% url 'add_future_activity' fk=ses.uuid %}"><img style="width: 40px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+                                    <a class="p-0 m-0" href="{% url 'add_future_activity' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/add.png' %}"></a>
                                 </div>
                                 <div class="text-center">
                                     <h6 class="m-0 pt-1 font-weight-bold" style="color: {{ ses.color }}">{{ ses.name }}</h6>

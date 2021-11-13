@@ -7,7 +7,9 @@
     <title>Add session | Spodaily </title>
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
-            <h3 class="main-title text-uppercase align-self-center pb-2 m-0" style="padding-top: 15px !important;">Ajouter une séance</h3>
+            <div class="d-flex justify-content-between pt-2 pb-2">
+                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Ajouter une séance personnalisée</h3>
+            </div>
             <div class="row d-flex justify-content-center">
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
@@ -30,7 +32,7 @@
                                     <input class="text-muted" id="name" type="text" name="name" maxlength="25" placeholder="Séance..">
                                 </div>
                                 <div class="col-6">
-                                    <input class="text-muted" id="date" type="date" name="date" value="2021-01-01">
+                                    <input class="text-muted" id="date" type="date" name="date" value="{{ today }}">
                                 </div>
                             </div>
                             <div class="row">

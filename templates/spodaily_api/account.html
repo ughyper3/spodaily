@@ -5,7 +5,7 @@
 {% block content %}
 <title>Account | Spodaily </title>
 {% include 'base/fit/sidebar.html' %}
-{% include 'base/fit/header.html' %}
+{% include 'base/header.html' %}
 
    <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
@@ -48,10 +48,10 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input class="text-muted" id="name" type="text" name="name" pattern="^[.\p{L}]*$" maxlength="20" value="{{ user.name }}">
+                                    <input class="text-muted" id="name" type="text" name="name" pattern="^[.\p{L}]*$" maxlength="20" value="{% if user.name %}{{ user.name }}{% else %}{% endif %}">
                                 </div>
                                 <div class="col-6">
-                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="^[.\p{L}]*$" maxlength="20" value="{{ user.first_name }}">
+                                    <input class="text-muted" id="first_name" type="text" name="first_name" pattern="^[.\p{L}]*$" maxlength="20" value="{% if user.first_name %}{{ user.first_name }}{% else %}{% endif %}">
                                 </div>
                             </div>
                             <hr class="my-5">
@@ -82,10 +82,10 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <input id="birth" type="text" name="birth" placeholder="{{ user.birth}}" value="{{ user.birth}}" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input id="birth" type="text" name="birth" onfocus="(this.type='date')" onblur="(this.type='text')" value="{% if user.birth %}{{user.birth |date:'d/m/Y'}}{% else %}{% endif %}">
                                 </div>
                                 <div class="col-6">
-                                    {{ edit_user_form.sexe }}
+                                    {% if user.sexe %}{{ user.sexe }}{% else %}{{ edit_user_form.sexe }}{% endif %}
                                 </div>
                             </div>
                             <div class="row">
@@ -93,6 +93,15 @@
                                 </div>
                                 <div class="col-2">
                                     <input class="btn btn-dark mb-2" type="submit" value="Enregistrer">
+                                </div>
+                            </div>
+                            <hr class="my-5">
+                            <h6 class="heading-small text-muted mb-4 mt-2">Gérer mon compte</h6>
+                            <div class="row">
+                                <div class="col-10">
+                                </div>
+                                <div class="col-2">
+                                    <a class="text-light" href="{% url 'home' %}"><button type="button" class="btn btn-danger">Supprimer</button></a>
                                 </div>
                             </div>
                         </form>
