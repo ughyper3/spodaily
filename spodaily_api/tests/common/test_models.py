@@ -7,12 +7,20 @@ class UserTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(
             email="test@test.test",
-            password="testtesttest"
+            password="testtesttest",
+            accept_email=False
+        )
+        self.user2 = User.objects.create(
+            email="test@test.test2",
+            password="testtesttest2"
         )
 
     def test_user_creation(self):
         user = self.user
+        user2 = self.user2
         self.assertTrue(isinstance(user, User))
+        self.assertEqual(user.accept_email, False)
+        self.assertEqual(user2.accept_email, True)
         self.assertEqual(user.get_email(), user.email)
         self.assertEqual(user.get_password(), user.password)
 

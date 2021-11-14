@@ -33,7 +33,7 @@ class RegisterTest(TestCase):
 
     def test_register_redirection(self):
         response = self.client.post(reverse('register'),
-                                    data={'email': 'alice@example.com',
+                                    data={'email': 'test@example.com',
                                           'password1': 'testtesttest',
                                           'password2': 'testtesttest'})
         self.assertRedirects(response, reverse('register_success'))
@@ -66,7 +66,7 @@ class LogoutTest(TestCase):
         self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
 
     def test_logout_not_authenticated_user(self):
-        url = reverse('routine')
+        url = reverse('logout')
         response = self.client.get(url)
         self.assertTemplateNotUsed(response, 'spodaily_api/logged_out.html')
         self.assertEqual(response.status_code, 302)

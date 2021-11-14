@@ -126,7 +126,6 @@ class Contact(BaseModel):
 '''
 
 
-
 class Session(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     name = models.CharField(max_length=100, null=False, blank=False, default='off')
