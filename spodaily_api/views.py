@@ -227,7 +227,7 @@ class AddFutureSessionView(LoginRequiredMixin, TemplateView):
         form.instance.user = request.user
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('routine'))
+            return HttpResponseRedirect(reverse('home'))
 
 
 class AddFutureActivityView(LoginRequiredMixin, CreateView):
@@ -248,7 +248,7 @@ class AddFutureActivityView(LoginRequiredMixin, CreateView):
             form.save(commit=False)
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('routine'))
+            return HttpResponseRedirect(reverse('home'))
 
 
 class AddProgramActivityView(LoginRequiredMixin, CreateView):
@@ -327,7 +327,7 @@ class AddFutureActivityView(LoginRequiredMixin, CreateView):
             form.save(commit=False)
             form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('routine'))
+            return HttpResponseRedirect(reverse('home'))
 
 
 class DeletePastSessionView(LoginRequiredMixin, DeleteView):
@@ -339,7 +339,7 @@ class DeletePastSessionView(LoginRequiredMixin, DeleteView):
 class DeleteFutureSessionView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/fit/delete_session.html"
     model = Session
-    success_url = reverse_lazy('routine')
+    success_url = reverse_lazy('home')
 
 
 class DeleteProgramSessionView(LoginRequiredMixin, DeleteView):
@@ -364,7 +364,7 @@ class DeleteActivityView(LoginRequiredMixin, DeleteView):
 class DeleteFutureActivityView(LoginRequiredMixin, DeleteView):
     template_name = "spodaily_api/fit/delete_activity.html"
     model = Activity
-    success_url = reverse_lazy('routine')
+    success_url = reverse_lazy('home')
 
     def get(self, request, *args, **kwargs):
         activity_uuid = kwargs['pk']
@@ -455,7 +455,7 @@ class UpdateFutureActivityView(LoginRequiredMixin, UpdateView):
     model = Activity
     fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
     template_name = 'spodaily_api/fit/update_activity.html'
-    success_url = reverse_lazy('routine')
+    success_url = reverse_lazy('home')
 
 
 class UpdateProgramActivityView(LoginRequiredMixin, UpdateView):
@@ -531,7 +531,7 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
                 activity_2.pk = None
                 activity_2.session_id = session
                 activity_2.save()
-            return HttpResponseRedirect(reverse('routine'))
+            return HttpResponseRedirect(reverse('home'))
         else:
             return HttpResponseRedirect(reverse('home'))
 
