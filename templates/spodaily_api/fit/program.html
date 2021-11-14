@@ -14,8 +14,8 @@
             </div>
             <div>
                 <h6 class="text-muted m-0 p-0">Vous pouvez construire, visualiser et modifier votre programme.</h6>
-                <h6 class="text-muted m-0 p-0">Duppliquer une séance permet de l'ajouter manuellement aux séances à venir.</h6>
-                <h6 class="text-muted">Les séances de votre programme s'ajoutent automatiquement à vos séances à venir à la récurrence choisie lors de la création de la séance.</h6>
+                <h6 class="text-muted m-0 p-0">Les séances de votre programme s'ajoutent automatiquement à vos séances à venir et sont visibles depuis le tableau de bord</h6>
+                <h6 class="text-muted">Après avoir effectué une séance, validez-là depuis le tableau de bord pour passer à la séance suivante</h6>
             </div>
             <div class="row">
                 {% for ses in session %}
@@ -29,7 +29,6 @@
                                     <h6 class="m-0 font-weight-bold" >{{ ses.name }}</h6>
                                 </div>
                                 <div>
-                                    <a class="pr-2" href="{% url 'duplicate_program_session' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/dupliquer.png' %}"></a>
                                     <a style="" href="{% url 'delete_program_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
                                 </div>
                             </div>

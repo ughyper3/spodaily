@@ -53,13 +53,19 @@
             <div class="row">
                 <div class="col-6">
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 border-bottom-0 tab-head blue">
+                        <div class="card-header py-3 border-bottom-0 d-flex justify-content-between text-light align-items-center blue">
                             {% if session %}
                                 {% for session in session %}
-                                <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : {{ session.name }} | {{ session.date | date:'d/m/y'}}</h6>
+                                    <div>
+                                        <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : {{ session.name }} | {{ session.date | date:'d/m/y'}}</h6>
+                                    </div>
+                                    <div>
+                                        <a class="pr-2" href="{% url 'session_done' fk=session.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/check.png' %}"></a>
+                                        <a class="p-0 m-0 mt-2" style=" color: black" href="{% url 'delete_future_session' session.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
+                                    </div>
                                 {% endfor %}
                             {% else %}
-                                <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Ma prochaine séance : vous n'avez aucune séance de prévue, rendez-vous sur l'onglet programme ou séance à venir</h6>
+                                <h6 class="m-0 text-light" ><img class="img-fluid pr-3" style="height: 25px" src="{% static "spodaily_api/img/icon/future.png" %}">Aucune séance de prévue, rendez-vous sur l'onglet programme</h6>
                             {% endif %}
                         </div>
                         <div class="card-body m-0 p-0">
@@ -72,6 +78,8 @@
                                             <th class="case-sm text-left">Repétition</th>
                                             <th class="case-sm text-left">Poids</th>
                                             <th class="case-sm text-left">Repos</th>
+                                            <th class="case-sm text-left"></th>
+                                            <th class="case-sm text-left"></th>
                                         </tr>
                                     </thead>
                                         {% for act in activity %}
@@ -82,6 +90,8 @@
                                                     <td class="case-sm text-left">{{ truc.repetition }}</td>
                                                     <td class="case-sm text-left">{{ truc.weight }}</td>
                                                     <td class="case-sm text-left">{{ truc.rest }}</td>
+                                                    <td class="case-sm text-left"><a href="{% url 'update_future_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
+                                                    <td class="case-sm text-left"><a href="{% url 'delete_future_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>
                                                 </tr>
                                             {% endfor %}
                                         {% endfor %}
