@@ -22,11 +22,10 @@
                         <div class="card shadow h-100 border-0">
                             <div class="card-header border-0 d-flex justify-content-between text-light align-items-center blue">
                                 <div>
-                                    <a class="p-0 m-0" href="{% url 'add_future_activity' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/add.png' %}"></a>
+                                    <a class="p-0 m-0" href="{% url 'add_future_activity' fk=ses.uuid %}"><img style="width: 20px" src="{% static 'spodaily_api/img/icon/add.png' %}"></a>
                                 </div>
                                 <div class="text-center">
-                                    <h6 class="m-0 pt-1 font-weight-bold" style="color: {{ ses.color }}">{{ ses.name }}</h6>
-                                    <h6 class="m-0 pt-1 font-weight-bold" style="color: {{ ses.color }}">{{ ses.date|date:'d/m/y'}}</h6>
+                                    <h6 class="m-0 pt-1 font-weight-bold" style="color: {{ ses.color }}">{{ ses.name }} | {{ ses.date|date:'d/m/y'}}</h6>
                                 </div>
                                 <div>
                                     <a class="pr-2" href="{% url 'session_done' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/check.png' %}"></a>
