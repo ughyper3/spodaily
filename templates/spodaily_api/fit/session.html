@@ -1,0 +1,19 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block content %}
+
+{% include 'base/fit/sidebar.html' %}
+{% include 'base/fit/header.html' %}
+    <title>Session | Spodaily </title>
+    <div class="content" style="padding-left: 200px">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between pt-2 pb-2">
+                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Mes sessions</h3>
+                    <a class="position-sticky" href="{% url 'add_session' %}"><img style="width: 50px" src="{% static 'spodaily_api/img/add.png' %}"></a>
+            </div>
+            <div class="row">
+            </div>
+        </div>
+        {% include 'base/footer.html' %}
+    </div>
+{% endblock %}
