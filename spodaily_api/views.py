@@ -76,14 +76,6 @@ class LogoutView(LoginRequiredMixin, TemplateView):
         return HttpResponseRedirect(reverse('dlc_login'))
 
 
-class ContactView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/contact.html'
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, self.template_name, context)
-
-
 class RulesOfUseView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/rules_of_use.html'
 
@@ -218,7 +210,6 @@ class Home(LoginRequiredMixin, TemplateView):
         context['number_of_session'] = number_of_sess
         context['number_of_tonnage'] = number_of_tonnage['sum']
         context['number_of_calories'] = number_of_calories
-
         return render(request, self.template_name, context)
 
 
@@ -453,21 +444,21 @@ class PastSessionView(LoginRequiredMixin, TemplateView):
         return render(request, 'spodaily_api/fit/past_session.html', context)
 
 
-class UpdateActivityView(UpdateView):
+class UpdateActivityView(LoginRequiredMixin, UpdateView):
     model = Activity
     fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
     template_name = 'spodaily_api/fit/update_activity.html'
     success_url = reverse_lazy('past_session')
 
 
-class UpdateFutureActivityView(UpdateView):
+class UpdateFutureActivityView(LoginRequiredMixin, UpdateView):
     model = Activity
     fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
     template_name = 'spodaily_api/fit/update_activity.html'
     success_url = reverse_lazy('routine')
 
 
-class UpdateProgramActivityView(UpdateView):
+class UpdateProgramActivityView(LoginRequiredMixin, UpdateView):
     model = Activity
     fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
     template_name = 'spodaily_api/fit/update_activity.html'

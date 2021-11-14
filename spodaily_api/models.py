@@ -156,7 +156,7 @@ class Activity(BaseModel):
     exercise_id = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     sets = models.SmallIntegerField(null=False, blank=False, default=0)
     repetition = models.SmallIntegerField(null=False, blank=False, default=0)
-    rest = models.DurationField(null=False, blank=False, default=0)
+    rest = models.DurationField(null=False, blank=False, default='0:00:00')
     weight = models.SmallIntegerField(null=False, blank=False, default=0)
 
 

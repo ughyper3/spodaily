@@ -1,3 +1,6 @@
+from html import escape
+
+from django.core import mail
 from django.test import TestCase
 from spodaily_api.views import *
 
@@ -22,9 +25,6 @@ class LoginTest(TestCase):
 
 class RegisterTest(TestCase):
 
-    def setUp(self):
-        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
-
     def test_register_view(self):
         url = reverse('register')
         response = self.client.get(url)
@@ -37,8 +37,30 @@ class RegisterTest(TestCase):
                                           'password1': 'testtesttest',
                                           'password2': 'testtesttest'})
         self.assertRedirects(response, reverse('register_success'))
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(User.objects.get(email='test@example.com').is_active, False)
+        self.assertEqual(mail.outbox[0].subject, 'Activez votre compte Spodaily')
+        self.assertTrue('http://testserver/activate/' in mail.outbox[0].body)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(User.objects.count(), 2)
+        self.assertEqual(User.objects.count(), 1)
+
+
+class RegisterSuccessTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_login_view(self):
+        url = reverse('register_success')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/register_success.html')
+
+    def test_login_redirection(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('register_success'))
+        self.failUnlessEqual(response.status_code, 200)
+        self.client.logout()
 
 
 class AccountTest(TestCase):
@@ -69,7 +91,7 @@ class LogoutTest(TestCase):
         url = reverse('logout')
         response = self.client.get(url)
         self.assertTemplateNotUsed(response, 'spodaily_api/logged_out.html')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_logout_authenticated_user(self):
         self.client.login(email='pascal@test.com', password='pascal')
@@ -79,7 +101,7 @@ class LogoutTest(TestCase):
         self.client.logout()
 
 
-class ContactTest(TestCase):
+class AddContactTest(TestCase):
 
     def setUp(self):
         self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
@@ -115,4 +137,24 @@ class RulesOfUseTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'spodaily_api/rules_of_use.html')
         self.client.logout()
+
+
+class CGUTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_rules_of_use_not_authenticated_user(self):
+        url = reverse('cgu')
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'registration/cgu.html')
+        self.assertEqual(response.status_code, 200)
+
+    def test_rules_of_use_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('cgu'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/cgu.html')
+        self.client.logout()
+
 
