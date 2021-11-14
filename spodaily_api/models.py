@@ -5,6 +5,13 @@ from django.utils.datetime_safe import datetime
 import uuid as uuid_util
 
 
+'''
+
+----- COMMON MODELS -----
+
+'''
+
+
 class CustomManager(models.Manager):
     pass
 
@@ -63,13 +70,14 @@ class User(AbstractBaseUser, BaseModel):
 
     email = models.EmailField(verbose_name='email', max_length=200, unique=True, null=False, blank=False)
     password = models.CharField(max_length=200, null=False, blank=False)
-    name = models.CharField(max_length=200, null=True, blank=True, default='Non renseigné')
-    first_name = models.CharField(max_length=200, null=True, blank=True, default='Non renseigné')
+    name = models.CharField(max_length=200, null=True, blank=True, default='')
+    first_name = models.CharField(max_length=200, null=True, blank=True, default='')
     birth = models.DateField(null=True, blank=True)
     height = models.SmallIntegerField(null=True, blank=True)
     weight = models.SmallIntegerField(null=True, blank=True)
     sexe = models.CharField(null=True, blank=True, choices=sexe_choice, max_length=100)
     picture = models.ImageField(max_length=200, null=True, blank=True)
+    accept_email = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -92,6 +100,30 @@ class User(AbstractBaseUser, BaseModel):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Contact(BaseModel):
+    CONTACT_CHOICE = [
+        ('Suggestion', 'Suggestion'),
+        ('Bug', 'Bug'),
+        ('Autre', 'Autre')
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=20, choices=CONTACT_CHOICE)
+    content = models.CharField(max_length=1000, null=False, blank=False)
+
+    def __str__(self):
+        return self.reason
+
+    def get_user(self):
+        return self.user
+
+
+'''
+
+----- FIT MODELS -----
+
+'''
 
 
 class Session(BaseModel):
@@ -124,7 +156,7 @@ class Activity(BaseModel):
     exercise_id = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     sets = models.SmallIntegerField(null=False, blank=False, default=0)
     repetition = models.SmallIntegerField(null=False, blank=False, default=0)
-    rest = models.DurationField(null=False, blank=False, default=0)
+    rest = models.DurationField(null=False, blank=False, default='0:00:00')
     weight = models.SmallIntegerField(null=False, blank=False, default=0)
 
 
@@ -158,18 +190,56 @@ class Muscle(BaseModel):
         return self.name
 
 
-class Contact(BaseModel):
-    CONTACT_CHOICE = [
-        ('Suggestion', 'Suggestion'),
-        ('Bug', 'Bug'),
-        ('Autre', 'Autre')
-    ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    reason = models.CharField(max_length=20, choices=CONTACT_CHOICE)
-    content = models.CharField(max_length=1000, null=False, blank=False)
+'''
+
+----- FIT MODELS -----
+
+'''
+
+
+class Meal(BaseModel):
+
+    MEAL_CHOICE = (
+        ('Petit déjeuner', 'Petit déjeuner'),
+        ('Déjeuner', 'Déjeuner'),
+        ('Goûté', 'Goûté'),
+        ('Diner', 'Diner'),
+        ('Collation', 'Collation')
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_meal')
+    date = models.DateField(default=datetime.now)
+    is_done = models.BooleanField(default=False)
+    recurrence = models.PositiveSmallIntegerField(blank=False, null=False)
+    name = models.CharField(max_length=100, choices=MEAL_CHOICE)
 
     def __str__(self):
-        return self.reason
+        return self.name
 
-    def get_user(self):
-        return self.user
+
+class Food(BaseModel):
+
+    name = models.CharField(max_length=100, null=False, blank=False)
+    nutriscore = models.CharField(max_length=2, blank=True, null=True)
+    nova = models.PositiveSmallIntegerField(blank=True, null=True)
+    eco = models.PositiveSmallIntegerField(blank=True, null=True)
+    ean = models.PositiveBigIntegerField(blank=True, null=True)
+    kcal = models.PositiveSmallIntegerField(blank=True, null=True)
+    proteine = models.PositiveSmallIntegerField(blank=True, null=True)
+    glucide = models.PositiveSmallIntegerField(blank=True, null=True)
+    lipide = models.PositiveSmallIntegerField(blank=True, null=True)
+    sel = models.PositiveSmallIntegerField(blank=True, null=True)
+    fibre = models.PositiveSmallIntegerField(blank=True, null=True)
+    image = models.CharField(blank=True, null=True, max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class MealXFood(BaseModel):
+
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='meal')
+    food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='food')
+    weight = models.PositiveSmallIntegerField(blank=True, null=True)
+
+

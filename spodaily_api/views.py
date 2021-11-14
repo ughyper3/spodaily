@@ -24,6 +24,13 @@ from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessi
 from spodaily_api.models_queries import get_graph_of_exercise
 
 
+"""
+
+------- COMMON VIEWS --------
+
+"""
+
+
 class LoginView(TemplateView):
     template_name = "registration/login.html"
 
@@ -43,238 +50,6 @@ class LoginView(TemplateView):
         return HttpResponseRedirect(reverse('login'))
 
 
-class Home(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/home.html"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        user = request.user
-        today = datetime.date.today()
-        number_of_session = get_session_number_by_user(user.uuid)
-        number_of_tonnage = get_tonnage_number_by_user(user.uuid)
-        number_of_calories = get_calories_burn_by_user(user.uuid)
-        sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
-        squat_data = get_graph_of_exercise(request, 'Squat')
-        bench_data = get_graph_of_exercise(request, 'Développé couché')
-        number_of_session = 1
-        session = get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
-        activities_list = []
-        for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
-            activities_list.append(activity)
-            ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
-        context['session'] = session
-        context['activity'] = activities_list
-        context['sdt_labels'] = sdt_data[0]
-        context['sdt_data'] = sdt_data[1]
-        context['sdt_exercise'] = sdt_data[2]
-        context['squat_labels'] = squat_data[0]
-        context['squat_data'] = squat_data[1]
-        context['squat_exercise'] = squat_data[2]
-        context['bench_labels'] = bench_data[0]
-        context['bench_data'] = bench_data[1]
-        context['bench_exercise'] = bench_data[2]
-        context['number_of_session'] = number_of_session
-        context['number_of_tonnage'] = number_of_tonnage['sum']
-        context['number_of_calories'] = number_of_calories
-
-        return render(request, self.template_name, context)
-
-
-class AddFutureSessionView(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/add_session.html"
-
-    def get(self, request, *args, **kwargs):
-        form = AddSessionForm()
-        context = {'form': form}
-        return render(request, 'spodaily_api/add_session.html', context)
-
-    def post(self, request, *args, **kwargs):
-        form = AddSessionForm(request.POST)
-        form.instance.user = request.user
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('routine'))
-
-
-class AddFutureActivityView(LoginRequiredMixin, CreateView):
-    template_name = "spodaily_api/add_activity.html"
-    model = Activity
-    success_url = '/'
-
-    def get(self, request, *args, **kwargs):
-        form = AddActivityForm()
-        session = Session.objects.get(uuid=kwargs['fk'])
-        context = {'form': form,
-                   'session': session}
-        return render(request, 'spodaily_api/add_activity.html', context)
-
-    def post(self, request, *args, **kwargs):
-        form = AddActivityForm(request.POST)
-        if form.is_valid():
-            form.save(commit=False)
-            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
-            form.save()
-            return HttpResponseRedirect(reverse('routine'))
-
-
-class AddProgramActivityView(LoginRequiredMixin, CreateView):
-    template_name = "spodaily_api/add_activity.html"
-    model = Activity
-    success_url = '/'
-
-    def get(self, request, *args, **kwargs):
-        form = AddActivityForm()
-        session = Session.objects.get(uuid=kwargs['fk'])
-        context = {'form': form,
-                   'session': session}
-        return render(request, 'spodaily_api/add_activity.html', context)
-
-    def post(self, request, *args, **kwargs):
-        form = AddActivityForm(request.POST)
-        if form.is_valid():
-            form.save(commit=False)
-            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
-            form.save()
-            return HttpResponseRedirect(reverse('program'))
-
-
-class AddPastSessionView(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/add_session.html"
-
-    def get(self, request, *args, **kwargs):
-        form = AddSessionForm()
-        context = {'form': form}
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = AddSessionForm(request.POST)
-        form.instance.user = request.user
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('past_session'))
-
-
-class AddPastActivityView(LoginRequiredMixin, CreateView):
-    template_name = "spodaily_api/add_activity.html"
-    model = Activity
-    success_url = '/'
-
-    def get(self, request, *args, **kwargs):
-        form = AddActivityForm()
-        session = Session.objects.get(uuid=kwargs['fk'])
-        context = {'form': form,
-                   'session': session}
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = AddActivityForm(request.POST)
-        if form.is_valid():
-            form.save(commit=False)
-            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
-            form.save()
-            return HttpResponseRedirect(reverse('past_session'))
-
-
-class AddFutureActivityView(LoginRequiredMixin, CreateView):
-    template_name = "spodaily_api/add_activity.html"
-    model = Activity
-    success_url = '/'
-
-    def get(self, request, *args, **kwargs):
-        form = AddActivityForm()
-        session = Session.objects.get(uuid=kwargs['fk'])
-        context = {'form': form,
-                   'session': session}
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = AddActivityForm(request.POST)
-        if form.is_valid():
-            form.save(commit=False)
-            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
-            form.save()
-            return HttpResponseRedirect(reverse('routine'))
-
-
-class DeletePastSessionView(LoginRequiredMixin, DeleteView):
-    template_name = "spodaily_api/delete_session.html"
-    model = Session
-    success_url = reverse_lazy('past_session')
-
-
-class DeleteFutureSessionView(LoginRequiredMixin, DeleteView):
-    template_name = "spodaily_api/delete_session.html"
-    model = Session
-    success_url = reverse_lazy('routine')
-
-
-class DeleteProgramSessionView(LoginRequiredMixin, DeleteView):
-    template_name = "spodaily_api/delete_session.html"
-    model = Session
-    success_url = reverse_lazy('program')
-
-
-class DeleteActivityView(LoginRequiredMixin, DeleteView):
-    template_name = "spodaily_api/delete_activity.html"
-    model = Activity
-    success_url = reverse_lazy('past_session')
-
-    def get(self, request, *args, **kwargs):
-        activity_uuid = kwargs['fk']
-        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
-        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
-        context = {'session': session, 'activity': activity}
-        return render(request, self.template_name, context)
-
-
-class DeleteFutureActivityView(LoginRequiredMixin, DeleteView):
-    template_name = "spodaily_api/delete_activity.html"
-    model = Activity
-    success_url = reverse_lazy('routine')
-
-    def get(self, request, *args, **kwargs):
-        activity_uuid = kwargs['fk']
-        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
-        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
-        context = {'session': session, 'activity': activity}
-        return render(request, self.template_name, context)
-
-
-class DeleteProgramActivityView(LoginRequiredMixin, DeleteView):
-    template_name = "spodaily_api/delete_activity.html"
-    model = Activity
-    success_url = reverse_lazy('program')
-
-    def get(self, request, *args, **kwargs):
-        activity_uuid = kwargs['fk']
-        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
-        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
-        context = {'session': session, 'activity': activity}
-        return render(request, self.template_name, context)
-
-
-class ExerciseGuideView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/exercise_guide.html'
-
-    def get(self, request, *args, **kwargs):
-        muscles = get_muscles()
-        context = {'muscle': muscles}
-        return render(request, self.template_name, context)
-
-
-class MuscleView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/muscle.html'
-
-    def get(self, request, *args, **kwargs):
-        uuid = kwargs['fk']  # disgusting way to get url
-        muscle = get_muscle_by_uuid(uuid)
-        exercise = get_exercise_by_muscle(uuid)
-        context = {'muscle': muscle,
-                   'exercise': exercise}
-        return render(request, self.template_name, context)
-
-
 class AccountView(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/account.html"
 
@@ -286,10 +61,11 @@ class AccountView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = EditUserForm(request.POST, instance=request.user)
         if form.is_valid():
+            print('valid')
             form.save()
             return HttpResponseRedirect(reverse('account'))
         else:
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('account'))
 
 
 class LogoutView(LoginRequiredMixin, TemplateView):
@@ -300,33 +76,6 @@ class LogoutView(LoginRequiredMixin, TemplateView):
         return HttpResponseRedirect(reverse('dlc_login'))
 
 
-class RoutineView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/routine.html'
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        today = datetime.date.today()
-        user = request.user
-        number_of_session = 8
-        session = get_future_sessions_by_user(user.uuid, number_of_session).values()
-        activities_list = []
-        for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
-            activities_list.append(activity)
-            ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
-        context['session'] = session
-        context['activity'] = activities_list
-        return render(request, self.template_name, context)
-
-
-class ContactView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/contact.html'
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, self.template_name, context)
-
-
 class RulesOfUseView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/rules_of_use.html'
 
@@ -335,21 +84,23 @@ class RulesOfUseView(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, context)
 
 
-class PastSessionView(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/past_session.html"
+class AddContactView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/contact.html"
 
     def get(self, request, *args, **kwargs):
-        context = {}
-        user = request.user
-        session = get_past_sessions_by_user(user.uuid).values()
-        activities_list = []
-        for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
-            activities_list.append(activity)
+        form = AddContactForm()
+        context = {'form': form}
+        return render(request, self.template_name, context)
 
-        context['session'] = session
-        context['activity'] = activities_list
-        return render(request, 'spodaily_api/past_session.html', context)
+    def post(self, request, *args, **kwargs):
+        form = AddContactForm(request.POST)
+        form.instance.user = request.user
+        user_id = request.user.uuid
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.user = User.objects.get(uuid=user_id)
+            form.save()
+            return HttpResponseRedirect(reverse('home'))
 
 
 class RegisterView(TemplateView):
@@ -369,7 +120,7 @@ class RegisterView(TemplateView):
             email = form.cleaned_data['email']
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your account.'
+            mail_subject = 'Activez votre compte Spodaily'
             message = render_to_string('emails/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -397,7 +148,7 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return render(request, template_name="registration/confirmation_email_success.html", context={})
     else:
         return HttpResponse('Activation link is invalid!')
 
@@ -410,48 +161,312 @@ class RegisterSuccessView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class UpdateActivityView(UpdateView):
-    model = Activity
-    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
-    template_name = 'spodaily_api/update_activity.html'
-    success_url = reverse_lazy('past_session')
-
-
-class UpdateFutureActivityView(UpdateView):
-    model = Activity
-    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
-    template_name = 'spodaily_api/update_activity.html'
-    success_url = reverse_lazy('routine')
-
-
-class UpdateProgramActivityView(UpdateView):
-    model = Activity
-    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
-    template_name = 'spodaily_api/update_activity.html'
-    success_url = reverse_lazy('program')
-
-
-class AddContactView(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/contact.html"
+class CguView(TemplateView):
+    template_name = 'registration/cgu.html'
 
     def get(self, request, *args, **kwargs):
-        form = AddContactForm()
+        context = {}
+        return render(request, self.template_name, context)
+
+
+"""
+
+------- FIT VIEWS --------
+
+"""
+
+
+class Home(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/fit/home.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        user = request.user
+        today = datetime.date.today()
+        number_of_sess = get_session_number_by_user(user.uuid)
+        number_of_tonnage = get_tonnage_number_by_user(user.uuid)
+        number_of_calories = get_calories_burn_by_user(user.uuid)
+        sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
+        squat_data = get_graph_of_exercise(request, 'Squat')
+        bench_data = get_graph_of_exercise(request, 'Développé couché')
+        number_of_session = 1
+        session = get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+            ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
+        context['session'] = session
+        context['activity'] = activities_list
+        context['sdt_labels'] = sdt_data[0]
+        context['sdt_data'] = sdt_data[1]
+        context['sdt_exercise'] = sdt_data[2]
+        context['squat_labels'] = squat_data[0]
+        context['squat_data'] = squat_data[1]
+        context['squat_exercise'] = squat_data[2]
+        context['bench_labels'] = bench_data[0]
+        context['bench_data'] = bench_data[1]
+        context['bench_exercise'] = bench_data[2]
+        context['number_of_session'] = number_of_sess
+        context['number_of_tonnage'] = number_of_tonnage['sum']
+        context['number_of_calories'] = number_of_calories
+        return render(request, self.template_name, context)
+
+
+class AddFutureSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/fit/add_session.html"
+
+    def get(self, request, *args, **kwargs):
+        form = AddSessionForm()
+        context = {'form': form,
+                   'today': datetime.date.today()}
+        return render(request, 'spodaily_api/fit/add_session.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddSessionForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('routine'))
+
+
+class AddFutureActivityView(LoginRequiredMixin, CreateView):
+    template_name = "spodaily_api/fit/add_activity.html"
+    model = Activity
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        form = AddActivityForm()
+        session = Session.objects.get(uuid=kwargs['fk'])
+        context = {'form': form,
+                   'session': session}
+        return render(request, 'spodaily_api/fit/add_activity.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddActivityForm(request.POST)
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
+            form.save()
+            return HttpResponseRedirect(reverse('routine'))
+
+
+class AddProgramActivityView(LoginRequiredMixin, CreateView):
+    template_name = "spodaily_api/fit/add_activity.html"
+    model = Activity
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        form = AddActivityForm()
+        session = Session.objects.get(uuid=kwargs['fk'])
+        context = {'form': form,
+                   'session': session}
+        return render(request, 'spodaily_api/fit/add_activity.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddActivityForm(request.POST)
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
+            form.save()
+            return HttpResponseRedirect(reverse('program'))
+
+
+class AddPastSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/fit/add_session.html"
+
+    def get(self, request, *args, **kwargs):
+        form = AddSessionForm()
         context = {'form': form}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = AddContactForm(request.POST)
+        form = AddSessionForm(request.POST)
         form.instance.user = request.user
-        user_id = request.user.uuid
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('past_session'))
+
+
+class AddPastActivityView(LoginRequiredMixin, CreateView):
+    template_name = "spodaily_api/fit/add_activity.html"
+    model = Activity
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        form = AddActivityForm()
+        session = Session.objects.get(uuid=kwargs['fk'])
+        context = {'form': form,
+                   'session': session}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddActivityForm(request.POST)
         if form.is_valid():
             form.save(commit=False)
-            form.instance.user = User.objects.get(uuid=user_id)
+            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
             form.save()
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('past_session'))
+
+
+class AddFutureActivityView(LoginRequiredMixin, CreateView):
+    template_name = "spodaily_api/fit/add_activity.html"
+    model = Activity
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        form = AddActivityForm()
+        session = Session.objects.get(uuid=kwargs['fk'])
+        context = {'form': form,
+                   'session': session}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = AddActivityForm(request.POST)
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.session_id = Session.objects.get(uuid=kwargs['fk'])
+            form.save()
+            return HttpResponseRedirect(reverse('routine'))
+
+
+class DeletePastSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('past_session')
+
+
+class DeleteFutureSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('routine')
+
+
+class DeleteProgramSessionView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_session.html"
+    model = Session
+    success_url = reverse_lazy('program')
+
+
+class DeleteActivityView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_activity.html"
+    model = Activity
+    success_url = reverse_lazy('past_session')
+
+    def get(self, request, *args, **kwargs):
+        activity_uuid = kwargs['pk']
+        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
+        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
+        context = {'session': session, 'activity': activity}
+        return render(request, self.template_name, context)
+
+
+class DeleteFutureActivityView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_activity.html"
+    model = Activity
+    success_url = reverse_lazy('routine')
+
+    def get(self, request, *args, **kwargs):
+        activity_uuid = kwargs['pk']
+        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
+        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
+        context = {'session': session, 'activity': activity}
+        return render(request, self.template_name, context)
+
+
+class DeleteProgramActivityView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_activity.html"
+    model = Activity
+    success_url = reverse_lazy('program')
+
+    def get(self, request, *args, **kwargs):
+        activity_uuid = kwargs['pk']
+        session = Session.objects.filter(activity_session_id=activity_uuid).values('name', 'date')[0]
+        activity = Activity.objects.filter(uuid=activity_uuid).values('exercise_id__name')[0]
+        context = {'session': session, 'activity': activity}
+        return render(request, self.template_name, context)
+
+
+class ExerciseGuideView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/fit/exercise_guide.html'
+
+    def get(self, request, *args, **kwargs):
+        muscles = get_muscles()
+        context = {'muscle': muscles}
+        return render(request, self.template_name, context)
+
+
+class MuscleView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/fit/muscle.html'
+
+    def get(self, request, *args, **kwargs):
+        uuid = kwargs['fk']  # disgusting way to get url
+        muscle = get_muscle_by_uuid(uuid)
+        exercise = get_exercise_by_muscle(uuid)
+        context = {'muscle': muscle,
+                   'exercise': exercise}
+        return render(request, self.template_name, context)
+
+
+class RoutineView(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/fit/routine.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        today = datetime.date.today()
+        user = request.user
+        number_of_session = 8
+        session = get_future_sessions_by_user(user.uuid, number_of_session).values()
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+            ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
+        context['session'] = session
+        context['activity'] = activities_list
+        return render(request, self.template_name, context)
+
+
+class PastSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/fit/past_session.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        user = request.user
+        session = get_past_sessions_by_user(user.uuid).values()
+        activities_list = []
+        for ses in session:
+            activity = get_activities_by_session(ses['uuid'])
+            activities_list.append(activity)
+
+        context['session'] = session
+        context['activity'] = activities_list
+        return render(request, 'spodaily_api/fit/past_session.html', context)
+
+
+class UpdateActivityView(LoginRequiredMixin, UpdateView):
+    model = Activity
+    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
+    template_name = 'spodaily_api/fit/update_activity.html'
+    success_url = reverse_lazy('past_session')
+
+
+class UpdateFutureActivityView(LoginRequiredMixin, UpdateView):
+    model = Activity
+    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
+    template_name = 'spodaily_api/fit/update_activity.html'
+    success_url = reverse_lazy('routine')
+
+
+class UpdateProgramActivityView(LoginRequiredMixin, UpdateView):
+    model = Activity
+    fields = ['exercise_id', 'weight', 'rest', 'repetition', 'sets']
+    template_name = 'spodaily_api/fit/update_activity.html'
+    success_url = reverse_lazy('program')
 
 
 class ProgramView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/program.html'
+    template_name = 'spodaily_api/fit/program.html'
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -468,7 +483,7 @@ class ProgramView(LoginRequiredMixin, TemplateView):
 
 
 class AddProgramSessionView(LoginRequiredMixin, TemplateView):
-    template_name = 'spodaily_api/add_program_session.html'
+    template_name = 'spodaily_api/fit/add_program_session.html'
 
     def get(self, request, *args, **kwargs):
         form = AddSessionProgramForm()
@@ -489,7 +504,7 @@ class AddProgramSessionView(LoginRequiredMixin, TemplateView):
 
 
 class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/duplicate_program_session.html"
+    template_name = "spodaily_api/fit/duplicate_program_session.html"
 
     def get(self, request, *args, **kwargs):
         session_uuid = kwargs['fk']
@@ -522,7 +537,7 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
 
 
 class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
-    template_name = "spodaily_api/session_done.html"
+    template_name = "spodaily_api/fit/session_done.html"
 
     def get(self, request, *args, **kwargs):
         session_uuid = kwargs['fk']
@@ -556,3 +571,19 @@ class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('past_session'))
         else:
             return HttpResponseRedirect(reverse('home'))
+
+
+"""
+
+------- FOOD VIEWS --------
+
+"""
+
+
+
+class FoodHome(LoginRequiredMixin, TemplateView):
+    template_name = 'spodaily_api/food/home.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
