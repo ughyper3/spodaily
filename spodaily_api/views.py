@@ -20,7 +20,7 @@ from spodaily_api.models_queries import get_activities_by_session, \
     get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user, get_session_program_by_user
 
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm
 from spodaily_api.models_queries import get_graph_of_exercise
 
 
@@ -61,7 +61,6 @@ class AccountView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = EditUserForm(request.POST, instance=request.user)
         if form.is_valid():
-            print('valid')
             form.save()
             return HttpResponseRedirect(reverse('account'))
         else:
@@ -571,6 +570,30 @@ class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('past_session'))
         else:
             return HttpResponseRedirect(reverse('home'))
+
+
+class SettingsProgramSessionView(LoginRequiredMixin, TemplateView):
+    template_name = "spodaily_api/fit/settings_programme_session.html"
+
+    def get(self, request, *args, **kwargs):
+        session_uuid = kwargs['fk']
+        session = Session.objects.get(uuid=session_uuid)
+        form = SettingsProgramSessionForm()
+        context = {'session': session,
+                   'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = SettingsProgramSessionForm(request.POST)
+        if form.is_valid():
+            session_uuid = kwargs['fk']
+            session = Session.objects.get(uuid=session_uuid)
+            session.recurrence = form.data['recurrence']
+            session.name = form.data['name']
+            session.save()
+            return HttpResponseRedirect(reverse('program'))
+
+
 
 
 """
