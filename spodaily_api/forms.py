@@ -92,3 +92,13 @@ class SessionDoneForm(ModelForm):
     class Meta:
         model = Session
         fields = ['is_done']
+
+
+class SettingsProgramSessionForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SettingsProgramSessionForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Session
+        fields = ['recurrence', 'name']

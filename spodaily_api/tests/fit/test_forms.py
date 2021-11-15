@@ -1,7 +1,7 @@
 from django.test import TestCase
 from spodaily_api.models import Session, User, Exercise
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm
 
 
 class AddSessionFormTest(TestCase):
@@ -137,6 +137,28 @@ class SessionDoneFormTest(TestCase):
     def test_is_valid(self):
         form = SessionDoneForm(
             data={"is_done": True
+                  }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class SettingsProgramSessionFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_recurrence_is_invalid(self):
+        form = SettingsProgramSessionForm(
+            data={"recurrence": "test",
+                  "name": "issou"
+                  }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_is_valid(self):
+        form = SettingsProgramSessionForm(
+            data={"recurrence": 7,
+                  "name": "issou"
                   }
         )
         self.assertTrue(form.is_valid())

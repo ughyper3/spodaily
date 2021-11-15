@@ -492,3 +492,24 @@ class MarkSessionAsDoneTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'spodaily_api/fit/session_done.html')
         self.client.logout()
+
+
+class SettingsProgramSessionTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+        self.session = Session.objects.create(user=self.pascal, name='test_session')
+
+    def test_SettingsProgramSession_not_authenticated_user(self):
+        url = reverse('settings_program_session', args=[self.session.uuid])
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/fit/settings_programme_session.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_SettingsProgramSession_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        url = reverse('settings_program_session', args=[self.session.uuid])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/fit/settings_programme_session.html')
+        self.client.logout()
