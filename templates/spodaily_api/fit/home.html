@@ -88,7 +88,7 @@
                                                     <td class="case-sm text-left">{{ truc.exercise_id__name }}</td>
                                                     <td class="case-sm text-left">{{ truc.sets }}</td>
                                                     <td class="case-sm text-left">{{ truc.repetition }}</td>
-                                                    <td class="case-sm text-left">{{ truc.weight }}</td>
+                                                    <td class="case-sm text-left">{{ truc.weight|floatformat }}</td>
                                                     <td class="case-sm text-left">{{ truc.rest }}</td>
                                                     <td class="case-sm text-left"><a href="{% url 'update_future_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
                                                     <td class="case-sm text-left"><a href="{% url 'delete_future_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>

@@ -157,7 +157,7 @@ class Activity(BaseModel):
     sets = models.SmallIntegerField(null=False, blank=False, default=0)
     repetition = models.SmallIntegerField(null=False, blank=False, default=0)
     rest = models.DurationField(null=False, blank=False, default='0:00:00')
-    weight = models.SmallIntegerField(null=False, blank=False, default=0)
+    weight = models.FloatField(null=False, blank=False, default=0)
 
 
     def get_exercise_id(self):
