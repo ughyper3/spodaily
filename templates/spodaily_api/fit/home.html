@@ -30,7 +30,7 @@
                         <div class="card-body">
                             <h1 class="p-0 m-0 text-center">
                                 {% if number_of_tonnage %}
-                                    {{ number_of_tonnage }}
+                                    {{ number_of_tonnage|floatformat }}
                                 {% else %}
                                     0
                                 {% endif %}

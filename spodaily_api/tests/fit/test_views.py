@@ -63,7 +63,7 @@ class HomeTest(TestCase):
 
         self.assertEqual(type(response.context['number_of_session']), int)
 
-        self.assertEqual(type(response.context['number_of_tonnage']), int)
+        self.assertEqual(type(response.context['number_of_tonnage']), float)
 
         self.assertEqual(type(response.context['number_of_session']), int)
 
