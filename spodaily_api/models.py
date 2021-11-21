@@ -75,6 +75,8 @@ class User(AbstractBaseUser, BaseModel):
     birth = models.DateField(null=True, blank=True)
     height = models.SmallIntegerField(null=True, blank=True)
     weight = models.SmallIntegerField(null=True, blank=True)
+    number_of_session_per_week = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
+    average_session_length = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
     sexe = models.CharField(null=True, blank=True, choices=sexe_choice, max_length=100)
     picture = models.ImageField(max_length=200, null=True, blank=True)
     accept_email = models.BooleanField(default=True)

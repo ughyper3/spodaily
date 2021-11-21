@@ -30,7 +30,7 @@ class EditUserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'name', 'birth', 'height', 'weight', 'sexe']
+        fields = ['email', 'first_name', 'name', 'birth', 'height', 'weight', 'sexe', 'number_of_session_per_week', 'average_session_length']
 
 
 class AddSessionForm(ModelForm):
