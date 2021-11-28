@@ -1,5 +1,4 @@
 import datetime
-
 from django.contrib import messages
 from django.contrib.auth.backends import UserModel
 from django.contrib.auth.tokens import default_token_generator
@@ -14,14 +13,11 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import TemplateView, DeleteView, CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from spodaily_api.algorithm.fitness import Fitness
 from spodaily_api.models import Activity, Session, User
-from spodaily_api.models_queries import get_activities_by_session, \
-    get_muscles, get_muscle_by_uuid, get_exercise_by_muscle, get_past_sessions_by_user, get_session_number_by_user, \
-    get_tonnage_number_by_user, get_calories_burn_by_user, get_future_sessions_by_user, get_session_program_by_user
-
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm
-from spodaily_api.models_queries import get_graph_of_exercise
+
 
 
 """
@@ -116,7 +112,6 @@ class RegisterView(TemplateView):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
-            email = form.cleaned_data['email']
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'Activez votre compte Spodaily'
@@ -179,20 +174,21 @@ class Home(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/fit/home.html"
 
     def get(self, request, *args, **kwargs):
+        fitness = Fitness()
         context = {}
         user = request.user
         today = datetime.date.today()
-        number_of_sess = get_session_number_by_user(user.uuid)
-        number_of_tonnage = get_tonnage_number_by_user(user.uuid)
-        number_of_calories = get_calories_burn_by_user(user.uuid)
-        sdt_data = get_graph_of_exercise(request, 'Soulevé de terre')
-        squat_data = get_graph_of_exercise(request, 'Squat')
-        bench_data = get_graph_of_exercise(request, 'Développé couché')
+        number_of_sess = fitness.get_session_number_by_user(user.uuid)
+        number_of_tonnage = fitness.get_tonnage_number_by_user(user.uuid)
+        number_of_calories = fitness.get_calories_burn_by_user(user.uuid)
+        sdt_data = fitness.get_graph_of_exercise(request, 'Soulevé de terre')
+        squat_data = fitness.get_graph_of_exercise(request, 'Squat')
+        bench_data = fitness.get_graph_of_exercise(request, 'Développé couché')
         number_of_session = 1
-        session = get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
+        session = fitness.get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
         activities_list = []
         for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
+            activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
             ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
         context['session'] = session
@@ -390,7 +386,8 @@ class ExerciseGuideView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/fit/exercise_guide.html'
 
     def get(self, request, *args, **kwargs):
-        muscles = get_muscles()
+        fitness = Fitness()
+        muscles = fitness.get_muscles()
         context = {'muscle': muscles}
         return render(request, self.template_name, context)
 
@@ -399,9 +396,10 @@ class MuscleView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/fit/muscle.html'
 
     def get(self, request, *args, **kwargs):
-        uuid = kwargs['fk']  # disgusting way to get url
-        muscle = get_muscle_by_uuid(uuid)
-        exercise = get_exercise_by_muscle(uuid)
+        fitness = Fitness()
+        uuid = kwargs['fk']
+        muscle = fitness.get_muscle_by_uuid(uuid)
+        exercise = fitness.get_exercise_by_muscle(uuid)
         context = {'muscle': muscle,
                    'exercise': exercise}
         return render(request, self.template_name, context)
@@ -411,14 +409,15 @@ class RoutineView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/fit/routine.html'
 
     def get(self, request, *args, **kwargs):
+        fitness = Fitness()
         context = {}
         today = datetime.date.today()
         user = request.user
         number_of_session = 8
-        session = get_future_sessions_by_user(user.uuid, number_of_session).values()
+        session = fitness.get_future_sessions_by_user(user.uuid, number_of_session).values()
         activities_list = []
         for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
+            activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
             ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
         context['session'] = session
@@ -430,12 +429,13 @@ class PastSessionView(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/fit/past_session.html"
 
     def get(self, request, *args, **kwargs):
+        fitness = Fitness()
         context = {}
         user = request.user
-        session = get_past_sessions_by_user(user.uuid).values()
+        session = fitness.get_past_sessions_by_user(user.uuid).values()
         activities_list = []
         for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
+            activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
 
         context['session'] = session
@@ -468,11 +468,12 @@ class ProgramView(LoginRequiredMixin, TemplateView):
     template_name = 'spodaily_api/fit/program.html'
 
     def get(self, request, *args, **kwargs):
+        fitness = Fitness()
         context = {}
-        session = get_session_program_by_user(request.user.uuid).values()
+        session = fitness.get_session_program_by_user(request.user.uuid).values()
         activities_list = []
         for ses in session:
-            activity = get_activities_by_session(ses['uuid'])
+            activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
 
         context['session'] = session

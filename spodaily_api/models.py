@@ -1,6 +1,5 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.utils import timezone
 from django.utils.datetime_safe import datetime
 import uuid as uuid_util
 

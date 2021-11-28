@@ -1,8 +1,7 @@
 from django import forms
 from django.forms import ModelForm
-from spodaily_api.models import User, Session, Activity, Contact
+from spodaily_api.models import Session, Activity, Contact, Exercise
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -47,6 +46,7 @@ class AddActivityForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AddActivityForm, self).__init__(*args, **kwargs)
+        self.fields['exercise_id'].queryset = Exercise.objects.order_by('name')
 
 
     class Meta:
