@@ -2,18 +2,15 @@ import datetime
 from django.contrib import messages
 from django.contrib.auth.backends import UserModel
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode
 from django.views.generic import TemplateView, DeleteView, CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from spodaily_api.algorithm.fitness import Fitness
+from spodaily_api.algorithm.registration import Registration
 from spodaily_api.models import Activity, Session, User
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm
@@ -108,24 +105,13 @@ class RegisterView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = CreateUserForm(request.POST)
+        registration = Registration()
         context = {'form': form}
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            current_site = get_current_site(request)
-            mail_subject = 'Activez votre compte Spodaily'
-            message = render_to_string('emails/account_activation_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                mail_subject, message, to=[to_email]
-            )
-            email.send()
+            registration.send_registration_email(user, request, form)
             messages.success(request, 'Successfully registered')
             return HttpResponseRedirect(reverse('register_success'))
         else:
@@ -475,7 +461,6 @@ class ProgramView(LoginRequiredMixin, TemplateView):
         for ses in session:
             activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
-
         context['session'] = session
         context['activity'] = activities_list
 
@@ -517,20 +502,9 @@ class DuplicateProgramSessionView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = AddSessionDuplicateForm(request.POST)
         form.instance.user = request.user
+        fitness = Fitness()
         if form.is_valid():
-            session_uuid = kwargs['fk']
-            session = Session.objects.get(uuid=session_uuid)
-            activities = Activity.objects.filter(session_id=session_uuid)
-            session_2 = session
-            session_2.pk = None
-            session_2.is_program = False
-            session_2.date = form.instance.date
-            session_2.save()
-            for activity in activities:
-                activity_2 = activity
-                activity_2.pk = None
-                activity_2.session_id = session
-                activity_2.save()
+            fitness.duplicate_session(kwargs['fk'], form)
             return HttpResponseRedirect(reverse('home'))
         else:
             return HttpResponseRedirect(reverse('home'))
@@ -551,23 +525,9 @@ class MarkSessionAsDone(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = SessionDoneForm(request.POST)
         form.instance.user = request.user
+        fitness = Fitness()
         if form.is_valid():
-            session_uuid = kwargs['fk']
-            session = Session.objects.get(uuid=session_uuid)
-            session.is_done = True
-            session.save()
-            activities = Activity.objects.filter(session_id=session_uuid)
-            session_2 = session
-            session_2.pk = None
-            session_2.is_program = False
-            session_2.is_done = False
-            session_2.date = session.date + datetime.timedelta(days=session.recurrence)
-            session_2.save()
-            for activity in activities:
-                activity_2 = activity
-                activity_2.pk = None
-                activity_2.session_id = session
-                activity_2.save()
+            fitness.mark_session_as_done(kwargs['fk'])
             return HttpResponseRedirect(reverse('past_session'))
         else:
             return HttpResponseRedirect(reverse('home'))
@@ -586,13 +546,13 @@ class SettingsProgramSessionView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = SettingsProgramSessionForm(request.POST)
+        fitness = Fitness()
         if form.is_valid():
-            session_uuid = kwargs['fk']
-            session = Session.objects.get(uuid=session_uuid)
-            session.recurrence = form.data['recurrence']
-            session.name = form.data['name']
-            session.save()
+            fitness.update_session_settings(kwargs['fk'], form)
             return HttpResponseRedirect(reverse('program'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
+
 
 
 
