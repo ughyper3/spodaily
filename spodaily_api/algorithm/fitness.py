@@ -1,3 +1,4 @@
+import datetime
 from datetime import date
 from django.db.models import Sum, F, Q
 from spodaily_api import models
@@ -100,3 +101,52 @@ class Fitness:
             data.append(self.get_maximum_by_exercise(activity.repetition, activity.weight))
 
         return labels, data, exercise
+
+    def mark_session_as_done(self, uuid):
+        """
+        todo CREATE UNIT TEST FOR THIS METHOD
+        """
+        session_uuid = uuid
+        session = models.Session.objects.get(uuid=session_uuid)
+        session.is_done = True
+        session.save()
+        activities = models.Activity.objects.filter(session_id=session_uuid)
+        session_2 = session
+        session_2.pk = None
+        session_2.is_program = False
+        session_2.is_done = False
+        session_2.date = session.date + datetime.timedelta(days=session.recurrence)
+        session_2.save()
+        for activity in activities:
+            activity_2 = activity
+            activity_2.pk = None
+            activity_2.session_id = session
+            activity_2.save()
+
+    def update_session_settings(self, uuid, form):
+        """
+        todo CREATE UNIT TEST FOR THIS METHOD
+        """
+        session_uuid = uuid
+        session = models.Session.objects.get(uuid=session_uuid)
+        session.recurrence = form.data['recurrence']
+        session.name = form.data['name']
+        session.save()
+
+    def duplicate_session(self, uuid, form):
+        """
+        todo CREATE UNIT TEST FOR THIS METHOD
+        """
+        session_uuid = uuid
+        session = models.Session.objects.get(uuid=session_uuid)
+        activities = models.Activity.objects.filter(session_id=session_uuid)
+        session_2 = session
+        session_2.pk = None
+        session_2.is_program = False
+        session_2.date = form.instance.date
+        session_2.save()
+        for activity in activities:
+            activity_2 = activity
+            activity_2.pk = None
+            activity_2.session_id = session
+            activity_2.save()
