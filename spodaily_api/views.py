@@ -13,9 +13,7 @@ from spodaily_api.algorithm.fitness import Fitness
 from spodaily_api.algorithm.registration import Registration
 from spodaily_api.models import Activity, Session, User
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm
-
-
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm, FitnessGoalForm
 
 """
 
@@ -455,16 +453,28 @@ class ProgramView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         fitness = Fitness()
+        form = FitnessGoalForm()
         context = {}
+        goals = fitness.get_fitness_goals_by_user(request.user.uuid)
         session = fitness.get_session_program_by_user(request.user.uuid).values()
         activities_list = []
         for ses in session:
             activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
+        context['goals'] = goals
         context['session'] = session
         context['activity'] = activities_list
-
+        context['form'] = form
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = FitnessGoalForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('program'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
 
 class AddProgramSessionView(LoginRequiredMixin, TemplateView):

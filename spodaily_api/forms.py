@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from spodaily_api.models import Session, Activity, Contact, Exercise
+from spodaily_api.models import Session, Activity, Contact, Exercise, FitnessGoal
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 
@@ -102,3 +102,13 @@ class SettingsProgramSessionForm(ModelForm):
     class Meta:
         model = Session
         fields = ['recurrence', 'name']
+
+
+class FitnessGoalForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(FitnessGoalForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = FitnessGoal
+        fields = ['date', 'exercise', 'weight']
