@@ -47,8 +47,8 @@
                                                 <td class="case-sm text-left">{{ goal.exercise }}</td>
                                                 <td class="case-sm text-left">{{ goal.weight|floatformat }}</td>
                                                 <td class="case-sm text-left">{{ goal.date }}</td>
-                                                <td class="case-sm text-left"><a href=""><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
-                                                <td class="case-sm text-left"><a href=""><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>
+                                                <td class="case-sm text-left"><a href="{% url 'update_goal' goal.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
+                                                <td class="case-sm text-left"><a href="{% url 'delete_goal' goal.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

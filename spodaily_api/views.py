@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from spodaily_api.algorithm.fitness import Fitness
 from spodaily_api.algorithm.registration import Registration
-from spodaily_api.models import Activity, Session, User
+from spodaily_api.models import Activity, Session, User, FitnessGoal
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm, FitnessGoalForm
 
@@ -564,7 +564,23 @@ class SettingsProgramSessionView(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('home'))
 
 
+class DeleteGoalView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_goal.html"
+    model = FitnessGoal
+    success_url = reverse_lazy('program')
 
+    def get(self, request, *args, **kwargs):
+        goal_uuid = kwargs['pk']
+        goal = FitnessGoal.objects.filter(uuid=goal_uuid).values('exercise__name')[0]
+        context = {'goal': goal}
+        return render(request, self.template_name, context)
+
+
+class UpdateGoalView(LoginRequiredMixin, UpdateView):
+    model = FitnessGoal
+    fields = ['exercise', 'weight', 'date']
+    template_name = 'spodaily_api/fit/update_goal.html'
+    success_url = reverse_lazy('program')
 
 
 """
