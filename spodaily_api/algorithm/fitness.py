@@ -150,3 +150,11 @@ class Fitness:
             activity_2.pk = None
             activity_2.session_id = session
             activity_2.save()
+
+    def get_fitness_goals_by_user(self, user_id):
+        data = models.FitnessGoal.objects.filter(
+            user_id=user_id,
+            deleted=False,
+            is_done=False
+        ).order_by('date')
+        return data

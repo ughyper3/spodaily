@@ -11,11 +11,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from spodaily_api.algorithm.fitness import Fitness
 from spodaily_api.algorithm.registration import Registration
-from spodaily_api.models import Activity, Session, User
+from spodaily_api.models import Activity, Session, User, FitnessGoal
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm
-
-
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm, FitnessGoalForm
 
 """
 
@@ -455,16 +453,28 @@ class ProgramView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         fitness = Fitness()
+        form = FitnessGoalForm()
         context = {}
+        goals = fitness.get_fitness_goals_by_user(request.user.uuid)
         session = fitness.get_session_program_by_user(request.user.uuid).values()
         activities_list = []
         for ses in session:
             activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
+        context['goals'] = goals
         context['session'] = session
         context['activity'] = activities_list
-
+        context['form'] = form
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = FitnessGoalForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('program'))
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
 
 class AddProgramSessionView(LoginRequiredMixin, TemplateView):
@@ -554,7 +564,23 @@ class SettingsProgramSessionView(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse('home'))
 
 
+class DeleteGoalView(LoginRequiredMixin, DeleteView):
+    template_name = "spodaily_api/fit/delete_goal.html"
+    model = FitnessGoal
+    success_url = reverse_lazy('program')
 
+    def get(self, request, *args, **kwargs):
+        goal_uuid = kwargs['pk']
+        goal = FitnessGoal.objects.filter(uuid=goal_uuid).values('exercise__name')[0]
+        context = {'goal': goal}
+        return render(request, self.template_name, context)
+
+
+class UpdateGoalView(LoginRequiredMixin, UpdateView):
+    model = FitnessGoal
+    fields = ['exercise', 'weight', 'date']
+    template_name = 'spodaily_api/fit/update_goal.html'
+    success_url = reverse_lazy('program')
 
 
 """

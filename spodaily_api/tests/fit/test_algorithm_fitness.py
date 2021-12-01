@@ -113,5 +113,11 @@ class GetExercise(TestCase):
         self.assertEqual(len(fitness.get_exercise_by_muscle(self.muscle.uuid)), 2)
 
 
+class GetFitnessGoalsByUser(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+        self.exercise = Exercise.objects.create(name='test')
+        self.goal = Fitness(goal)
 
 

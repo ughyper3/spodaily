@@ -1,5 +1,5 @@
 from django.test import TestCase
-from spodaily_api.models import Session, User, Exercise, Activity, Muscle, Contact
+from spodaily_api.models import Session, User, Exercise, Activity, Muscle, Contact, FitnessGoal
 
 
 class SessionTestCase(TestCase):
@@ -70,7 +70,7 @@ class MuscleTestCase(TestCase):
             name="test"
         )
         self.muscle = Muscle.objects.create(
-            name='muscle'
+            name="muscle"
         )
 
     def test_muscle_creation(self):
@@ -78,3 +78,28 @@ class MuscleTestCase(TestCase):
         self.assertTrue(isinstance(muscle, Muscle))
         self.assertEqual(muscle.get_user(), muscle.use)
         self.assertEqual(muscle.get_name(), muscle.name)
+
+
+class FitnessGoalTestCase(TestCase):
+
+    def setUp(self):
+        self.exercise = Exercise.objects.create(
+            name="test"
+        )
+        self.user = User.objects.create(
+            email="test@test.test",
+            password="testtesttest"
+        )
+        self.fitness_goal = FitnessGoal.objects.create(
+            exercise=self.exercise,
+            user=self.user,
+            weight=100,
+            date='2000-01-01'
+        )
+
+    def test_fitness_goal_creation(self):
+        goal = self.fitness_goal
+        self.assertTrue(isinstance(goal, FitnessGoal))
+        self.assertEqual(goal.get_weight(), goal.weight)
+        self.assertEqual(goal.get_date(), goal.date)
+

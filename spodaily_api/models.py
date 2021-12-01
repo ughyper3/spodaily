@@ -152,6 +152,23 @@ class Exercise(BaseModel):
         return self.name
 
 
+class FitnessGoal(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='exercises')
+    weight = models.FloatField(null=False, blank=False, default=0)
+    date = models.DateField(default=datetime.now)
+    is_done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.name
+
+    def get_weight(self):
+        return self.weight
+
+    def get_date(self):
+        return self.date
+
+
 class Activity(BaseModel):
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='activity_session_id')
     exercise_id = models.ForeignKey(Exercise, on_delete=models.CASCADE)
