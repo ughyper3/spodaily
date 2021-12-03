@@ -1,7 +1,7 @@
 from django.test import TestCase
 from spodaily_api.models import Session, User, Exercise
 from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
-    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm
+    AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm, FitnessGoalForm
 
 
 class AddSessionFormTest(TestCase):
@@ -138,5 +138,78 @@ class SessionDoneFormTest(TestCase):
         form = SessionDoneForm(
             data={"is_done": True
                   }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class SettingsProgramSessionFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_recurrence_is_invalid(self):
+        form = SettingsProgramSessionForm(
+            data={"recurrence": "test",
+                  "name": "issou"
+                  }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_is_valid(self):
+        form = SettingsProgramSessionForm(
+            data={"recurrence": 7,
+                  "name": "issou"
+                  }
+        )
+        self.assertTrue(form.is_valid())
+
+
+class FitnessGoalFormTest(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+        self.exercise = Exercise.objects.create(name='test')
+
+    def test_date_is_invalid(self):
+        form = FitnessGoalForm(
+            data={
+                "date": 'issou',
+                "weight": 12.0,
+                "user": self.pascal,
+                "exercise": self.exercise
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_weight_is_invalid(self):
+        form = FitnessGoalForm(
+            data={
+                "date": '2021-10-10',
+                "weight": 'hello',
+                "user": self.pascal,
+                "exercise": self.exercise
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_exercise_is_invalid(self):
+        form = FitnessGoalForm(
+            data={
+                "date": '2021-10-10',
+                "weight": 12.0,
+                "user": self.pascal,
+                "exercise": 'test'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_is_valid(self):
+        form = FitnessGoalForm(
+            data={
+                "date": '2021-10-10',
+                "weight": 12.0,
+                "user": self.pascal,
+                "exercise": self.exercise
+            }
         )
         self.assertTrue(form.is_valid())

@@ -4,30 +4,30 @@
 
 {% include 'base/fit/sidebar.html' %}
 {% include 'base/fit/header.html' %}
-    <title>Delete activity | Spodaily </title>
+    <title>Delete account | Spodaily </title>
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2 pb-2">
-                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Supprimer une activité</h3>
+                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Supprimer mon compte</h3>
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
                     <div class="card-header border-0 d-flex blue text-light">
-                        <h6 class="m-0 p-0 font-weight-bold">Supprimer l'activité suivante</h6>
+                        <h6 class="m-0 p-0 font-weight-bold">Supprimer mon compte</h6>
 
                     </div>
                     <div class="card-body">
                         <form method="post" action="">
                             {% csrf_token %}
                             <div class="row mb-3 d-flex justify-content-center">
-                                <p> Êtes-vous sur de vouloir supprimer l'activité {{ activity.exercise_id__name }} de la session {{ session.name }} ?</p>
+                                <p> Êtes-vous sur de vouloir supprimer votre compte ?</p>
                             </div>
                             <div class="row">
                                 <div class="col-10">
                                 </div>
                                 <div class="col-2">
-                                    <input class="btn btn-dark mb-2" type="submit" value="Supprimer" name="delete">
+                                    <input class="btn btn-dark mb-2" type="submit" value="Supprimer" name="Delete">
                                 </div>
                             </div>
                         </form>

@@ -14,8 +14,106 @@
             </div>
             <div>
                 <h6 class="text-muted m-0 p-0">Vous pouvez construire, visualiser et modifier votre programme.</h6>
-                <h6 class="text-muted m-0 p-0">Duppliquer une séance permet de l'ajouter manuellement aux séances à venir.</h6>
-                <h6 class="text-muted">Les séances de votre programme s'ajoutent automatiquement à vos séances à venir à la récurrence choisie lors de la création de la séance.</h6>
+                <h6 class="text-muted m-0 p-0">Lorsqu'une nouvelle séance est créée, intégrez la dans dans votre routine en appuyant sur : <img style="width: 20px" src="{% static 'spodaily_api/img/icon/dupliquer.png' %}"></h6>
+                <h6 class="text-muted">Après avoir effectué une séance, validez-là depuis le tableau de bord pour passer à la séance suivante.</h6>
+            </div>
+            <div class="row">
+                <div class="col-7" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-between blue text-light align-items-center">
+                            <div>
+                            </div>
+                            <div class="text-center">
+                                <h6 class="m-0 font-weight-bold" >Mes objectifs</h6>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped text-core m-0 p-0" width="100%" cellspacing="0">
+                                    <thead class="text-dark">
+                                        <tr>
+                                            <th class="case-sm text-left">Exercice</th>
+                                            <th class="case-sm text-left">Poids</th>
+                                            <th class="case-sm text-left">Date</th>
+                                            <th class="case-sm text-left"></th>
+                                            <th class="case-sm text-left"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for goal in goals %}
+                                            <tr>
+                                                <td class="case-sm text-left">{{ goal.exercise }}</td>
+                                                <td class="case-sm text-left">{{ goal.weight|floatformat }}</td>
+                                                <td class="case-sm text-left">{{ goal.date }}</td>
+                                                <td class="case-sm text-left"><a href="{% url 'update_goal' goal.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
+                                                <td class="case-sm text-left"><a href="{% url 'delete_goal' goal.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5" style="padding-bottom: 25px">
+                    <div class="card shadow h-100 border-0">
+                        <div class="card-header border-0 d-flex justify-content-between blue text-light align-items-center">
+                            <div>
+                            </div>
+                            <div class="text-center">
+                                <h6 class="m-0 font-weight-bold" >Ajouter un objectif</h6>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped text-core m-0 p-0" width="100%" cellspacing="0">
+                                    <tbody>
+                                        <form method="POST" action="">
+                                            <div>
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <label>Exercise</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12 text-center">
+                                                        {{form.exercise}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <label>Poids</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12 text-center">
+                                                        <input class="text-muted" id="weight" type="number" name="weight">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <label>Date</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12 text-center">
+                                                        <input class="text-muted" id="date" type="date" name="date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input class="btn btn-dark mb-2 ml-5" type="submit" value="Enregistrer">
+                                        </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 {% for ses in session %}
@@ -30,6 +128,7 @@
                                 </div>
                                 <div>
                                     <a class="pr-2" href="{% url 'duplicate_program_session' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/dupliquer.png' %}"></a>
+                                    <a class="pr-2" href="{% url 'settings_program_session' fk=ses.uuid %}"><img style="width: 30px" src="{% static 'spodaily_api/img/icon/settings.png' %}"></a>
                                     <a style="" href="{% url 'delete_program_session' ses.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a>
                                 </div>
                             </div>
@@ -54,7 +153,7 @@
                                                             <td class="case-sm text-left">{{ truc.exercise_id__name }}</td>
                                                             <td class="case-sm text-left">{{ truc.sets }}</td>
                                                             <td class="case-sm text-left">{{ truc.repetition}}</td>
-                                                            <td class="case-sm text-left">{{ truc.weight }}</td>
+                                                            <td class="case-sm text-left">{{ truc.weight|floatformat }}</td>
                                                             <td class="case-sm text-left">{{ truc.rest }}</td>
                                                             <td class="case-sm text-left"><a href="{% url 'update_program_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/update.png' %}"></a></td>
                                                             <td class="case-sm text-left"><a href="{% url 'delete_program_activity' truc.uuid %}"><img style="width: 15px" src="{% static 'spodaily_api/img/delete.png' %}"></a></td>

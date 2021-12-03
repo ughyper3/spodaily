@@ -1,6 +1,5 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.utils import timezone
 from django.utils.datetime_safe import datetime
 import uuid as uuid_util
 
@@ -75,6 +74,8 @@ class User(AbstractBaseUser, BaseModel):
     birth = models.DateField(null=True, blank=True)
     height = models.SmallIntegerField(null=True, blank=True)
     weight = models.SmallIntegerField(null=True, blank=True)
+    number_of_session_per_week = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
+    average_session_length = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
     sexe = models.CharField(null=True, blank=True, choices=sexe_choice, max_length=100)
     picture = models.ImageField(max_length=200, null=True, blank=True)
     accept_email = models.BooleanField(default=True)
@@ -151,13 +152,30 @@ class Exercise(BaseModel):
         return self.name
 
 
+class FitnessGoal(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users')
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='exercises')
+    weight = models.FloatField(null=False, blank=False, default=0)
+    date = models.DateField(default=datetime.now)
+    is_done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.name
+
+    def get_weight(self):
+        return self.weight
+
+    def get_date(self):
+        return self.date
+
+
 class Activity(BaseModel):
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='activity_session_id')
     exercise_id = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     sets = models.SmallIntegerField(null=False, blank=False, default=0)
     repetition = models.SmallIntegerField(null=False, blank=False, default=0)
     rest = models.DurationField(null=False, blank=False, default='0:00:00')
-    weight = models.SmallIntegerField(null=False, blank=False, default=0)
+    weight = models.FloatField(null=False, blank=False, default=0)
 
 
     def get_exercise_id(self):

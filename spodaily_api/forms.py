@@ -1,8 +1,7 @@
 from django import forms
 from django.forms import ModelForm
-from spodaily_api.models import User, Session, Activity, Contact
+from spodaily_api.models import Session, Activity, Contact, Exercise, FitnessGoal
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -30,7 +29,7 @@ class EditUserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'name', 'birth', 'height', 'weight', 'sexe']
+        fields = ['email', 'first_name', 'name', 'birth', 'height', 'weight', 'sexe', 'number_of_session_per_week', 'average_session_length']
 
 
 class AddSessionForm(ModelForm):
@@ -47,6 +46,7 @@ class AddActivityForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AddActivityForm, self).__init__(*args, **kwargs)
+        self.fields['exercise_id'].queryset = Exercise.objects.order_by('name')
 
 
     class Meta:
@@ -92,3 +92,23 @@ class SessionDoneForm(ModelForm):
     class Meta:
         model = Session
         fields = ['is_done']
+
+
+class SettingsProgramSessionForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SettingsProgramSessionForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Session
+        fields = ['recurrence', 'name']
+
+
+class FitnessGoalForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(FitnessGoalForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = FitnessGoal
+        fields = ['date', 'exercise', 'weight']

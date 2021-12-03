@@ -158,3 +158,22 @@ class CGUTest(TestCase):
         self.client.logout()
 
 
+class DeleteAccountView(TestCase):
+
+    def setUp(self):
+        self.pascal = User.objects.create_user(email='pascal@test.com', password='pascal')
+
+    def test_delete_account_not_authenticated_user(self):
+        url = reverse('delete_account', args=[self.pascal.uuid])
+        response = self.client.get(url)
+        self.assertTemplateNotUsed(response, 'spodaily_api/delete_account.html')
+        self.assertEqual(response.status_code, 302)
+
+    def test_rules_of_use_authenticated_user(self):
+        self.client.login(email='pascal@test.com', password='pascal')
+        response = self.client.get(reverse('delete_account', args=[self.pascal.uuid]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'spodaily_api/delete_account.html')
+        self.client.logout()
+
+

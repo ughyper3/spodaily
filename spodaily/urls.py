@@ -8,7 +8,8 @@ from spodaily_api.views import DeleteActivityView, AddFutureActivityView, Exerci
     RoutineView, RulesOfUseView, AccountView, PastSessionView, RegisterView, UpdateActivityView, Home, \
     RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView, DeletePastSessionView, \
     DeleteFutureSessionView, DeleteProgramSessionView, MarkSessionAsDone, DeleteFutureActivityView, \
-    DeleteProgramActivityView, AddProgramActivityView, UpdateFutureActivityView, UpdateProgramActivityView, FoodHome, CguView
+    DeleteProgramActivityView, AddProgramActivityView, UpdateFutureActivityView, UpdateProgramActivityView, FoodHome, \
+    CguView, SettingsProgramSessionView, DeleteGoalView, UpdateGoalView, DeleteAccount
 
 urlpatterns = [
 
@@ -26,6 +27,7 @@ urlpatterns = [
     url(r'^contact/', AddContactView.as_view(), name='contact'),
     url(r'^rule_of_use/', RulesOfUseView.as_view(), name='rules_of_use'),
     url(r'^cgu/', CguView.as_view(), name='cgu'),
+    path('delete_account/<uuid:pk>/', DeleteAccount.as_view(), name='delete_account'),
 
 
     # fit urls
@@ -51,10 +53,12 @@ urlpatterns = [
     path('fit/add_program_activity/<uuid:fk>/', AddProgramActivityView.as_view(), name='add_program_activity'),
     path('fit/session_done/<uuid:fk>/', MarkSessionAsDone.as_view(), name='session_done'),
     path('fit/duplicate_program_session/<uuid:fk>/', DuplicateProgramSessionView.as_view(), name='duplicate_program_session'),
+    path('fit/settings_program_session/<uuid:fk>/', SettingsProgramSessionView.as_view(), name='settings_program_session'),
     path('fit/add_past_activity/<uuid:fk>/', AddPastActivityView.as_view(), name='add_past_activity'),
     url(r'^fit/exercise_guide/', ExerciseGuideView.as_view(), name='exercise_guide'),
     path('fit/muscle/<uuid:fk>/', MuscleView.as_view(), name='muscle'),
-
+    path('fit/delete_goal/<uuid:pk>/', DeleteGoalView.as_view(), name='delete_goal'),
+    path('fit/update_goal/<uuid:pk>/', UpdateGoalView.as_view(), name='update_goal'),
 
     # food urls
 
