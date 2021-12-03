@@ -9,7 +9,7 @@ from spodaily_api.views import DeleteActivityView, AddFutureActivityView, Exerci
     RegisterSuccessView, AddContactView, AddPastActivityView, DuplicateProgramSessionView, DeletePastSessionView, \
     DeleteFutureSessionView, DeleteProgramSessionView, MarkSessionAsDone, DeleteFutureActivityView, \
     DeleteProgramActivityView, AddProgramActivityView, UpdateFutureActivityView, UpdateProgramActivityView, FoodHome, \
-    CguView, SettingsProgramSessionView, DeleteGoalView, UpdateGoalView
+    CguView, SettingsProgramSessionView, DeleteGoalView, UpdateGoalView, DeleteAccount
 
 urlpatterns = [
 
@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^contact/', AddContactView.as_view(), name='contact'),
     url(r'^rule_of_use/', RulesOfUseView.as_view(), name='rules_of_use'),
     url(r'^cgu/', CguView.as_view(), name='cgu'),
+    path('delete_account/<uuid:pk>/', DeleteAccount.as_view(), name='delete_account'),
 
 
     # fit urls
@@ -58,7 +59,6 @@ urlpatterns = [
     path('fit/muscle/<uuid:fk>/', MuscleView.as_view(), name='muscle'),
     path('fit/delete_goal/<uuid:pk>/', DeleteGoalView.as_view(), name='delete_goal'),
     path('fit/update_goal/<uuid:pk>/', UpdateGoalView.as_view(), name='update_goal'),
-
 
     # food urls
 

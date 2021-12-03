@@ -113,7 +113,7 @@
                             <h6 class="heading-small text-muted mb-4 mt-2">Gérer mon compte</h6>
                             <div class="row d-flex flex-row-reverse pr-3">
                                 <div>
-                                    <a class="text-light" href="{% url 'home' %}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                    <a class="text-light" href="{% url 'delete_account' user.uuid %}"><button type="button" class="btn btn-danger">Supprimer</button></a>
                                 </div>
                             </div>
                         </form>

@@ -147,6 +147,12 @@ class CguView(TemplateView):
         return render(request, self.template_name, context)
 
 
+class DeleteAccount(LoginRequiredMixin, UpdateView):
+    template_name = "spodaily_api/delete_account.html"
+    model = User
+    fields = ['is_active']
+    success_url = reverse_lazy('register')
+
 """
 
 ------- FIT VIEWS --------
