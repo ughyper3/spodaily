@@ -1,17 +1,6 @@
 from django.test import TestCase
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddContactForm
+from spodaily_api.forms import CreateUserForm, EditUserForm, AddContactForm
 from spodaily_api.models import User
-
-
-class LoginFormTest(TestCase):
-
-    def test_email_is_invalid(self):
-        form = LoginForm(data={"email": "test", "password": "password"})
-        self.assertFalse(form.is_valid())
-
-    def test_is_valid(self):
-        form = LoginForm(data={"email": "test@test.test", "password": "password"})
-        self.assertTrue(form.is_valid())
 
 
 class CreateUserFormTest(TestCase):

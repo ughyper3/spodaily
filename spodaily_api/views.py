@@ -1,5 +1,5 @@
 import datetime
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.contrib.auth.backends import UserModel
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponseRedirect, HttpResponse
@@ -7,12 +7,12 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.views.generic import TemplateView, DeleteView, CreateView, UpdateView
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from spodaily_api.algorithm.fitness import Fitness
 from spodaily_api.algorithm.registration import Registration
 from spodaily_api.models import Activity, Session, User, FitnessGoal
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
+from spodaily_api.forms import CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm, FitnessGoalForm
 
 """
@@ -20,26 +20,6 @@ from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessi
 ------- COMMON VIEWS --------
 
 """
-
-
-class LoginView(TemplateView):
-    template_name = "registration/login.html"
-
-    def post(self, request):
-        login_form = LoginForm(request.POST)
-
-        if login_form.is_valid():
-            user = authenticate(email=login_form.cleaned_data.get('email'),
-                                password=login_form.cleaned_data.get('password'))
-            if user is not None:
-                login(request, user)
-                return HttpResponseRedirect(reverse('home'))
-
-            else:
-                messages.error(request, 'username or password not correct')
-
-        return HttpResponseRedirect(reverse('login'))
-
 
 class AccountView(LoginRequiredMixin, TemplateView):
     template_name = "spodaily_api/account.html"
