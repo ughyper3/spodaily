@@ -1,6 +1,6 @@
 from django.test import TestCase
 from spodaily_api.models import Session, User, Exercise
-from spodaily_api.forms import LoginForm, CreateUserForm, EditUserForm, AddSessionForm, AddActivityForm, AddContactForm, \
+from spodaily_api.forms import AddSessionForm, AddActivityForm, \
     AddSessionProgramForm, AddSessionDuplicateForm, SessionDoneForm, SettingsProgramSessionForm, FitnessGoalForm
 
 
