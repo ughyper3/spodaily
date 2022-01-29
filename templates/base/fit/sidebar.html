@@ -1,4 +1,6 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'spodaily_api/css/base.css' %}">
+
 
 <style>
     *{
@@ -16,7 +18,7 @@
     <div class="row">
         <div class="col-12">
             <div class="row">
-                <div class="col picture text-center">
+                <div class="col picture text-center pt-2">
                     <a href="{% url 'home' %}"><img class="img-fluid" style="height: 40px" src="{% static 'spodaily_api/img/logo-spodaily.png' %}" alt="logo Spodaily"></a>
                 </div>
             </div>
@@ -25,18 +27,17 @@
     <div class="row" style="padding-bottom: 100%">
         <div class="col-12">
             <div class="side-links">
-                <a style="margin-left: -10px" class="list-group-item text-light sidebar-fit border-0" href="{% url 'home' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/dashboard.png' %}">Tableau de bord</a>
-                <a style="margin-left: -10px" class="list-group-item text-light sidebar-fit border-0" href="{% url 'program' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/program.png' %}">Programme</a>
-                <a style="margin-left: -10px" class="list-group-item text-light sidebar-fit border-0" href="{% url 'past_session' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/history.png' %}">Séances passées</a>
-                <a style="margin-left: -10px" class="list-group-item text-light sidebar-fit border-0" href="{% url 'exercise_guide' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/exercise.png' %}">Exercices</a>
+                <a style="margin-left: -10px" class="list-group-item sidebar-fit border-0 link" href="{% url 'home' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/dashboard.png' %}">Tableau de bord</a>
+                <a style="margin-left: -10px" class="list-group-item sidebar-fit border-0 link" href="{% url 'program' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/program.png' %}">Programme</a>
+                <a style="margin-left: -10px" class="list-group-item sidebar-fit border-0 link" href="{% url 'past_session' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/history.png' %}">Séances passées</a>
             </div>
         </div>
     </div>
     <div class="row pb-2">
         <div class="col-12">
             <div class="side-links">
-                <a style="margin-left: -10px" class="list-group-item text-light sidebar-fit border-0" href="{% url 'contact' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/contact.png' %}">Contact</a>
-                <a style="margin-left: -10px" class="list-group-item text-light sidebar-fit border-0" ><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/information.png' %}">Informations</a>
+                <a style="margin-left: -10px" class="list-group-item sidebar-fit border-0 link" href="{% url 'contact' %}"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/contact.png' %}">Contact</a>
+                <a style="margin-left: -10px" class="list-group-item sidebar-fit border-0 link text-light"><img class="img-fluid pr-3" style="height: 25px" src="{% static 'spodaily_api/img/icon/information.png' %}">Informations</a>
             </div>
         </div>
     </div>
