@@ -1,6 +1,8 @@
 import datetime
 from datetime import date
-from django.db.models import Sum, F, Q
+from django.db.models import Sum, F, Q, Count
+from django.db.models.functions import ExtractWeek, ExtractYear
+
 from spodaily_api import models
 
 
@@ -158,3 +160,26 @@ class Fitness:
             is_done=False
         ).order_by('date')
         return data
+
+    def get_frequencies_by_week(self, user_id):
+        labels = []
+        values = []
+        data = models.Session.objects.filter(
+            is_done=True,
+            deleted=False
+        ).annotate(
+            week=ExtractWeek('date'),
+            year=ExtractYear('date'),
+        ).values(
+            'year',
+            'week'
+        ).annotate(
+            count=Count('uuid')
+        ).order_by(
+            'year', 'week'
+        )
+        for data in data:
+            labels.append(str(data['year']) + '-' + str(data['week']))
+            values.append(int(data['count']))
+
+        return labels, values

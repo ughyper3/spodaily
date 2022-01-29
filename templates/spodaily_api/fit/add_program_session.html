@@ -9,16 +9,12 @@
     <div class="content" style="padding-left: 200px">
         <div class="container-fluid">
             <div class="d-flex justify-content-between pt-2">
-                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Ajouter une séance dans mon programme</h3>
-            </div>
-            <div>
-                <h6 class="text-muted">La récurrence d'une séance correspond au nombre de jours après lequel la séance sera reprogrammée lorsqu'elle a été validée.</h6>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
-                    <div class="card-header border-0 d-flex justify-content-between blue text-light">
+                    <div class="card-header border-0 d-flex justify-content-between bg-dark text-light">
                         <h6 class="m-0 p-0 font-weight-bold">Programme de {{ user.first_name }}</h6>
                     </div>
                     <div class="card-body">
@@ -40,7 +36,7 @@
                                     <input class="text-muted" id="recurrence" type="number" name="recurrence" maxlength="25" min="0" max="100" value="7">
                                 </div>
                             </div>
-                            <input class="btn btn-dark mb-2" type="submit" value="Enregistrer">
+                            <input class="btn button-pink mb-2" type="submit" value="Enregistrer">
                         </form>
                     </div>
                 </div>

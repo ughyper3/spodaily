@@ -6,18 +6,13 @@
 {% include 'base/fit/header.html' %}
     <title>Done session | Spodaily </title>
     <div class="content" style="padding-left: 200px">
-        <div class="container-fluid">
+        <div class="container-fluid" style="min-height: 100vh">
             <div class="d-flex justify-content-between pt-2">
-                <h3 class="main-title text-uppercase align-self-center" style="padding: 0; margin: 0">Séance terminée</h3>
-            </div>
-            <div>
-                <h6 class="text-muted m-0 p-0">Lorsqu'une séance est marquée comme validée, elle s'ajoute automatiquement aux séances passées.</h6>
-                <h6 class="text-muted">Dans le cas d'une séance créée depuis l'onglet <b>programme</b>, elle sera automatiquement reprogrammée à la date correspondante à sa récurrence.</h6>
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="col-9">
                     <div class="card shadow h-100 py-0">
-                    <div class="card-header border-0 d-flex blue text-light">
+                    <div class="card-header border-0 d-flex bg-dark text-light">
                         <h6 class="m-0 p-0 font-weight-bold">Marquer la séance {{ session.name }} comme terminée</h6>
 
                     </div>
@@ -31,7 +26,7 @@
                                 <div class="col-10">
                                 </div>
                                 <div class="col-2">
-                                    <input class="btn btn-dark mb-2" type="submit" value="Terminer" name="Delete">
+                                    <input class="btn button-pink mb-2" type="submit" value="Terminer" name="Delete">
                                 </div>
                             </div>
                         </form>
