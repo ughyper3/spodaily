@@ -1,9 +1,17 @@
+*{
+    font-family: Montserrat;
+}
+
 .sidebar-fit {
     background-color: #3D444B;
 }
 
 .blue {
     background-color: #047FEC;
+}
+
+.pink {
+    background-color: #f54251;
 }
 
 .gray {
@@ -14,6 +22,55 @@
     background-color: #014701;
 }
 
-.green {
+.button-pink{
+    background-color: #f54251;
+    font-weight: 600;
+    color: white;
+    font-size: 15px;
+}
 
+.bold{
+    font-weight: 900;
+}
+
+.font-14{
+    font-size: 14px;
+}
+
+.font-12{
+    font-size: 12px;
+}
+
+.pink-text{
+    font-weight: 800;
+    color:#f54251;
+    opacity: 70%;
+    font-size: 14px;
+}
+
+a.pink-text:hover{
+    font-size: 15px;
+    color:#f54251;
+    transition-delay: 100ms;
+}
+
+.button-pink:hover{
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+    transition-delay: 100ms;
+}
+
+a.link{
+    color: #ffffff;
+    font-weight: 500;
+}
+
+a.link:hover {
+    color: #f54251;
+}
+
+.number{
+    font-size: 28px;
+    font-weight: 700;
 }

@@ -3,37 +3,37 @@
 
 {% block content %}
     <title>Login | Spodaily </title>
-    <nav class="navbar fixed-top" style="background-color: #3D444B">
+    <nav class="navbar fixed-top sidebar-fit">
         <div class="navbar-brand m-0">
             <img class="img-responsive" style="height: 40px" src="{% static 'spodaily_api/img/logo-spodaily.png' %}">
         </div>
         <div class="navbar-nav">
             <a href="{% url 'register' %}">
-                <button type="submit" class="btn rounded-pill p-2" style="background-color: #f54251; font-weight: 600; color: white">
+                <button type="submit" class="btn rounded-pill p-2 button-pink">
                     S'inscrire
                 </button>
             </a>
         </div>
     </nav>
-    <div class="container-fluid" style="font-family: Montserrat">
+    <div class="container-fluid">
         <div class="row flex-column-reverse flex-md-row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="height: 100vh!important;">
                 <div class="row justify-content-center">
                     <div class="col-11" style="margin-top: 150px">
                         <div class="row pt-2">
                             <div class="col">
-                                <h5 style="font-weight: 800">Envie de performance ?</h5>
+                                <h5 class="bold">Envie de performance ?</h5>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-auto">
-                                <h1 class="text-left p-0 m-0" style="font-weight: 900">Mettez toutes les chances</h1>
-                                <h1 class="text-right p-0 m-0"style="font-weight: 900">de votre coté</h1>
+                                <h1 class="text-left p-0 m-0 bold">Mettez toutes les chances</h1>
+                                <h1 class="text-right p-0 m-0 bold">de votre coté</h1>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col text-right">
-                                <h5 style="font-weight: 800">Découvrez spodaily gratuitement</h5>
+                                <h5 class="bold">Découvrez spodaily gratuitement</h5>
                             </div>
                         </div>
                     </div>
@@ -49,12 +49,12 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <h6 style="font-weight: 800" >Managez votre entrainement</h6>
+                                        <h6 class="bold">Managez votre entrainement</h6>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <p style="font-size: 14px">
+                                        <p class="font-14">
                                             Planifiez vos séances, mesurez votre progression et atteignez vos objectifs Sportifs
                                         </p>
                                     </div>
@@ -68,12 +68,12 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <h6 style="font-weight: 800">Une communauté engagée</h6>
+                                        <h6 class="bold">Une communauté engagée</h6>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <p style="font-size: 14px">
+                                        <p class="font-14">
                                             Programmez vos repas,  découvez de nouvelles recettes healthy et respectueuses de l’environnement
                                         </p>
                                     </div>
@@ -87,12 +87,12 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <h6 style="font-weight: 800">Partagez autour du sport</h6>
+                                        <h6 class="bold">Partagez autour du sport</h6>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <p style="font-size: 14px">
+                                        <p class="font-14">
                                             Découvrez de nouveaux exercices, et diversifiez vos pratiques sportives avec Spodaily
                                         </p>
                                     </div>
@@ -110,7 +110,7 @@
                 </div>
                 <div class="row mt-5">
                     <div class="col text-center">
-                        <h6 style="font-weight: 800"> Bienvenue sur Spodaily </h6>
+                        <h6 class="bold"> Bienvenue sur Spodaily </h6>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-5">
@@ -118,21 +118,21 @@
                         <form method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="username" style="font-weight: 800">Email</label>
+                                <label for="username" class="bold">Email</label>
                                 <input type="email" class="form-control rounded-pill shadow" id="username" name="username" placeholder="Email">
                             </div>
                             <div class="form-group mt-2">
-                                <label for="password" style="font-weight: 800; ">Mot de passe</label>
+                                <label for="password" class="bold">Mot de passe</label>
                                 <input type="password" class="form-control rounded-pill shadow" id="password" name="password" placeholder="Mot de passe">
                             </div>
                             <div class="row text-right mt-5">
                                 <div class="col">
-                                    <a class="" href="{% url 'password_reset' %}" style="font-weight: 800; color:#f54251; opacity: 70%">Mot de passe oublié ?</a>
+                                    <a class="pink-text" href="{% url 'password_reset' %}" >Mot de passe oublié ?</a>
                                 </div>
                             </div>
                             <div class="row text-center mt-5">
                                 <div class="col">
-                                    <button type="submit" value="Submit" class="btn rounded-pill p-2" style="background-color: #f54251; color: white">Se connecter</button>
+                                    <button type="submit" value="Submit" class="btn rounded-pill p-2 button-pink">Se connecter</button>
                                 </div>
                             </div>
                         </form>

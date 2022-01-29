@@ -151,9 +151,8 @@ class Home(LoginRequiredMixin, TemplateView):
         number_of_sess = fitness.get_session_number_by_user(user.uuid)
         number_of_tonnage = fitness.get_tonnage_number_by_user(user.uuid)
         number_of_calories = fitness.get_calories_burn_by_user(user.uuid)
-        sdt_data = fitness.get_graph_of_exercise(request, 'Soulevé de terre')
-        squat_data = fitness.get_graph_of_exercise(request, 'Squat')
-        bench_data = fitness.get_graph_of_exercise(request, 'Développé couché')
+        exercise = 'Soulevé de terre'
+        exercise_data = fitness.get_graph_of_exercise(request, exercise)
         number_of_session = 1
         session = fitness.get_future_sessions_by_user(user.uuid, number_of_session).values('name', 'uuid', 'date')
         activities_list = []
@@ -161,17 +160,14 @@ class Home(LoginRequiredMixin, TemplateView):
             activity = fitness.get_activities_by_session(ses['uuid'])
             activities_list.append(activity)
             ses['color'] = 'white' if ses['date'] >= today else '#BA4545'
+        assiduity = fitness.get_frequencies_by_week(user.uuid)
+        context['assiduity_labels'] = assiduity[0]
+        context['assiduity_values'] = assiduity[1]
         context['session'] = session
         context['activity'] = activities_list
-        context['sdt_labels'] = sdt_data[0]
-        context['sdt_data'] = sdt_data[1]
-        context['sdt_exercise'] = sdt_data[2]
-        context['squat_labels'] = squat_data[0]
-        context['squat_data'] = squat_data[1]
-        context['squat_exercise'] = squat_data[2]
-        context['bench_labels'] = bench_data[0]
-        context['bench_data'] = bench_data[1]
-        context['bench_exercise'] = bench_data[2]
+        context['labels'] = exercise_data[0]
+        context['data'] = exercise_data[1]
+        context['exercise'] = exercise_data[2]
         context['number_of_session'] = number_of_sess
         context['number_of_tonnage'] = number_of_tonnage['sum']
         context['number_of_calories'] = number_of_calories
