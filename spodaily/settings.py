@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qtg6s+ixh65gn+8nx2-*$4iyqz&e=t$wz)-mpk=%+@d^mfcx5v'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS =['*']
+ALLOWED_HOSTS = ['*']
 
 
 AUTH_USER_MODEL = "spodaily_api.User"
@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'spodaily.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbk0f6j057q7sq',
-        'USER': 'viinylkmjxibgl',
-        'PASSWORD': 'ee501aa4a903c12c6e5b221b49353e1edf147b670de8cfd01a9fc9703d8ca516',
-        'HOST': 'ec2-34-243-180-8.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
+        'NAME': os.environ['NAME'],
+        'USER': os.environ['SECRET_KEY'],
+        'PASSWORD': os.environ['PASSWORD'],
+        'HOST': os.environ['HOST'],
+        'PORT': os.environ['PORT']
     }
 }
 
@@ -114,8 +114,8 @@ LOGIN_REDIRECT_URL = '/fit/home/'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'spodaily.app@gmail.com'
-EMAIL_HOST_PASSWORD = 'gomlqqmwycgtjdba'
+EMAIL_HOST_USER = os.environ['EMAIL_HOST']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
