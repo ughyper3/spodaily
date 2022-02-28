@@ -85,7 +85,7 @@ DATABASES = {
         'USER': os.environ['SECRET_KEY'],
         'PASSWORD': os.environ['PASSWORD'],
         'HOST': os.environ['HOST'],
-        'PORT': os.environ['PORT']
+        'PORT': 5432
     }
 }
 
